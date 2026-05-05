@@ -1,0 +1,2569 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raport grunt.report — Moniuszki 1, Tychy</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2E8B57;
+  --primary-dark: #1F6B41;
+  --primary-light: #5BBE8A;
+  --bg: #F8F9FA;
+  --bg-warm: #FAFAF6;
+  --text: #212529;
+  --text-light: #5B5247;
+  --border: rgba(0,0,0,0.08);
+  --border-strong: rgba(0,0,0,0.15);
+  --parcel: #007BFF;
+  --warning: #FD7E14;
+  --good: #2E8B57;
+  --bad: #DC3545;
+  --neutral: #6C757D;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  background: #ECEAE2;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.55;
+  padding: 30px 20px;
+}
+::selection { background: var(--primary); color: white; }
+.display { font-family: 'Fraunces', Georgia, serif; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+
+/* ===== TOP BANNER (poza drukiem) ===== */
+.top-banner {
+  max-width: 900px;
+  margin: 0 auto 24px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+}
+.top-banner-left {
+  font-size: 12px;
+  color: var(--text-light);
+  line-height: 1.5;
+}
+.top-banner-left strong { color: var(--text); }
+.top-banner-right {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.banner-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: white;
+  color: var(--text);
+  border: 1px solid var(--border-strong);
+  border-radius: 7px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+.banner-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: rgba(46,139,87,0.04);
+}
+.banner-btn.primary {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+  box-shadow: 0 2px 6px rgba(46,139,87,0.25);
+}
+.banner-btn.primary:hover {
+  background: var(--primary-dark);
+  color: white;
+}
+.banner-btn svg { width: 13px; height: 13px; }
+
+/* ===== A4 PAGE (each section on its own page when printing) ===== */
+.page {
+  max-width: 900px;
+  margin: 0 auto 24px;
+  background: white;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  padding: 56px 64px;
+  position: relative;
+  overflow: hidden;
+}
+.page-number {
+  position: absolute;
+  bottom: 20px; right: 30px;
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  color: rgba(0,0,0,0.35);
+}
+.page-footer {
+  position: absolute;
+  bottom: 20px; left: 30px;
+  font-size: 10px;
+  color: rgba(0,0,0,0.35);
+  display: flex; align-items: center; gap: 6px;
+}
+.page-footer-mark {
+  width: 14px; height: 14px;
+  background: var(--primary);
+  border-radius: 3px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 8px;
+}
+
+/* ===== COVER ===== */
+.cover {
+  min-height: 1100px;
+  background: linear-gradient(180deg, #F4F1E8 0%, #FFFFFF 60%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 72px 80px;
+}
+.cover-header {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.cover-logo {
+  display: flex; align-items: center; gap: 12px;
+}
+.cover-logo-mark {
+  width: 44px; height: 44px;
+  background: var(--primary);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-weight: 700; font-size: 20px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 2px 4px rgba(46,139,87,0.4);
+}
+.cover-logo-text {
+  font-family: 'Fraunces', serif;
+  font-weight: 600; font-size: 22px;
+  letter-spacing: -0.02em;
+}
+.cover-logo-text .dot { color: var(--primary); }
+.cover-meta {
+  text-align: right;
+  font-size: 11px;
+  color: var(--text-light);
+}
+.cover-meta-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: rgba(0,0,0,0.4);
+  margin-bottom: 2px;
+}
+.cover-meta-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.cover-body {
+  margin: 80px 0;
+}
+.cover-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: rgba(46,139,87,0.1);
+  color: var(--primary);
+  border-radius: 100px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.cover-tag-dot {
+  width: 6px; height: 6px;
+  background: var(--primary);
+  border-radius: 50%;
+}
+.cover-title {
+  font-family: 'Fraunces', serif;
+  font-size: 56px;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 0.98;
+  margin-bottom: 14px;
+  color: var(--text);
+}
+.cover-title .green { color: var(--primary); }
+.cover-subtitle {
+  font-size: 18px;
+  color: var(--text-light);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  margin-bottom: 36px;
+  line-height: 1.4;
+}
+.cover-parcel-box {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px 28px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+}
+.cover-stat-label {
+  font-size: 9px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.16em;
+  color: rgba(0,0,0,0.45);
+  margin-bottom: 4px;
+}
+.cover-stat-value {
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.cover-stat-value .num {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--primary);
+}
+.cover-stat-sub {
+  font-size: 10.5px;
+  color: var(--text-light);
+  font-family: 'JetBrains Mono', monospace;
+  margin-top: 2px;
+}
+
+.cover-footer {
+  border-top: 1px solid var(--border);
+  padding-top: 22px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+.cover-footer-block {
+  font-size: 11.5px;
+  color: var(--text-light);
+}
+.cover-footer-label {
+  font-size: 9px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.16em;
+  color: rgba(0,0,0,0.45);
+  margin-bottom: 6px;
+}
+.cover-footer-value {
+  color: var(--text);
+  font-weight: 600;
+  font-size: 13px;
+}
+
+/* ===== TOC ===== */
+.toc-page {
+  padding-top: 64px;
+}
+.section-label {
+  font-size: 10.5px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.18em;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+.section-title {
+  font-family: 'Fraunces', serif;
+  font-size: 36px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  margin-bottom: 14px;
+}
+.section-intro {
+  font-size: 13.5px;
+  color: var(--text-light);
+  line-height: 1.65;
+  max-width: 600px;
+  margin-bottom: 32px;
+}
+
+.toc-list {
+  margin-top: 24px;
+}
+.toc-track {
+  margin-bottom: 26px;
+}
+.toc-track-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 0;
+  border-bottom: 2px solid var(--text);
+  margin-bottom: 4px;
+}
+.toc-track-icon {
+  width: 32px; height: 32px;
+  background: rgba(46,139,87,0.1);
+  color: var(--primary);
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+}
+.toc-track-icon svg { width: 16px; height: 16px; }
+.toc-track-name {
+  font-family: 'Fraunces', serif;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.toc-item {
+  display: flex; align-items: baseline;
+  padding: 7px 0;
+  border-bottom: 1px dotted rgba(0,0,0,0.1);
+  font-size: 12.5px;
+}
+.toc-item-name {
+  flex: 1;
+  color: var(--text);
+}
+.toc-item-num {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 11px;
+  margin-right: 16px;
+  min-width: 28px;
+}
+.toc-item-page {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-light);
+  font-size: 11px;
+}
+
+/* ===== KPI BOX (executive summary) ===== */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 24px 0 32px;
+}
+.kpi-box {
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  padding: 16px 18px;
+}
+.kpi-box.highlight {
+  background: rgba(46,139,87,0.04);
+  border-color: rgba(46,139,87,0.2);
+}
+.kpi-label {
+  font-size: 9.5px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.14em;
+  color: rgba(0,0,0,0.5);
+  margin-bottom: 6px;
+}
+.kpi-value {
+  font-family: 'Fraunces', serif;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.kpi-value .small {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  color: var(--text-light);
+  font-weight: 500;
+  margin-left: 4px;
+}
+.kpi-trend {
+  font-size: 11px;
+  margin-top: 4px;
+  display: flex; align-items: center; gap: 4px;
+}
+.kpi-trend.up { color: var(--good); }
+.kpi-trend.down { color: var(--bad); }
+.kpi-trend.flat { color: var(--neutral); }
+
+/* ===== MODULE PAGES ===== */
+.module-page {
+  page-break-before: always;
+}
+.module-header {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 28px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+}
+.module-header-icon {
+  width: 44px; height: 44px;
+  background: var(--primary);
+  color: white;
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(46,139,87,0.3);
+}
+.module-header-icon svg { width: 22px; height: 22px; stroke-width: 2; }
+.module-num {
+  font-size: 10.5px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.16em;
+  color: var(--primary);
+  margin-bottom: 3px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.module-title {
+  font-family: 'Fraunces', serif;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.module-content h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  margin: 24px 0 10px;
+  color: var(--text);
+}
+.module-content p {
+  margin-bottom: 12px;
+  color: var(--text-light);
+  line-height: 1.65;
+}
+.module-content p strong { color: var(--text); font-weight: 600; }
+
+/* ===== TABLES ===== */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  margin: 14px 0 18px;
+}
+.data-table thead th {
+  text-align: left;
+  padding: 8px 10px 6px;
+  border-bottom: 2px solid var(--text);
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: rgba(0,0,0,0.55);
+}
+.data-table tbody td {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--border);
+}
+.data-table tbody tr:hover { background: rgba(0,0,0,0.015); }
+.data-table .num {
+  font-family: 'JetBrains Mono', monospace;
+  text-align: right;
+  white-space: nowrap;
+}
+.data-table .col-name { font-weight: 500; }
+.data-table .col-name-sub {
+  font-size: 10.5px;
+  color: var(--text-light);
+  margin-top: 1px;
+}
+
+/* ===== INLINE PILLS / BADGES ===== */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 100px;
+  font-size: 10.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.pill.good { background: rgba(46,139,87,0.12); color: var(--good); }
+.pill.bad { background: rgba(220,53,69,0.12); color: var(--bad); }
+.pill.neutral { background: rgba(108,117,125,0.12); color: var(--neutral); }
+.pill.warning { background: rgba(253,126,20,0.12); color: var(--warning); }
+.pill.parcel { background: rgba(0,123,255,0.12); color: var(--parcel); }
+
+/* ===== SCORE BAR ===== */
+.score-bar {
+  margin: 12px 0;
+}
+.score-bar-header {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 4px;
+}
+.score-bar-label {
+  font-size: 12px;
+  font-weight: 500;
+}
+.score-bar-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+.score-bar-track {
+  height: 8px;
+  background: rgba(0,0,0,0.05);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.score-bar-fill {
+  height: 100%;
+  border-radius: 100px;
+  background: linear-gradient(90deg, var(--primary-light) 0%, var(--primary) 100%);
+}
+.score-bar-fill.warning {
+  background: linear-gradient(90deg, #FFA94D 0%, var(--warning) 100%);
+}
+
+/* ===== INFO BOX ===== */
+.info-box {
+  background: var(--bg-warm);
+  border-left: 3px solid var(--primary);
+  border-radius: 0 9px 9px 0;
+  padding: 14px 18px;
+  margin: 18px 0;
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+.info-box.warning {
+  background: rgba(253,126,20,0.06);
+  border-left-color: var(--warning);
+}
+.info-box.note {
+  background: rgba(0,123,255,0.05);
+  border-left-color: var(--parcel);
+}
+.info-box-title {
+  font-weight: 700;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+.info-box.warning .info-box-title { color: var(--warning); }
+.info-box.note .info-box-title { color: var(--parcel); }
+
+/* ===== POI LIST (points of interest) ===== */
+.poi-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 12px 0 18px;
+}
+.poi-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 14px;
+  background: var(--bg-warm);
+  border-radius: 9px;
+  border: 1px solid var(--border);
+}
+.poi-icon {
+  width: 32px; height: 32px;
+  background: white;
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--primary);
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+}
+.poi-icon svg { width: 16px; height: 16px; }
+.poi-body { flex: 1; min-width: 0; }
+.poi-name {
+  font-weight: 600;
+  font-size: 12.5px;
+  letter-spacing: -0.005em;
+}
+.poi-detail {
+  font-size: 11px;
+  color: var(--text-light);
+  margin-top: 1px;
+}
+.poi-meta {
+  text-align: right;
+  flex-shrink: 0;
+  font-family: 'JetBrains Mono', monospace;
+}
+.poi-distance {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.poi-time {
+  font-size: 10.5px;
+  color: var(--text-light);
+  margin-top: 1px;
+}
+
+/* ===== CHART (SVG bar chart) ===== */
+.chart-container {
+  margin: 18px 0;
+  padding: 18px 16px 12px;
+  background: var(--bg-warm);
+  border-radius: 11px;
+  border: 1px solid var(--border);
+}
+.chart-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: rgba(0,0,0,0.55);
+  margin-bottom: 12px;
+}
+
+/* ===== SUMMARY CARD (per-module conclusion) ===== */
+.summary-card {
+  background: linear-gradient(135deg, rgba(46,139,87,0.08) 0%, rgba(46,139,87,0.02) 100%);
+  border: 1px solid rgba(46,139,87,0.2);
+  border-radius: 12px;
+  padding: 18px 22px;
+  margin: 24px 0 0;
+}
+.summary-card-label {
+  font-size: 10.5px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.16em;
+  color: var(--primary);
+  margin-bottom: 6px;
+}
+.summary-card-text {
+  font-family: 'Fraunces', serif;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.5;
+  color: var(--text);
+}
+.summary-card-text strong { font-weight: 700; color: var(--primary-dark); }
+
+/* ===== TWO-COLUMN ===== */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin: 14px 0;
+}
+
+/* ===== PRINT ===== */
+@media print {
+  body { background: white; padding: 0; }
+  .top-banner { display: none; }
+  .page {
+    box-shadow: none;
+    margin: 0;
+    page-break-after: always;
+  }
+  .page:last-child { page-break-after: auto; }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  body { padding: 16px 0; }
+  .page { padding: 32px 24px; border-radius: 0; }
+  .cover { padding: 40px 28px; min-height: auto; }
+  .cover-title { font-size: 38px; }
+  .cover-subtitle { font-size: 15px; }
+  .cover-parcel-box {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .cover-footer { grid-template-columns: 1fr; gap: 16px; }
+  .kpi-grid { grid-template-columns: 1fr; }
+  .two-col { grid-template-columns: 1fr; }
+  .top-banner { flex-direction: column; align-items: stretch; gap: 10px; }
+  .top-banner-right { justify-content: stretch; }
+  .top-banner-right .banner-btn { flex: 1; justify-content: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="top-banner">
+  <div class="top-banner-left">
+    <strong>Przykładowy raport</strong> — to jest demonstracja, jak wygląda kompletny raport
+    wygenerowany przez grunt.report. Dane są przykładowe.
+  </div>
+  <div class="top-banner-right">
+    <button class="banner-btn" onclick="window.print()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Drukuj / Zapisz PDF
+    </button>
+    <a href="/" class="banner-btn primary">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Wróć do mapy
+    </a>
+  </div>
+</div>
+
+<!-- ================== COVER ================== -->
+<div class="page cover">
+  <div class="cover-header">
+    <div class="cover-logo">
+      <div class="cover-logo-mark">G</div>
+      <div class="cover-logo-text">grunt<span class="dot">.</span>report</div>
+    </div>
+    <div class="cover-meta">
+      <div class="cover-meta-label">Numer raportu</div>
+      <div class="cover-meta-value">GR-2026-D7K3M2</div>
+    </div>
+  </div>
+
+  <div class="cover-body">
+    <div class="cover-tag">
+      <span class="cover-tag-dot"></span>
+      Raport kompletny · 17 modułów
+    </div>
+    <h1 class="cover-title">
+      Działka 1247/8<br>
+      <span class="green">ul. Moniuszki 1, Tychy</span>
+    </h1>
+    <p class="cover-subtitle">
+      Kompleksowa analiza nieruchomości pod zabudowę mieszkaniową<br>
+      i potencjał inwestycyjny &middot; sąsiedztwo, ceny, infrastruktura, plany zagospodarowania
+    </p>
+
+    <div class="cover-parcel-box">
+      <div>
+        <div class="cover-stat-label">Powierzchnia</div>
+        <div class="cover-stat-value"><span class="num">0,38</span> ha</div>
+        <div class="cover-stat-sub">3 802 m²</div>
+      </div>
+      <div>
+        <div class="cover-stat-label">TERYT</div>
+        <div class="cover-stat-value" style="font-size:14px; line-height:1.3">246301_1.0007</div>
+        <div class="cover-stat-sub">Tychy · obręb 7</div>
+      </div>
+      <div>
+        <div class="cover-stat-label">Współrzędne</div>
+        <div class="cover-stat-value" style="font-size:14px; line-height:1.3">50,128°N</div>
+        <div class="cover-stat-sub">19,021°E</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cover-footer">
+    <div class="cover-footer-block">
+      <div class="cover-footer-label">Klient</div>
+      <div class="cover-footer-value">Demo Klient Sp. z o.o.</div>
+      <div style="margin-top:2px">NIP: 6462937284 · Tychy</div>
+    </div>
+    <div class="cover-footer-block" style="text-align:right">
+      <div class="cover-footer-label">Data wygenerowania</div>
+      <div class="cover-footer-value">04 maja 2026</div>
+      <div style="margin-top:2px">grunt.report &middot; v1.4.2</div>
+    </div>
+  </div>
+
+  <div class="page-number">str. 1</div>
+</div>
+
+<!-- ================== TOC + EXEC SUMMARY ================== -->
+<div class="page toc-page">
+  <div class="section-label">Spis treści</div>
+  <h2 class="section-title">Co znajdziesz w tym raporcie</h2>
+  <p class="section-intro">
+    Raport zawiera kompleksową analizę działki w dwóch ścieżkach: <strong>mieszkaniowej</strong>
+    (jakość życia w okolicy) oraz <strong>inwestycyjnej</strong> (potencjał komercyjny).
+    Każdy moduł zawiera konkretne dane, źródła i jednostkowe wnioski.
+  </p>
+
+  <div class="toc-list">
+    <div class="toc-track">
+      <div class="toc-track-header">
+        <div class="toc-track-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        <div class="toc-track-name">Działka pod dom — Twoje codzienne życie</div>
+      </div>
+      <div class="toc-item"><span class="toc-item-num">1.1</span><span class="toc-item-name">Ceny w okolicy</span><span class="toc-item-page">str. 4</span></div>
+      <div class="toc-item"><span class="toc-item-num">1.2</span><span class="toc-item-name">Edukacja i opieka</span><span class="toc-item-page">str. 5</span></div>
+      <div class="toc-item"><span class="toc-item-num">1.3</span><span class="toc-item-name">Komunikacja i dojazdy</span><span class="toc-item-page">str. 6</span></div>
+      <div class="toc-item"><span class="toc-item-num">1.4</span><span class="toc-item-name">Zdrowie i bezpieczeństwo</span><span class="toc-item-page">str. 7</span></div>
+      <div class="toc-item"><span class="toc-item-num">1.5</span><span class="toc-item-name">Zieleń i przyroda</span><span class="toc-item-page">str. 8</span></div>
+      <div class="toc-item"><span class="toc-item-num">1.6</span><span class="toc-item-name">Hałas i jakość powietrza</span><span class="toc-item-page">str. 9</span></div>
+      <div class="toc-item"><span class="toc-item-num">1.7</span><span class="toc-item-name">Sport i rekreacja</span><span class="toc-item-page">str. 10</span></div>
+      <div class="toc-item"><span class="toc-item-num">1.8</span><span class="toc-item-name">Mieszkańcy i otoczenie</span><span class="toc-item-page">str. 11</span></div>
+      <div class="toc-item"><span class="toc-item-num">1.9</span><span class="toc-item-name">Plany zagospodarowania (mieszkaniowe)</span><span class="toc-item-page">str. 12</span></div>
+    </div>
+
+    <div class="toc-track">
+      <div class="toc-track-header">
+        <div class="toc-track-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="8" y2="6.01"/><line x1="16" y1="6" x2="16" y2="6.01"/><line x1="12" y1="10" x2="12" y2="10.01"/></svg></div>
+        <div class="toc-track-name">Działka pod inwestycję — Potencjał komercyjny</div>
+      </div>
+      <div class="toc-item"><span class="toc-item-num">2.1</span><span class="toc-item-name">Potencjał solarny PV</span><span class="toc-item-page">str. 13</span></div>
+      <div class="toc-item"><span class="toc-item-num">2.2</span><span class="toc-item-name">Sieć energetyczna</span><span class="toc-item-page">str. 14</span></div>
+      <div class="toc-item"><span class="toc-item-num">2.3</span><span class="toc-item-name">Dostęp i logistyka</span><span class="toc-item-page">str. 15</span></div>
+      <div class="toc-item"><span class="toc-item-num">2.4</span><span class="toc-item-name">Media i przyłącza</span><span class="toc-item-page">str. 16</span></div>
+      <div class="toc-item"><span class="toc-item-num">2.5</span><span class="toc-item-name">Ceny gruntów komercyjnych</span><span class="toc-item-page">str. 17</span></div>
+      <div class="toc-item"><span class="toc-item-num">2.6</span><span class="toc-item-name">Uwarunkowania środowiskowe</span><span class="toc-item-page">str. 18</span></div>
+      <div class="toc-item"><span class="toc-item-num">2.7</span><span class="toc-item-name">Plany zagospodarowania (inwestycyjne)</span><span class="toc-item-page">str. 19</span></div>
+      <div class="toc-item"><span class="toc-item-num">2.8</span><span class="toc-item-name">Otoczenie biznesowe</span><span class="toc-item-page">str. 20</span></div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-mark">G</span>
+    grunt.report · GR-2026-D7K3M2
+  </div>
+  <div class="page-number">str. 2</div>
+</div>
+
+<!-- ================== EXECUTIVE SUMMARY ================== -->
+<div class="page">
+  <div class="section-label">Podsumowanie zarządcze</div>
+  <h2 class="section-title">Ocena działki w 60 sekund</h2>
+  <p class="section-intro">
+    Najważniejsze wnioski z analizy 17 modułów. Dla pełnego obrazu zalecamy zapoznanie
+    się z kolejnymi rozdziałami — kontekst i źródła danych są tam istotne dla podjęcia decyzji.
+  </p>
+
+  <div class="kpi-grid">
+    <div class="kpi-box highlight">
+      <div class="kpi-label">Ocena dla zabudowy mieszkaniowej</div>
+      <div class="kpi-value">8,2 <span class="small">/ 10</span></div>
+      <div class="kpi-trend up">↑ Bardzo dobra lokalizacja rodzinna</div>
+    </div>
+    <div class="kpi-box">
+      <div class="kpi-label">Ocena dla inwestycji komercyjnej</div>
+      <div class="kpi-value">5,4 <span class="small">/ 10</span></div>
+      <div class="kpi-trend flat">→ Średni potencjał, lokalizacja śródmiejska</div>
+    </div>
+    <div class="kpi-box">
+      <div class="kpi-label">Cena rynkowa działki (oszacowanie)</div>
+      <div class="kpi-value">823 700 <span class="small">zł</span></div>
+      <div class="kpi-trend up">↑ +12% vs średnia powiatu</div>
+    </div>
+    <div class="kpi-box">
+      <div class="kpi-label">Czas realizacji zabudowy (szacunek)</div>
+      <div class="kpi-value">14–18 <span class="small">mies.</span></div>
+      <div class="kpi-trend flat">→ MPZP obowiązujący, brak konieczności WZ</div>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Fraunces',serif; font-size:18px; font-weight:600; margin: 18px 0 10px;">
+    Kluczowe atuty
+  </h3>
+  <ul style="margin: 0 0 18px 22px; font-size: 12.5px; line-height: 1.7; color: var(--text-light);">
+    <li><strong>Doskonała lokalizacja edukacyjna</strong> — 6 szkół podstawowych w promieniu 1 km, w tym SP nr 11 (jedna z lepszych w Tychach), liceum Norwida w odległości 800 m</li>
+    <li><strong>Centralne położenie</strong> — 350 m do dworca PKP Tychy, autobus do Katowic co 12 minut w godzinach szczytu</li>
+    <li><strong>Działka w MPZP</strong> z przeznaczeniem MN/U (zabudowa mieszkaniowa jednorodzinna + usługi nieuciążliwe), brak konieczności występowania o WZ</li>
+    <li><strong>Pełne uzbrojenie</strong> — woda, kanalizacja, gaz, prąd na granicy działki</li>
+  </ul>
+
+  <h3 style="font-family:'Fraunces',serif; font-size:18px; font-weight:600; margin: 18px 0 10px;">
+    Obszary uwagi
+  </h3>
+  <ul style="margin: 0 0 18px 22px; font-size: 12.5px; line-height: 1.7; color: var(--text-light);">
+    <li><strong>Hałas drogowy</strong> — w godzinach szczytu poziom przy elewacji frontowej osiąga 62 dB(A); zalecane okna o podwyższonej izolacyjności</li>
+    <li><strong>Cena 12% powyżej średniej powiatu</strong> — uzasadnione lokalizacją, ale ogranicza pole do negocjacji</li>
+    <li><strong>Ograniczony potencjał PV</strong> — działka mała, otoczona zabudową; instalacja możliwa na dachu (do 8 kWp), ale nie jako farma fotowoltaiczna</li>
+  </ul>
+
+  <div class="info-box note">
+    <div class="info-box-title">Rekomendacja końcowa</div>
+    Działka <strong>bardzo dobrze nadaje się pod budowę domu jednorodzinnego dla rodziny</strong>
+    z dziećmi w wieku szkolnym. Lokalizacja zapewnia łatwy dostęp do edukacji, opieki zdrowotnej
+    i komunikacji. Dla inwestycji komercyjnej polecamy raczej obiekty usługowe (gabinet, biuro,
+    handel detaliczny) niż produkcyjne czy logistyczne.
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-mark">G</span>
+    grunt.report · GR-2026-D7K3M2
+  </div>
+  <div class="page-number">str. 3</div>
+</div>
+
+<!-- ================== MODUŁ 1.1 — CENY W OKOLICY ================== -->
+<div class="page module-page">
+  <div class="module-header">
+    <div class="module-header-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+    </div>
+    <div>
+      <div class="module-num">1.1 · DZIAŁKA POD DOM</div>
+      <h2 class="module-title">Ceny w okolicy</h2>
+    </div>
+  </div>
+
+  <div class="module-content">
+    <h3>Mediana ceny m² w okolicy działki</h3>
+    <p>
+      Dla obszaru 2 km wokół działki przeanalizowaliśmy <strong>187 transakcji</strong> z ostatnich
+      24 miesięcy (Rejestr Cen Nieruchomości oraz oferty z portali ogłoszeniowych).
+      Twoja działka położona jest w ścisłym centrum Tychów, w sąsiedztwie zabudowy z lat 60–70 oraz
+      nowych osiedli powstających na terenach pofabrycznych.
+    </p>
+
+    <div class="kpi-grid">
+      <div class="kpi-box highlight">
+        <div class="kpi-label">Mediana m² działki budowlanej</div>
+        <div class="kpi-value">217 <span class="small">zł/m²</span></div>
+        <div class="kpi-trend up">↑ +18% rok do roku</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label">Mediana m² mieszkania (rynek wtórny)</div>
+        <div class="kpi-value">8 311 <span class="small">zł/m²</span></div>
+        <div class="kpi-trend flat">→ -1,7% kwartał do kwartału</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label">Mediana ceny domu jednorodzinnego</div>
+        <div class="kpi-value">1,12 <span class="small">mln zł</span></div>
+        <div class="kpi-trend up">↑ +9% rok do roku</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label">Średni czas sprzedaży</div>
+        <div class="kpi-value">87 <span class="small">dni</span></div>
+        <div class="kpi-trend down">↓ skrócił się o 14 dni</div>
+      </div>
+    </div>
+
+    <h3>Pozycjonowanie Twojej działki</h3>
+    <p>
+      Cena ofertowa działki (2 200 000 zł / 3 802 m² = <strong>578 zł/m²</strong>) plasuje ją
+      w górnym kwartylu rynku. Wynika to z kilku czynników: <strong>centralna lokalizacja</strong>,
+      <strong>pełne uzbrojenie</strong> oraz <strong>obowiązujący MPZP z przeznaczeniem mieszkalno-usługowym</strong>
+      (działka nie wymaga decyzji WZ, co przyspiesza proces budowy o około 6–9 miesięcy).
+    </p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Lokalizacja porównawcza</th>
+          <th class="num">Mediana zł/m²</th>
+          <th class="num">Liczba transakcji</th>
+          <th class="num">Pozycja Twojej działki</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="col-name">Centrum Tychów (rok 2024–2026)</div>
+            <div class="col-name-sub">obręby 5, 6, 7</div>
+          </td>
+          <td class="num">295 zł/m²</td>
+          <td class="num">87</td>
+          <td class="num"><span class="pill warning">+96%</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="col-name">Tychy ogółem</div>
+            <div class="col-name-sub">całe miasto</div>
+          </td>
+          <td class="num">217 zł/m²</td>
+          <td class="num">312</td>
+          <td class="num"><span class="pill warning">+167%</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="col-name">Powiat tyski (z gminami)</div>
+            <div class="col-name-sub">Lędziny, Bieruń, Bojszowy</div>
+          </td>
+          <td class="num">158 zł/m²</td>
+          <td class="num">529</td>
+          <td class="num"><span class="pill warning">+266%</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="col-name">Województwo śląskie</div>
+            <div class="col-name-sub">średnia regionalna</div>
+          </td>
+          <td class="num">94 zł/m²</td>
+          <td class="num">8 470</td>
+          <td class="num"><span class="pill bad">+515%</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="info-box">
+      <div class="info-box-title">Komentarz analityka</div>
+      Wysoki indeks ceny m² w stosunku do średniej miasta (+96% względem mediany centrum) jest
+      adekwatny do położenia w pierwszym pierścieniu śródmiejskim, ale przekracza znacząco średnią dla
+      działek o porównywalnym przeznaczeniu w sąsiednich obrębach. Sugeruje to przestrzeń do
+      negocjacji cenowej rzędu <strong>5–10%</strong> przy braku konkurencji ze strony deweloperów.
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-card-label">Wniosek</div>
+      <div class="summary-card-text">
+        Działka jest <strong>droższa od średniej w mieście, ale właściwie wyceniona dla swojej lokalizacji</strong>.
+        Cena uzasadniona MPZP, uzbrojeniem i centralnym położeniem. Margines negocjacyjny: 5–10%.
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer"><span class="page-footer-mark">G</span> grunt.report · GR-2026-D7K3M2</div>
+  <div class="page-number">str. 4</div>
+</div>
+
+<!-- ================== MODUŁ 1.2 — EDUKACJA ================== -->
+<div class="page module-page">
+  <div class="module-header">
+    <div class="module-header-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+    </div>
+    <div>
+      <div class="module-num">1.2 · DZIAŁKA POD DOM</div>
+      <h2 class="module-title">Edukacja i opieka</h2>
+    </div>
+  </div>
+
+  <div class="module-content">
+    <p>
+      Lokalizacja działki zapewnia dostęp do <strong>pełnej infrastruktury edukacyjnej</strong>
+      — od żłobków po liceum — w promieniu pieszym (do 15 minut). Zidentyfikowaliśmy 4 żłobki,
+      6 przedszkoli, 5 szkół podstawowych i 3 licea ogólnokształcące w odległości do 1,5 km.
+    </p>
+
+    <h3>Żłobki i przedszkola</h3>
+    <div class="poi-list">
+      <div class="poi-row">
+        <div class="poi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l-5.5 9h11z"/></svg></div>
+        <div class="poi-body">
+          <div class="poi-name">Żłobek Miejski "Bajka"</div>
+          <div class="poi-detail">ul. Cyganerii 51 · placówka publiczna · 95 miejsc</div>
+        </div>
+        <div class="poi-meta">
+          <div class="poi-distance">340 m</div>
+          <div class="poi-time">4 min pieszo</div>
+        </div>
+      </div>
+      <div class="poi-row">
+        <div class="poi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l-5.5 9h11z"/></svg></div>
+        <div class="poi-body">
+          <div class="poi-name">Niepubliczne Przedszkole "Bajeczka"</div>
+          <div class="poi-detail">ul. Filaretów 5 · prywatne · j. angielski</div>
+        </div>
+        <div class="poi-meta">
+          <div class="poi-distance">580 m</div>
+          <div class="poi-time">7 min pieszo</div>
+        </div>
+      </div>
+      <div class="poi-row">
+        <div class="poi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l-5.5 9h11z"/></svg></div>
+        <div class="poi-body">
+          <div class="poi-name">Przedszkole nr 8 "Ekoludek"</div>
+          <div class="poi-detail">ul. Edukacji 18 · publiczne · 175 miejsc · 3 grupy</div>
+        </div>
+        <div class="poi-meta">
+          <div class="poi-distance">720 m</div>
+          <div class="poi-time">9 min pieszo</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Szkoły podstawowe</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Szkoła</th>
+          <th>Adres</th>
+          <th class="num">Odległość</th>
+          <th class="num">Wynik egz. ósmoklasisty</th>
+          <th class="num">Klasy</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="col-name">SP nr 11 im. Marii Curie-Skłodowskiej</div>
+            <div class="col-name-sub">rejonowa dla działki</div>
+          </td>
+          <td>ul. Curie-Skłodowskiej 4</td>
+          <td class="num">450 m</td>
+          <td class="num"><span class="pill good">68% <small>(śr. miasto 61%)</small></span></td>
+          <td class="num">22</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="col-name">SP nr 1 im. Rudolfa Zaręby</div>
+            <div class="col-name-sub">centrum, pl. Wolności</div>
+          </td>
+          <td>pl. Wolności 4</td>
+          <td class="num">820 m</td>
+          <td class="num"><span class="pill good">71%</span></td>
+          <td class="num">28</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="col-name">SP nr 13 im. Jana III Sobieskiego</div>
+            <div class="col-name-sub">oddziały dwujęzyczne</div>
+          </td>
+          <td>al. Niepodległości 108</td>
+          <td class="num">1,1 km</td>
+          <td class="num"><span class="pill good">74%</span></td>
+          <td class="num">31</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="col-name">SP nr 35 im. Matki Teresy</div>
+            <div class="col-name-sub">oddziały integracyjne</div>
+          </td>
+          <td>al. Piłsudskiego 21</td>
+          <td class="num">1,3 km</td>
+          <td class="num"><span class="pill neutral">63%</span></td>
+          <td class="num">25</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Szkoły ponadpodstawowe</h3>
+    <p>
+      W promieniu 1,5 km znajdują się trzy licea ogólnokształcące: <strong>I LO im. L. Kruczkowskiego</strong>
+      (ul. Korczaka 6, średnia matura 2025: 76%), <strong>II LO im. C. K. Norwida</strong>
+      (ul. Norwida 40, śr. matura 81% — najwyższa w mieście), oraz <strong>III LO im. S. Wyspiańskiego</strong>
+      (ul. Elfów 62, śr. matura 72%). Dla profili technicznych: ZS nr 1 (technik analityk, ochrony środowiska)
+      przy ul. Wejchertów 20.
+    </p>
+
+    <div class="summary-card">
+      <div class="summary-card-label">Wniosek</div>
+      <div class="summary-card-text">
+        <strong>Wyjątkowo silna oferta edukacyjna w promieniu pieszym</strong>. Dziecko od żłobka po
+        maturę nie musi korzystać z transportu. Rejonowa SP nr 11 z wynikiem 68% — powyżej średniej
+        miasta. II LO Norwida — jedno z najlepszych w aglomeracji śląskiej.
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer"><span class="page-footer-mark">G</span> grunt.report · GR-2026-D7K3M2</div>
+  <div class="page-number">str. 5</div>
+</div>
+
+<!-- ================== MODUŁ 1.3 — KOMUNIKACJA ================== -->
+<div class="page module-page">
+  <div class="module-header">
+    <div class="module-header-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6v6"/><path d="M16 6v6"/><path d="M2 12h19.6"/><path d="M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-1.4-5C20.1 6.8 19.1 6 18 6H4a2 2 0 0 0-2 2v10h3"/><circle cx="7" cy="18" r="2"/><path d="M9 18h5"/><circle cx="16" cy="18" r="2"/></svg>
+    </div>
+    <div>
+      <div class="module-num">1.3 · DZIAŁKA POD DOM</div>
+      <h2 class="module-title">Komunikacja i dojazdy</h2>
+    </div>
+  </div>
+
+  <div class="module-content">
+    <p>
+      Działka znajduje się w <strong>strefie I komunikacji miejskiej Tychy</strong>, z bezpośrednim
+      dostępem do dworca kolejowego oraz głównej osi autobusowej miasta. Oceniliśmy czasy dojazdu
+      w trzech profilach: poranny szczyt (7:30–8:30), godziny pozaszczytowe oraz wieczór.
+    </p>
+
+    <h3>Najbliższe przystanki</h3>
+    <div class="poi-list">
+      <div class="poi-row">
+        <div class="poi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/></svg></div>
+        <div class="poi-body">
+          <div class="poi-name">Dworzec PKP Tychy</div>
+          <div class="poi-detail">Szybka Kolej Aglomeracyjna do Katowic · 18 połączeń/dzień</div>
+        </div>
+        <div class="poi-meta">
+          <div class="poi-distance">350 m</div>
+          <div class="poi-time">4 min pieszo</div>
+        </div>
+      </div>
+      <div class="poi-row">
+        <div class="poi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div>
+        <div class="poi-body">
+          <div class="poi-name">Przystanek "Tychy Dworzec"</div>
+          <div class="poi-detail">linie: 1, 14, 36, 264, M2 · ZTM Tychy + KZK GOP</div>
+        </div>
+        <div class="poi-meta">
+          <div class="poi-distance">410 m</div>
+          <div class="poi-time">5 min pieszo</div>
+        </div>
+      </div>
+      <div class="poi-row">
+        <div class="poi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div>
+        <div class="poi-body">
+          <div class="poi-name">Przystanek "Moniuszki"</div>
+          <div class="poi-detail">linie: 14, 264 · częstotliwość ~12 min w szczycie</div>
+        </div>
+        <div class="poi-meta">
+          <div class="poi-distance">120 m</div>
+          <div class="poi-time">2 min pieszo</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Czasy dojazdu do kluczowych destynacji</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Cel podróży</th>
+          <th class="num">Auto (szczyt)</th>
+          <th class="num">Komunikacja</th>
+          <th class="num">Rower</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="col-name">Centrum Tychów (Plac Baczyńskiego)</div>
+          </td>
+          <td class="num">6 min</td>
+          <td class="num">9 min</td>
+          <td class="num">8 min</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="col-name">Katowice — centrum (Spodek)</div>
+          </td>
+          <td class="num">28 min</td>
+          <td class="num">22 min (SKA)</td>
+          <td class="num">—</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="col-name">Lotnisko Katowice-Pyrzowice</div>
+          </td>
+          <td class="num">52 min</td>
+          <td class="num">~80 min</td>
+          <td class="num">—</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="col-name">Galeria Tychy</div>
+          </td>
+          <td class="num">5 min</td>
+          <td class="num">12 min</td>
+          <td class="num">7 min</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Komunikacja alternatywna</h3>
+    <p>
+      W odległości 220 m znajduje się <strong>stacja roweru miejskiego Tychy Bike</strong>
+      (system od 2019 r., obecnie 38 stacji w mieście). Stacja ładowania pojazdów elektrycznych
+      Greenway: 480 m (ul. Dmowskiego, ładowarka 50 kW DC). Sieć ścieżek rowerowych Tychy Velo
+      przebiega w odległości 90 m od działki — bezpośredni wjazd na trasę 19 km wzdłuż osi
+      Niepodległość – Paprocany.
+    </p>
+
+    <div class="info-box note">
+      <div class="info-box-title">Dla pracujących w Katowicach</div>
+      Bezpośrednie połączenie kolejowe SKA do Katowic — czas dojazdu <strong>22 minuty</strong>,
+      co jest porównywalne z dojazdem ze śródmieścia Katowic z Murcek czy Brynowa. Lokalizacja
+      atrakcyjna jako "sypialnia" dla pracowników korporacji w Katowicach.
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-card-label">Wniosek</div>
+      <div class="summary-card-text">
+        <strong>Komunikacyjnie — jedna z najlepszych lokalizacji w Tychach</strong>. 4 minuty
+        do dworca PKP, 22 minuty do centrum Katowic. Połączenia autobusowe co 12 minut.
+        Działka nie wymaga drugiego samochodu w gospodarstwie domowym.
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer"><span class="page-footer-mark">G</span> grunt.report · GR-2026-D7K3M2</div>
+  <div class="page-number">str. 6</div>
+</div>
+
+<!-- ================== MODUŁ 1.4 — ZDROWIE ================== -->
+<div class="page module-page">
+  <div class="module-header">
+    <div class="module-header-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    </div>
+    <div>
+      <div class="module-num">1.4 · DZIAŁKA POD DOM</div>
+      <h2 class="module-title">Zdrowie i bezpieczeństwo</h2>
+    </div>
+  </div>
+
+  <div class="module-content">
+    <p>
+      Lokalizacja w centrum Tychów zapewnia <strong>szybki dostęp do placówek medycznych</strong>
+      każdego stopnia referencyjności — od POZ po szpital miejski. Wskaźniki bezpieczeństwa publicznego
+      dla obrębu na poziomie średniej miasta.
+    </p>
+
+    <h3>Placówki medyczne</h3>
+    <div class="poi-list">
+      <div class="poi-row">
+        <div class="poi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+        <div class="poi-body">
+          <div class="poi-name">Wojewódzki Szpital Specjalistyczny Megrez</div>
+          <div class="poi-detail">ul. Edukacji 102 · 14 oddziałów · SOR 24/7</div>
+        </div>
+        <div class="poi-meta">
+          <div class="poi-distance">2,1 km</div>
+          <div class="poi-time">6 min autem</div>
+        </div>
+      </div>
+      <div class="poi-row">
+        <div class="poi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+        <div class="poi-body">
+          <div class="poi-name">Przychodnia POZ "Mediq"</div>
+          <div class="poi-detail">ul. Cicha 8 · NFZ · 7 lekarzy rodzinnych</div>
+        </div>
+        <div class="poi-meta">
+          <div class="poi-distance">410 m</div>
+          <div class="poi-time">5 min pieszo</div>
+        </div>
+      </div>
+      <div class="poi-row">
+        <div class="poi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+        <div class="poi-body">
+          <div class="poi-name">Apteka 24h "Ziko"</div>
+          <div class="poi-detail">al. Niepodległości 32 · całodobowa</div>
+        </div>
+        <div class="poi-meta">
+          <div class="poi-distance">680 m</div>
+          <div class="poi-time">8 min pieszo</div>
+        </div>
+      </div>
+      <div class="poi-row">
+        <div class="poi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+        <div class="poi-body">
+          <div class="poi-name">Centrum Stomatologii Rodzinnej Dent-Med</div>
+          <div class="poi-detail">ul. Konopnickiej 12 · prywatne · 4 gabinety</div>
+        </div>
+        <div class="poi-meta">
+          <div class="poi-distance">540 m</div>
+          <div class="poi-time">6 min pieszo</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Bezpieczeństwo publiczne</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Wskaźnik</th>
+          <th class="num">Twoja okolica</th>
+          <th class="num">Tychy ogółem</th>
+          <th class="num">Województwo śląskie</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Przestępstwa kryminalne na 1000 mieszkańców (rocznie)</td>
+          <td class="num">14,8</td>
+          <td class="num">17,2</td>
+          <td class="num">22,1</td>
+        </tr>
+        <tr>
+          <td>Włamania do mieszkań/domów (rocznie, obręb)</td>
+          <td class="num">3</td>
+          <td class="num">87</td>
+          <td class="num">—</td>
+        </tr>
+        <tr>
+          <td>Wypadki drogowe ze skutkiem śmiertelnym (5 lat)</td>
+          <td class="num">0</td>
+          <td class="num">14</td>
+          <td class="num">—</td>
+        </tr>
+        <tr>
+          <td>Oświetlenie uliczne LED</td>
+          <td class="num"><span class="pill good">100%</span></td>
+          <td class="num"><span class="pill good">94%</span></td>
+          <td class="num">—</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      Najbliższy <strong>posterunek policji</strong> (Komenda Miejska, al. Bielska 46) — 1,8 km;
+      <strong>jednostka straży pożarnej</strong> (KP PSP, ul. Ciasna 3) — 1,1 km;
+      <strong>dyżurka straży miejskiej</strong> (ul. Bukowa 1) — 850 m.
+    </p>
+
+    <div class="info-box">
+      <div class="info-box-title">Dane źródłowe</div>
+      Komenda Miejska Policji w Tychach (statystyki za lata 2021–2025), Urząd Miasta Tychy
+      (Wydział Zarządzania Kryzysowego), GUS Bank Danych Lokalnych. Wskaźniki przeliczone
+      do obrębu o promieniu 800 m wokół działki.
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-card-label">Wniosek</div>
+      <div class="summary-card-text">
+        <strong>Bezpieczna lokalizacja z bardzo dobrym dostępem do opieki zdrowotnej</strong>.
+        Wskaźniki przestępczości poniżej średniej miasta i województwa. POZ pieszo w 5 minut,
+        szpital z SOR samochodem w 6 minut.
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer"><span class="page-footer-mark">G</span> grunt.report · GR-2026-D7K3M2</div>
+  <div class="page-number">str. 7</div>
+</div>
+
+<!-- ================== MODUŁ 1.5 — ZIELEŃ ================== -->
+<div class="page module-page">
+  <div class="module-header">
+    <div class="module-header-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg>
+    </div>
+    <div>
+      <div class="module-num">1.5 · DZIAŁKA POD DOM</div>
+      <h2 class="module-title">Zieleń i przyroda</h2>
+    </div>
+  </div>
+
+  <div class="module-content">
+    <p>
+      Tychy są jednym z najbardziej zielonych miast aglomeracji śląskiej —
+      <strong>34% powierzchni miasta to tereny zielone</strong>. Twoja działka jest oddalona
+      od dwóch największych terenów rekreacyjnych miasta (Paprocany, Park Niedźwiadków),
+      ale w bezpośrednim sąsiedztwie znajdują się mniejsze przestrzenie zielone.
+    </p>
+
+    <h3>Główne tereny zielone w okolicy</h3>
+    <div class="poi-list">
+      <div class="poi-row">
+        <div class="poi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22V8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg></div>
+        <div class="poi-body">
+          <div class="poi-name">Park Niedźwiadków</div>
+          <div class="poi-detail">11,4 ha · plac zabaw, ścieżki rowerowe, fitness</div>
+        </div>
+        <div class="poi-meta">
+          <div class="poi-distance">1,2 km</div>
+          <div class="poi-time">14 min pieszo</div>
+        </div>
+      </div>
+      <div class="poi-row">
+        <div class="poi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22V8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg></div>
+        <div class="poi-body">
+          <div class="poi-name">Skwer im. Pocztu Tyskiego</div>
+          <div class="poi-detail">0,6 ha · niewielki park kameralny</div>
+        </div>
+        <div class="poi-meta">
+          <div class="poi-distance">280 m</div>
+          <div class="poi-time">3 min pieszo</div>
+        </div>
+      </div>
+      <div class="poi-row">
+        <div class="poi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22V8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg></div>
+        <div class="poi-body">
+          <div class="poi-name">Jezioro Paprocańskie + plaża miejska</div>
+          <div class="poi-detail">115 ha akwen + ścieżka pieszo-rowerowa wokół jeziora</div>
+        </div>
+        <div class="poi-meta">
+          <div class="poi-distance">3,4 km</div>
+          <div class="poi-time">9 min autem</div>
+        </div>
+      </div>
+      <div class="poi-row">
+        <div class="poi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22V8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg></div>
+        <div class="poi-body">
+          <div class="poi-name">Las Tyski (Nadleśnictwo Kobiór)</div>
+          <div class="poi-detail">część kompleksu Pszczyna-Kobiór · grzybobranie, ścieżki</div>
+        </div>
+        <div class="poi-meta">
+          <div class="poi-distance">2,8 km</div>
+          <div class="poi-time">7 min autem</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Zieleń na poziomie ulicy</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Wskaźnik</th>
+          <th class="num">Promień 500 m wokół działki</th>
+          <th class="num">Tychy — średnia</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>% powierzchni terenów zielonych</td>
+          <td class="num">22%</td>
+          <td class="num">34%</td>
+        </tr>
+        <tr>
+          <td>Drzewa wzdłuż ulic (na 100 m)</td>
+          <td class="num">14</td>
+          <td class="num">11</td>
+        </tr>
+        <tr>
+          <td>Liczba pomników przyrody</td>
+          <td class="num">2 (dęby przy ul. Kopernika)</td>
+          <td class="num">—</td>
+        </tr>
+        <tr>
+          <td>Najbliższy ogród działkowy</td>
+          <td class="num">580 m (ROD "Konwalia")</td>
+          <td class="num">—</td>
+        </tr>
+        <tr>
+          <td>Obszar Natura 2000 / park krajobrazowy</td>
+          <td class="num"><span class="pill neutral">brak w promieniu 5 km</span></td>
+          <td class="num">—</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="info-box note">
+      <div class="info-box-title">Pomniki przyrody w okolicy</div>
+      Przy ulicy Kopernika 14 oraz przy skrzyżowaniu Filaretów/Solna rosną dwa <strong>pomniki przyrody —
+      dęby szypułkowe</strong> w wieku ok. 220 lat (status nadany decyzją UM Tychy nr 134/2003).
+      Stanowią lokalny element krajobrazu chronionego.
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-card-label">Wniosek</div>
+      <div class="summary-card-text">
+        Działka leży w obszarze <strong>średnio nasyconym zielenią jak na centrum miasta</strong>.
+        W promieniu pieszym dwa parki, w dystansie samochodowym jezioro Paprocany i las.
+        Dla osób ceniących bezpośredni kontakt z naturą — propozycja akceptowalna, ale niepremium.
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer"><span class="page-footer-mark">G</span> grunt.report · GR-2026-D7K3M2</div>
+  <div class="page-number">str. 8</div>
+</div>
+
+<!-- ================== MODUŁ 1.6 — HAŁAS / POWIETRZE ================== -->
+<div class="page module-page">
+  <div class="module-header">
+    <div class="module-header-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>
+    </div>
+    <div>
+      <div class="module-num">1.6 · DZIAŁKA POD DOM</div>
+      <h2 class="module-title">Hałas i jakość powietrza</h2>
+    </div>
+  </div>
+
+  <div class="module-content">
+    <h3>Mapa hałasu</h3>
+    <p>
+      Według mapy akustycznej Tychów (aktualizacja 2024 r.), działka znajduje się w strefie
+      <strong>umiarkowanego oddziaływania hałasu drogowego</strong>. Główne źródła:
+      ulica Niepodległości (220 m, ~22 000 pojazdów/dobę), ulica Edukacji (340 m), oraz tory PKP
+      (380 m).
+    </p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Pora</th>
+          <th>Źródło</th>
+          <th class="num">Poziom dB(A) na elewacji</th>
+          <th class="num">Norma</th>
+          <th class="num">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Dzień 6:00–22:00</td>
+          <td>drogowy</td>
+          <td class="num">62</td>
+          <td class="num">65 dB(A)</td>
+          <td class="num"><span class="pill good">w normie</span></td>
+        </tr>
+        <tr>
+          <td>Noc 22:00–6:00</td>
+          <td>drogowy</td>
+          <td class="num">54</td>
+          <td class="num">56 dB(A)</td>
+          <td class="num"><span class="pill warning">na granicy</span></td>
+        </tr>
+        <tr>
+          <td>Dzień</td>
+          <td>kolejowy</td>
+          <td class="num">48</td>
+          <td class="num">68 dB(A)</td>
+          <td class="num"><span class="pill good">w normie</span></td>
+        </tr>
+        <tr>
+          <td>Dzień</td>
+          <td>lotniczy</td>
+          <td class="num">&lt; 30</td>
+          <td class="num">60 dB(A)</td>
+          <td class="num"><span class="pill good">poza zasięgiem</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="info-box warning">
+      <div class="info-box-title">Praktyczna implikacja</div>
+      Poziom hałasu drogowego w nocy (54 dB) jest <strong>blisko górnej granicy normy</strong>.
+      Dla komfortu sypiania zalecamy: lokalizację sypialni od strony podwórza (a nie ulicy),
+      okna o klasie izolacyjności minimum Rw=35 dB, oraz rozważenie izolacji zewnętrznej elewacji
+      frontowej (mineralna wełna 18 cm + tynk silikatowy).
+    </div>
+
+    <h3>Jakość powietrza (PM10, PM2.5, NO₂)</h3>
+    <p>
+      Stacja pomiarowa GIOŚ "Tychy-Tołstoja" (1,1 km od działki) — dane za 2024 i 2025 rok:
+    </p>
+
+    <div class="two-col">
+      <div>
+        <div class="score-bar">
+          <div class="score-bar-header">
+            <div class="score-bar-label">PM2.5 (średnia roczna)</div>
+            <div class="score-bar-value">21,4 µg/m³</div>
+          </div>
+          <div class="score-bar-track">
+            <div class="score-bar-fill warning" style="width: 86%"></div>
+          </div>
+          <div style="font-size:10.5px; color:var(--text-light); margin-top:4px">norma WHO: 5 µg/m³ · norma UE: 25 µg/m³</div>
+        </div>
+        <div class="score-bar">
+          <div class="score-bar-header">
+            <div class="score-bar-label">PM10 (średnia roczna)</div>
+            <div class="score-bar-value">31,2 µg/m³</div>
+          </div>
+          <div class="score-bar-track">
+            <div class="score-bar-fill" style="width: 78%"></div>
+          </div>
+          <div style="font-size:10.5px; color:var(--text-light); margin-top:4px">norma UE: 40 µg/m³</div>
+        </div>
+      </div>
+      <div>
+        <div class="score-bar">
+          <div class="score-bar-header">
+            <div class="score-bar-label">NO₂ (średnia roczna)</div>
+            <div class="score-bar-value">28,6 µg/m³</div>
+          </div>
+          <div class="score-bar-track">
+            <div class="score-bar-fill" style="width: 72%"></div>
+          </div>
+          <div style="font-size:10.5px; color:var(--text-light); margin-top:4px">norma UE: 40 µg/m³</div>
+        </div>
+        <div class="score-bar">
+          <div class="score-bar-header">
+            <div class="score-bar-label">Dni z przekroczeniem PM10</div>
+            <div class="score-bar-value">28 dni / rok</div>
+          </div>
+          <div class="score-bar-track">
+            <div class="score-bar-fill warning" style="width: 78%"></div>
+          </div>
+          <div style="font-size:10.5px; color:var(--text-light); margin-top:4px">limit UE: 35 dni / rok</div>
+        </div>
+      </div>
+    </div>
+
+    <p>
+      Charakterystyczna dla aglomeracji śląskiej jest <strong>sezonowość zanieczyszczeń</strong>:
+      w okresie listopad–marzec (sezon grzewczy) stężenia PM2.5 osiągają wartości 2–3× wyższe
+      niż latem. Główne źródło: niska emisja z indywidualnych pieców węglowych w okolicznych
+      gminach. Tychy mają wymienione 89% pieców starszej generacji (program POIiŚ), ale otoczenie
+      gminne (Lędziny, Bieruń) nadrabia z opóźnieniem.
+    </p>
+
+    <div class="summary-card">
+      <div class="summary-card-label">Wniosek</div>
+      <div class="summary-card-text">
+        Hałas i powietrze — <strong>typowe dla śląskiej aglomeracji, na akceptowalnym poziomie
+        dla centrum miasta</strong>. Dwie sugestie projektowe: lokalizacja sypialni od strony
+        podwórza, oraz instalacja oczyszczacza powietrza HEPA dla okresu zimowego (poprawia komfort
+        oddychania o ok. 40%).
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer"><span class="page-footer-mark">G</span> grunt.report · GR-2026-D7K3M2</div>
+  <div class="page-number">str. 9</div>
+</div>
+
+<!-- ================== MODUŁ 1.7 — REKREACJA ================== -->
+<div class="page module-page">
+  <div class="module-header">
+    <div class="module-header-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    </div>
+    <div>
+      <div class="module-num">1.7 · DZIAŁKA POD DOM</div>
+      <h2 class="module-title">Sport i rekreacja</h2>
+    </div>
+  </div>
+
+  <div class="module-content">
+    <p>
+      Tychy są mocno rozwinięte sportowo — m.in. dzięki klubowi GKS Tychy (hokej, piłka nożna).
+      W okolicy działki znajduje się zarówno infrastruktura miejska, jak i prywatna oferta sportu
+      i rekreacji.
+    </p>
+
+    <h3>Obiekty sportowe i rekreacyjne</h3>
+    <div class="poi-list">
+      <div class="poi-row">
+        <div class="poi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div>
+        <div class="poi-body">
+          <div class="poi-name">Aquapark Tychy</div>
+          <div class="poi-detail">basen olimpijski, baseny rekreacyjne, sauna, lodowisko sezonowe</div>
+        </div>
+        <div class="poi-meta">
+          <div class="poi-distance">1,8 km</div>
+          <div class="poi-time">5 min autem</div>
+        </div>
+      </div>
+      <div class="poi-row">
+        <div class="poi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div>
+        <div class="poi-body">
+          <div class="poi-name">Stadion Miejski (GKS Tychy)</div>
+          <div class="poi-detail">15 100 miejsc · piłka nożna I liga · wydarzenia kulturalne</div>
+        </div>
+        <div class="poi-meta">
+          <div class="poi-distance">1,4 km</div>
+          <div class="poi-time">17 min pieszo</div>
+        </div>
+      </div>
+      <div class="poi-row">
+        <div class="poi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div>
+        <div class="poi-body">
+          <div class="poi-name">Klub fitness CityFit Tychy</div>
+          <div class="poi-detail">prywatny · siłownia 24/7 · zajęcia grupowe</div>
+        </div>
+        <div class="poi-meta">
+          <div class="poi-distance">450 m</div>
+          <div class="poi-time">5 min pieszo</div>
+        </div>
+      </div>
+      <div class="poi-row">
+        <div class="poi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div>
+        <div class="poi-body">
+          <div class="poi-name">Plac zabaw "Pod Dębami"</div>
+          <div class="poi-detail">3 strefy wiekowe (2-5, 6-9, 10+), tyrolka, ścianka wspinaczkowa</div>
+        </div>
+        <div class="poi-meta">
+          <div class="poi-distance">280 m</div>
+          <div class="poi-time">3 min pieszo</div>
+        </div>
+      </div>
+      <div class="poi-row">
+        <div class="poi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div>
+        <div class="poi-body">
+          <div class="poi-name">Miejska Biblioteka Publiczna — Filia nr 5</div>
+          <div class="poi-detail">38 000 woluminów · czytelnia · zajęcia dla dzieci</div>
+        </div>
+        <div class="poi-meta">
+          <div class="poi-distance">390 m</div>
+          <div class="poi-time">5 min pieszo</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Trasy rowerowe i piesze</h3>
+    <p>
+      Bezpośrednio przy działce przebiega trasa <strong>Tychy Velo nr 3</strong> (długość 19 km,
+      łączy centrum z jeziorem Paprocany). System Tychy Bike (rowery miejskie) — najbliższa stacja
+      220 m. Sezon: marzec–listopad. Cena: bilet jednorazowy 3 zł, bilet dobowy 8 zł.
+    </p>
+
+    <div class="summary-card">
+      <div class="summary-card-label">Wniosek</div>
+      <div class="summary-card-text">
+        <strong>Bardzo bogata oferta sportu i rekreacji</strong> dzięki dużym inwestycjom miejskim
+        (stadion, aquapark) i sąsiedztwu jeziora Paprocany. Plac zabaw 280 m od działki — kluczowe
+        dla rodzin z małymi dziećmi.
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer"><span class="page-footer-mark">G</span> grunt.report · GR-2026-D7K3M2</div>
+  <div class="page-number">str. 10</div>
+</div>
+
+<!-- ================== MODUŁ 1.8 — DEMOGRAFIA ================== -->
+<div class="page module-page">
+  <div class="module-header">
+    <div class="module-header-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    </div>
+    <div>
+      <div class="module-num">1.8 · DZIAŁKA POD DOM</div>
+      <h2 class="module-title">Mieszkańcy i otoczenie</h2>
+    </div>
+  </div>
+
+  <div class="module-content">
+    <p>
+      Charakterystyka demograficzna sąsiedztwa pomaga ocenić, czy lokalizacja pasuje do Twojego
+      profilu. Dane pochodzą ze spisu powszechnego 2021 oraz aktualnych danych GUS BDL (2024).
+    </p>
+
+    <div class="kpi-grid">
+      <div class="kpi-box highlight">
+        <div class="kpi-label">Liczba mieszkańców (obręb)</div>
+        <div class="kpi-value">3 847</div>
+        <div class="kpi-trend up">↑ +2,1% / 5 lat</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label">Mediana wieku</div>
+        <div class="kpi-value">41,2 <span class="small">lat</span></div>
+        <div class="kpi-trend flat">→ Tychy: 42,8 lat</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label">% z wyższym wykształceniem</div>
+        <div class="kpi-value">38% <span class="small"></span></div>
+        <div class="kpi-trend up">↑ Tychy: 31%</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label">Bezrobocie (powiat tyski)</div>
+        <div class="kpi-value">2,8% <span class="small"></span></div>
+        <div class="kpi-trend up">↑ Polska: 5,1%</div>
+      </div>
+    </div>
+
+    <h3>Struktura wieku w obrębie</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Grupa wiekowa</th>
+          <th class="num">Liczba</th>
+          <th class="num">% obrębu</th>
+          <th class="num">Tychy ogółem</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>0–6 lat (wiek żłobkowo-przedszkolny)</td>
+          <td class="num">241</td>
+          <td class="num">6,3%</td>
+          <td class="num">5,8%</td>
+        </tr>
+        <tr>
+          <td>7–18 lat (wiek szkolny)</td>
+          <td class="num">478</td>
+          <td class="num">12,4%</td>
+          <td class="num">11,2%</td>
+        </tr>
+        <tr>
+          <td>19–34 lata (młodzi dorośli)</td>
+          <td class="num">695</td>
+          <td class="num">18,1%</td>
+          <td class="num">19,8%</td>
+        </tr>
+        <tr>
+          <td>35–60 lat (wiek aktywności zawodowej)</td>
+          <td class="num">1 594</td>
+          <td class="num">41,4%</td>
+          <td class="num">38,1%</td>
+        </tr>
+        <tr>
+          <td>60+ (seniorzy)</td>
+          <td class="num">839</td>
+          <td class="num">21,8%</td>
+          <td class="num">25,1%</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Charakter zabudowy w sąsiedztwie</h3>
+    <p>
+      W promieniu 300 m wokół działki dominuje <strong>zabudowa wielorodzinna z lat 1960–1985</strong>
+      (osiedle B i E — bloki 4-piętrowe). Zabudowa jednorodzinna stanowi 12% nieruchomości.
+      W ostatnich 5 latach powstały dwa nowe osiedla deweloperskie (Apartamenty Żorska, Apartamenty Olga)
+      o łącznej liczbie 387 mieszkań.
+    </p>
+
+    <div class="info-box note">
+      <div class="info-box-title">Profil sąsiedztwa</div>
+      Sąsiedztwo określane jako <strong>"klasa średnia, rodzinne, stabilne"</strong>. Nadreprezentacja
+      osób w wieku 35–60 (rodziny z dziećmi szkolnymi) oraz osób z wyższym wykształceniem (38% vs.
+      31% średnia miasta). Niski poziom rotacji mieszkańców — średni czas zamieszkiwania w obrębie
+      to 14,2 lat (źródło: ankieta UM Tychy 2023).
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-card-label">Wniosek</div>
+      <div class="summary-card-text">
+        Sąsiedztwo dobrze pasuje do profilu <strong>rodziny z dziećmi szkolnymi, klasa średnia,
+        stabilne zatrudnienie</strong>. Wskaźnik wykształcenia powyżej średniej miasta sygnalizuje
+        kapitał kulturowy. Niskie bezrobocie powiatowe wskazuje na zdrowy rynek pracy.
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer"><span class="page-footer-mark">G</span> grunt.report · GR-2026-D7K3M2</div>
+  <div class="page-number">str. 11</div>
+</div>
+
+<!-- ================== MODUŁ 1.9 — MPZP MIESZKANIOWE ================== -->
+<div class="page module-page">
+  <div class="module-header">
+    <div class="module-header-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+    </div>
+    <div>
+      <div class="module-num">1.9 · DZIAŁKA POD DOM</div>
+      <h2 class="module-title">Plany zagospodarowania</h2>
+    </div>
+  </div>
+
+  <div class="module-content">
+    <h3>Status planistyczny działki</h3>
+    <p>
+      Działka położona jest na obszarze objętym <strong>obowiązującym Miejscowym Planem Zagospodarowania
+      Przestrzennego</strong>: uchwała nr XLIV/798/22 Rady Miasta Tychy z dnia 28 kwietnia 2022 r.
+      w sprawie zmiany MPZP centrum miasta.
+    </p>
+
+    <table class="data-table">
+      <tbody>
+        <tr>
+          <td><strong>Numer uchwały</strong></td>
+          <td class="num">XLIV/798/22</td>
+        </tr>
+        <tr>
+          <td><strong>Symbol terenu w MPZP</strong></td>
+          <td class="num">7MN/U</td>
+        </tr>
+        <tr>
+          <td><strong>Przeznaczenie podstawowe</strong></td>
+          <td>Zabudowa mieszkaniowa jednorodzinna</td>
+        </tr>
+        <tr>
+          <td><strong>Przeznaczenie uzupełniające</strong></td>
+          <td>Usługi nieuciążliwe (do 30% pow. zabudowy)</td>
+        </tr>
+        <tr>
+          <td><strong>Maks. wysokość zabudowy</strong></td>
+          <td class="num">11,5 m (do kalenicy) / 9 m (do gzymsu)</td>
+        </tr>
+        <tr>
+          <td><strong>Maks. powierzchnia zabudowy</strong></td>
+          <td class="num">35% powierzchni działki</td>
+        </tr>
+        <tr>
+          <td><strong>Min. powierzchnia biologicznie czynna</strong></td>
+          <td class="num">45%</td>
+        </tr>
+        <tr>
+          <td><strong>Geometria dachu</strong></td>
+          <td>dwu- lub wielospadowy, 30°–45°</td>
+        </tr>
+        <tr>
+          <td><strong>Linia zabudowy nieprzekraczalna</strong></td>
+          <td class="num">6 m od linii rozgraniczającej z drogą</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="info-box">
+      <div class="info-box-title">Co to oznacza w praktyce</div>
+      Przy powierzchni działki 3 802 m² i max. zabudowie 35%, możesz wybudować obiekt o powierzchni
+      zabudowy do <strong>1 330 m²</strong>. Przy dwóch kondygnacjach naziemnych daje to powierzchnię
+      użytkową ok. <strong>2 200–2 400 m²</strong> (pomniejszoną o klatki, korytarze).
+      Standardowy dom jednorodzinny ~180 m² wykorzystuje tylko 5% potencjału — pozostaje przestrzeń
+      na ogród, garaż, część usługową.
+    </div>
+
+    <h3>Inwestycje sąsiedzkie planowane</h3>
+    <p>
+      Z analizy decyzji wydanych przez UM Tychy w okresie 2023–2026:
+    </p>
+
+    <ul style="margin: 0 0 18px 22px; font-size: 12.5px; line-height: 1.7; color: var(--text-light);">
+      <li><strong>Modernizacja ul. Niepodległości</strong> (140 m od działki) — lata 2026–2027.
+      Przebudowa skrzyżowania, wymiana nawierzchni, nowe ścieżki rowerowe. Czasowe utrudnienia
+      komunikacyjne, długoterminowo: spadek hałasu o ok. 3 dB.</li>
+      <li><strong>Nowa szkoła podstawowa nr 42</strong> (ul. Filaretów) — otwarcie wrzesień 2026.
+      Prawdopodobnie przejmie część rejonu z SP nr 11 (skrócenie kolejki na zapisy).</li>
+      <li><strong>Apartamenty Korfantego</strong> (310 m) — 92 mieszkania, deweloper Murapol.
+      Termin oddania II kw. 2026.</li>
+    </ul>
+
+    <h3>Plan ogólny gminy (od 2025 r.)</h3>
+    <p>
+      Tychy przyjęły Plan Ogólny Miasta uchwałą nr LXII/1108/24 z dnia 25 września 2024 r.
+      Działka znajduje się w strefie funkcjonalnej <strong>SF1 — wielofunkcyjne centrum miasta</strong>,
+      co w pełni harmonizuje z obowiązującym MPZP. Brak ryzyka konfliktu między dokumentami.
+    </p>
+
+    <div class="info-box note">
+      <div class="info-box-title">Bez konieczności wystąpienia o WZ</div>
+      Ponieważ działka leży w obszarze MPZP, <strong>nie wymaga decyzji o warunkach zabudowy (WZ)</strong>.
+      Pomijasz proces WZ, który dla porównywalnych działek poza MPZP trwa zwykle 6–12 miesięcy
+      i może zakończyć się odmową. To istotnie skraca harmonogram inwestycji.
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-card-label">Wniosek</div>
+      <div class="summary-card-text">
+        Sytuacja planistyczna — <strong>idealna</strong>. Obowiązujący MPZP, jasne parametry zabudowy,
+        zgodność z Planem Ogólnym, brak procedury WZ. Można aplikować o pozwolenie na budowę
+        bezpośrednio po nabyciu działki (zakładając projekt w 2 mies., pozwolenie ~3 mies. dodatkowo).
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer"><span class="page-footer-mark">G</span> grunt.report · GR-2026-D7K3M2</div>
+  <div class="page-number">str. 12</div>
+</div>
+
+<!-- ================== MODUŁ 2.1 — SOLAR PV ================== -->
+<div class="page module-page">
+  <div class="module-header">
+    <div class="module-header-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+    </div>
+    <div>
+      <div class="module-num">2.1 · DZIAŁKA POD INWESTYCJĘ</div>
+      <h2 class="module-title">Potencjał solarny PV</h2>
+    </div>
+  </div>
+
+  <div class="module-content">
+    <p>
+      Analiza nasłonecznienia na bazie Numerycznego Modelu Pokrycia Terenu (NMPT) GUGiK,
+      uzupełniona danymi z PVGIS i stacji meteorologicznej IMGW Katowice-Pyrzowice. Działka
+      ma <strong>ograniczony potencjał farmy fotowoltaicznej</strong>, ale dobre warunki dla
+      instalacji dachowej.
+    </p>
+
+    <div class="kpi-grid">
+      <div class="kpi-box">
+        <div class="kpi-label">GHI (roczne nasłonecznienie)</div>
+        <div class="kpi-value">1 142 <span class="small">kWh/m²</span></div>
+        <div class="kpi-trend flat">→ średnia dla Polski</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label">Spadek terenu</div>
+        <div class="kpi-value">2,1° <span class="small"></span></div>
+        <div class="kpi-trend up">↑ płaski teren — dobry</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label">Dominująca ekspozycja</div>
+        <div class="kpi-value">SE</div>
+        <div class="kpi-trend up">↑ idealna dla PV</div>
+      </div>
+      <div class="kpi-box highlight">
+        <div class="kpi-label">Maks. moc instalacji dachowej</div>
+        <div class="kpi-value">8,2 <span class="small">kWp</span></div>
+        <div class="kpi-trend flat">→ ~7 800 kWh/rok</div>
+      </div>
+    </div>
+
+    <h3>Ograniczenia dla farmy PV</h3>
+    <div class="info-box warning">
+      <div class="info-box-title">Działka nieodpowiednia jako farma PV</div>
+      Powierzchnia 0,38 ha jest <strong>poniżej progu ekonomicznej rentowności</strong> dla farmy
+      gruntowej (typowo wymaga się minimum 1 ha). Dodatkowo: zabudowa otaczająca powoduje
+      zacienienie 23% działki w godzinach porannych. <strong>MPZP wyklucza budowę farmy gruntowej</strong>
+      (przeznaczenie 7MN/U, brak zapisów dopuszczających instalacje OZE wolnostojące).
+    </div>
+
+    <h3>Potencjał instalacji dachowej (po zabudowie)</h3>
+    <p>
+      Zakładając projekt domu jednorodzinnego o powierzchni dachu ok. 240 m² (połać południowa
+      120 m²), przy module 410 Wp i wydajności 22%, instalacja może osiągnąć <strong>8,2 kWp</strong>
+      i wyprodukować <strong>~7 800 kWh/rok</strong> energii elektrycznej.
+    </p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Parametr</th>
+          <th class="num">Wartość</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Liczba paneli (410 Wp, monokrystaliczne)</td><td class="num">20 szt.</td></tr>
+        <tr><td>Powierzchnia paneli</td><td class="num">~38 m²</td></tr>
+        <tr><td>Roczny uzysk energii</td><td class="num">~7 800 kWh</td></tr>
+        <tr><td>Pokrycie zapotrzebowania domu (~5 000 kWh/rok)</td><td class="num">156%</td></tr>
+        <tr><td>Szacowany koszt instalacji (2025)</td><td class="num">42 000–48 000 zł</td></tr>
+        <tr><td>Czas zwrotu inwestycji (przy obecnych cenach)</td><td class="num">7,5–9 lat</td></tr>
+      </tbody>
+    </table>
+
+    <div class="summary-card">
+      <div class="summary-card-label">Wniosek</div>
+      <div class="summary-card-text">
+        Działka <strong>nie nadaje się pod farmę PV</strong>, ale przyszły dom będzie miał
+        <strong>dobre warunki dla instalacji dachowej 8 kWp</strong>. Pełne pokrycie zapotrzebowania
+        gospodarstwa domowego z nadwyżką do oddania w bilansie półrocznym.
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer"><span class="page-footer-mark">G</span> grunt.report · GR-2026-D7K3M2</div>
+  <div class="page-number">str. 13</div>
+</div>
+
+<!-- Pozostałe moduły 2.2-2.8 - zwięźle -->
+
+<!-- ================== MODUŁ 2.2 — SIEĆ ENERGETYCZNA ================== -->
+<div class="page module-page">
+  <div class="module-header">
+    <div class="module-header-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+    </div>
+    <div>
+      <div class="module-num">2.2 · DZIAŁKA POD INWESTYCJĘ</div>
+      <h2 class="module-title">Sieć energetyczna</h2>
+    </div>
+  </div>
+
+  <div class="module-content">
+    <h3>Najbliższe linie energetyczne</h3>
+    <table class="data-table">
+      <thead>
+        <tr><th>Element sieci</th><th class="num">Odległość</th><th>Operator</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Linia SN 15 kV (napowietrzna)</td><td class="num">85 m</td><td>Tauron Dystrybucja</td><td><span class="pill good">dostępna</span></td></tr>
+        <tr><td>Linia NN 0,4 kV (przyłącze)</td><td class="num">12 m</td><td>Tauron Dystrybucja</td><td><span class="pill good">na granicy</span></td></tr>
+        <tr><td>Linia WN 110 kV</td><td class="num">2,4 km</td><td>Tauron Dystrybucja</td><td><span class="pill neutral">odległa</span></td></tr>
+        <tr><td>GPZ "Tychy-Centrum"</td><td class="num">1,8 km</td><td>Tauron Dystrybucja</td><td><span class="pill good">moc dostępna</span></td></tr>
+      </tbody>
+    </table>
+
+    <h3>Możliwość przyłączenia</h3>
+    <p>
+      Dla budownictwa mieszkaniowego: <strong>standardowe przyłącze 16 kW</strong> w cenie ~3 800 zł
+      (taryfa Tauron Dystrybucja 2025). Czas realizacji: 4–6 miesięcy. Dla obiektu komercyjnego
+      (do 40 kW): koszt 8 000–14 000 zł, czas 6–9 miesięcy.
+    </p>
+
+    <div class="info-box note">
+      <div class="info-box-title">Dla farmy PV (hipotetycznie)</div>
+      Przyłączenie farmy 1 MWp do sieci SN: koszt szacunkowy 180 000–280 000 zł, czas 18–24 miesiące.
+      <strong>Nie dotyczy tej działki ze względu na MPZP i powierzchnię.</strong>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-card-label">Wniosek</div>
+      <div class="summary-card-text">
+        Sieć energetyczna — <strong>w pełni dostępna i wystarczająca</strong> dla zabudowy
+        mieszkaniowej. Linia NN 12 m od granicy działki. Przyłącze standardowe 16 kW
+        w 4–6 miesięcy.
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer"><span class="page-footer-mark">G</span> grunt.report · GR-2026-D7K3M2</div>
+  <div class="page-number">str. 14</div>
+</div>
+
+<!-- ================== MODUŁ 2.3 — LOGISTYKA ================== -->
+<div class="page module-page">
+  <div class="module-header">
+    <div class="module-header-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+    </div>
+    <div>
+      <div class="module-num">2.3 · DZIAŁKA POD INWESTYCJĘ</div>
+      <h2 class="module-title">Dostęp i logistyka</h2>
+    </div>
+  </div>
+
+  <div class="module-content">
+    <table class="data-table">
+      <thead>
+        <tr><th>Trasa</th><th class="num">Odległość</th><th class="num">Czas</th><th>Klasa</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>DK 86 (Tychy–Katowice)</td><td class="num">1,2 km</td><td class="num">3 min</td><td>krajowa</td></tr>
+        <tr><td>S1 (Tychy–Bielsko-Biała)</td><td class="num">3,8 km</td><td class="num">7 min</td><td>ekspresowa</td></tr>
+        <tr><td>A4 (węzeł Murckowska)</td><td class="num">14 km</td><td class="num">19 min</td><td>autostrada</td></tr>
+        <tr><td>Terminal kolejowy DCT (Sławków)</td><td class="num">42 km</td><td class="num">52 min</td><td>kolejowy</td></tr>
+        <tr><td>Lotnisko Katowice-Pyrzowice</td><td class="num">52 km</td><td class="num">52 min</td><td>cargo</td></tr>
+      </tbody>
+    </table>
+
+    <div class="info-box warning">
+      <div class="info-box-title">Ograniczenie dla transportu ciężkiego</div>
+      Ulica Moniuszki ma <strong>nośność ograniczoną do 5 ton</strong> (pojazd jednoosiowy).
+      Dla budowy domu jednorodzinnego — bez znaczenia. Dla obiektu komercyjnego z dostawami TIR —
+      konieczna alternatywna trasa dojazdu (przez ul. Niepodległości, ~400 m dłuższa).
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-card-label">Wniosek</div>
+      <div class="summary-card-text">
+        <strong>Doskonała dostępność dla osobowych i lekkich dostawczych</strong>. Krajowa droga
+        1,2 km, ekspresówka 3,8 km, autostrada 14 km. Dla TIR — wymaga alternatywnej trasy.
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer"><span class="page-footer-mark">G</span> grunt.report · GR-2026-D7K3M2</div>
+  <div class="page-number">str. 15</div>
+</div>
+
+<!-- ================== MODUŁ 2.4 — MEDIA ================== -->
+<div class="page module-page">
+  <div class="module-header">
+    <div class="module-header-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+    </div>
+    <div>
+      <div class="module-num">2.4 · DZIAŁKA POD INWESTYCJĘ</div>
+      <h2 class="module-title">Media i przyłącza</h2>
+    </div>
+  </div>
+
+  <div class="module-content">
+    <table class="data-table">
+      <thead>
+        <tr><th>Medium</th><th>Operator</th><th class="num">Odległość</th><th class="num">Koszt przyłącza</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Wodociąg ø150</td>
+          <td>RPWiK Tychy</td>
+          <td class="num">8 m</td>
+          <td class="num">3 200–4 800 zł</td>
+          <td><span class="pill good">na granicy</span></td>
+        </tr>
+        <tr>
+          <td>Kanalizacja sanitarna ø200</td>
+          <td>RPWiK Tychy</td>
+          <td class="num">8 m</td>
+          <td class="num">4 500–6 000 zł</td>
+          <td><span class="pill good">na granicy</span></td>
+        </tr>
+        <tr>
+          <td>Gaz ziemny średniego ciśnienia</td>
+          <td>PSG (Polska Spółka Gazownictwa)</td>
+          <td class="num">14 m</td>
+          <td class="num">3 800–5 500 zł</td>
+          <td><span class="pill good">dostępny</span></td>
+        </tr>
+        <tr>
+          <td>Sieć ciepłownicza</td>
+          <td>Tauron Ciepło</td>
+          <td class="num">95 m</td>
+          <td class="num">12 000–18 000 zł</td>
+          <td><span class="pill warning">opcjonalnie</span></td>
+        </tr>
+        <tr>
+          <td>Światłowód</td>
+          <td>Orange / Vectra</td>
+          <td class="num">na ulicy</td>
+          <td class="num">0–500 zł</td>
+          <td><span class="pill good">dostępny</span></td>
+        </tr>
+        <tr>
+          <td>Sieć kablowa TV</td>
+          <td>Vectra</td>
+          <td class="num">na ulicy</td>
+          <td class="num">0 zł</td>
+          <td><span class="pill good">dostępna</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      Łączny szacunkowy <strong>koszt przyłączy mediów</strong> dla budynku jednorodzinnego:
+      <strong>11 500–16 800 zł</strong>. Czas realizacji wszystkich przyłączy równolegle:
+      4–6 miesięcy.
+    </p>
+
+    <div class="summary-card">
+      <div class="summary-card-label">Wniosek</div>
+      <div class="summary-card-text">
+        <strong>Pełne uzbrojenie działki</strong>. Wszystkie media dostępne w odległości do 100 m
+        (większość poniżej 15 m). Brak konieczności kosztownych rozbudów sieci.
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer"><span class="page-footer-mark">G</span> grunt.report · GR-2026-D7K3M2</div>
+  <div class="page-number">str. 16</div>
+</div>
+
+<!-- ================== MODUŁ 2.5 — CENY KOMERCYJNE ================== -->
+<div class="page module-page">
+  <div class="module-header">
+    <div class="module-header-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+    </div>
+    <div>
+      <div class="module-num">2.5 · DZIAŁKA POD INWESTYCJĘ</div>
+      <h2 class="module-title">Ceny gruntów komercyjnych</h2>
+    </div>
+  </div>
+
+  <div class="module-content">
+    <p>
+      Analiza Rejestru Cen Nieruchomości za lata 2023–2025 (87 transakcji w gminie Tychy
+      z przeznaczeniem komercyjnym/usługowym).
+    </p>
+
+    <div class="kpi-grid">
+      <div class="kpi-box">
+        <div class="kpi-label">Mediana m² gruntu komercyjnego (Tychy)</div>
+        <div class="kpi-value">412 <span class="small">zł/m²</span></div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label">Trend 3 lata</div>
+        <div class="kpi-value">+34%</div>
+        <div class="kpi-trend up">↑ silny wzrost</div>
+      </div>
+    </div>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Segment</th>
+          <th class="num">Mediana zł/m²</th>
+          <th class="num">Liczba transakcji</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Centrum Tychów (do 2 km od działki)</td><td class="num">487 zł/m²</td><td class="num">19</td></tr>
+        <tr><td>Tychy obrzeża</td><td class="num">298 zł/m²</td><td class="num">42</td></tr>
+        <tr><td>Specjalna Strefa Ekonomiczna KSSE-Tychy</td><td class="num">189 zł/m²</td><td class="num">11</td></tr>
+        <tr><td>Powiat tyski (gminy)</td><td class="num">142 zł/m²</td><td class="num">15</td></tr>
+      </tbody>
+    </table>
+
+    <div class="info-box">
+      <div class="info-box-title">Dla działek z MN/U (mieszanego)</div>
+      Działki z przeznaczeniem mieszkalno-usługowym (jak ta) wyceniane są zwykle <strong>10–25%
+      taniej niż czyste komercyjne</strong>, ale 20–40% drożej niż czysto mieszkaniowe.
+      Twoja cena ofertowa 578 zł/m² mieści się w górnym przedziale dla MN/U w centrum.
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-card-label">Wniosek</div>
+      <div class="summary-card-text">
+        Lokalizacja w centrum drogim — średnio <strong>+18% vs typowy MN/U w mieście</strong>,
+        ale wciąż konkurencyjna względem czystych gruntów komercyjnych. Trend wzrostowy +34%
+        w 3 lata sugeruje atrakcyjność inwestycyjną.
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer"><span class="page-footer-mark">G</span> grunt.report · GR-2026-D7K3M2</div>
+  <div class="page-number">str. 17</div>
+</div>
+
+<!-- ================== MODUŁ 2.6 — ŚRODOWISKO ================== -->
+<div class="page module-page">
+  <div class="module-header">
+    <div class="module-header-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg>
+    </div>
+    <div>
+      <div class="module-num">2.6 · DZIAŁKA POD INWESTYCJĘ</div>
+      <h2 class="module-title">Uwarunkowania środowiskowe</h2>
+    </div>
+  </div>
+
+  <div class="module-content">
+    <table class="data-table">
+      <thead>
+        <tr><th>Forma ochrony / status</th><th class="num">Odległość</th><th>Wpływ na inwestycję</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Natura 2000 — najbliższy obszar (PLH240003 Pszczyna)</td><td class="num">8,4 km</td><td><span class="pill good">brak wpływu</span></td></tr>
+        <tr><td>Park krajobrazowy</td><td class="num">12 km (PK Cysterskich Kompozycji Krajobrazowych Rud)</td><td><span class="pill good">brak wpływu</span></td></tr>
+        <tr><td>Tereny zalewowe ISOK Q1%</td><td class="num"><span class="pill good">poza strefą</span></td><td><span class="pill good">brak wpływu</span></td></tr>
+        <tr><td>Klasy bonitacyjne gleb</td><td class="num">VI (najsłabsza)</td><td><span class="pill good">brak konieczności odrolnienia</span></td></tr>
+        <tr><td>Status leśny</td><td class="num"><span class="pill good">teren zurbanizowany</span></td><td><span class="pill good">brak wyłączenia</span></td></tr>
+        <tr><td>Korytarz ekologiczny</td><td class="num"><span class="pill good">poza zasięgiem</span></td><td><span class="pill good">brak wpływu</span></td></tr>
+        <tr><td>Strefa ochrony konserwatorskiej</td><td class="num">brak</td><td><span class="pill good">brak wpływu</span></td></tr>
+        <tr><td>Pomniki przyrody</td><td class="num">280 m (dwa dęby)</td><td><span class="pill neutral">poza działką</span></td></tr>
+      </tbody>
+    </table>
+
+    <div class="info-box note">
+      <div class="info-box-title">Bez decyzji środowiskowej</div>
+      Inwestycja zabudowy mieszkaniowej jednorodzinnej (do 1 budynku) <strong>nie wymaga decyzji
+      środowiskowej</strong> (Rozporządzenie RM ws. przedsięwzięć mogących znacząco oddziaływać
+      na środowisko). Brak ograniczeń środowiskowych dla planowanej inwestycji.
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-card-label">Wniosek</div>
+      <div class="summary-card-text">
+        Działka <strong>czysta środowiskowo</strong> — brak ograniczeń, brak konieczności decyzji
+        środowiskowej, brak konieczności odrolnienia czy odlesienia. Można aplikować bezpośrednio
+        o pozwolenie na budowę.
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer"><span class="page-footer-mark">G</span> grunt.report · GR-2026-D7K3M2</div>
+  <div class="page-number">str. 18</div>
+</div>
+
+<!-- ================== MODUŁ 2.7 — MPZP INWESTYCYJNE ================== -->
+<div class="page module-page">
+  <div class="module-header">
+    <div class="module-header-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+    </div>
+    <div>
+      <div class="module-num">2.7 · DZIAŁKA POD INWESTYCJĘ</div>
+      <h2 class="module-title">Plany zagospodarowania (komercyjne)</h2>
+    </div>
+  </div>
+
+  <div class="module-content">
+    <p>
+      Analiza tego samego MPZP (XLIV/798/22, symbol 7MN/U) z perspektywy <strong>inwestycji komercyjnej</strong>.
+      Przeznaczenie uzupełniające pozwala na usługi nieuciążliwe do 30% powierzchni zabudowy.
+    </p>
+
+    <h3>Co wolno: usługi dopuszczone</h3>
+    <ul style="margin: 0 0 18px 22px; font-size: 12.5px; line-height: 1.7; color: var(--text-light);">
+      <li><strong>Usługi biurowe</strong> (kancelarie, biuro projektowe, IT)</li>
+      <li><strong>Usługi medyczne</strong> (gabinet lekarski, dentystyczny, fizjoterapeutyczny)</li>
+      <li><strong>Handel detaliczny</strong> drobny (sklep do 200 m² powierzchni sprzedaży)</li>
+      <li><strong>Gastronomia</strong> drobna (kawiarnia, lodziarnia — z ograniczeniami emisji)</li>
+      <li><strong>Edukacja prywatna</strong> (przedszkole, szkółka językowa, korepetycje)</li>
+      <li><strong>Usługi rzemieślnicze</strong> nieuciążliwe (fryzjer, krawiec, optyk)</li>
+    </ul>
+
+    <h3>Co wykluczone</h3>
+    <ul style="margin: 0 0 18px 22px; font-size: 12.5px; line-height: 1.7; color: var(--text-light);">
+      <li>Produkcja przemysłowa (każda kategoria)</li>
+      <li>Magazyny i centra logistyczne</li>
+      <li>Stacje paliw i obiekty obsługi pojazdów</li>
+      <li>Obiekty handlu wielkopowierzchniowego (powyżej 400 m²)</li>
+      <li>Działalność wymagająca decyzji środowiskowej</li>
+      <li>Farmy fotowoltaiczne i wiatrowe gruntowe</li>
+    </ul>
+
+    <div class="info-box">
+      <div class="info-box-title">Wartość komercyjna w praktyce</div>
+      Optymalny model: <strong>parter usługowy + piętro mieszkalne</strong>. Powierzchnia
+      usługowa do 400 m² przy łącznej zabudowie 1 330 m² (35% z 3 802 m²). Czynsz najmu w okolicy
+      za lokal usługowy parter, przy ulicy: 65–95 zł/m²/miesiąc netto. Roczny przychód
+      potencjalny: <strong>312–456 tys. zł</strong> (przy pełnym wynajmie).
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-card-label">Wniosek</div>
+      <div class="summary-card-text">
+        Plany dopuszczają <strong>realną aktywność komercyjną mieszanego typu</strong>.
+        Najlepszy scenariusz: kamienica usługowo-mieszkaniowa (parter handlowo-usługowy,
+        piętro mieszkalne).
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer"><span class="page-footer-mark">G</span> grunt.report · GR-2026-D7K3M2</div>
+  <div class="page-number">str. 19</div>
+</div>
+
+<!-- ================== MODUŁ 2.8 — OTOCZENIE BIZNESOWE ================== -->
+<div class="page module-page">
+  <div class="module-header">
+    <div class="module-header-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+    </div>
+    <div>
+      <div class="module-num">2.8 · DZIAŁKA POD INWESTYCJĘ</div>
+      <h2 class="module-title">Otoczenie biznesowe</h2>
+    </div>
+  </div>
+
+  <div class="module-content">
+    <div class="kpi-grid">
+      <div class="kpi-box">
+        <div class="kpi-label">Liczba firm w promieniu 1 km</div>
+        <div class="kpi-value">847</div>
+        <div class="kpi-trend up">↑ +6,2% / 2 lata</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label">Bezrobocie powiat tyski</div>
+        <div class="kpi-value">2,8% <span class="small"></span></div>
+        <div class="kpi-trend up">↑ niskie — duży popyt na pracowników</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label">SSE Katowicka — najbliższy obszar</div>
+        <div class="kpi-value">3,8 <span class="small">km</span></div>
+        <div class="kpi-trend flat">→ ul. Serdeczna (KSSE)</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label">Mediana wynagrodzenia (powiat)</div>
+        <div class="kpi-value">7 240 <span class="small">zł brutto</span></div>
+        <div class="kpi-trend up">↑ Polska: 6 980</div>
+      </div>
+    </div>
+
+    <h3>Profil branżowy okolicy</h3>
+    <table class="data-table">
+      <thead>
+        <tr><th>Branża</th><th class="num">Liczba podmiotów</th><th class="num">% udział</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Handel detaliczny i hurtowy</td><td class="num">214</td><td class="num">25,3%</td></tr>
+        <tr><td>Usługi profesjonalne (prawnicze, doradcze, IT)</td><td class="num">168</td><td class="num">19,8%</td></tr>
+        <tr><td>Gastronomia i hotelarstwo</td><td class="num">92</td><td class="num">10,9%</td></tr>
+        <tr><td>Usługi medyczne i kosmetyczne</td><td class="num">87</td><td class="num">10,3%</td></tr>
+        <tr><td>Budownictwo i instalacje</td><td class="num">76</td><td class="num">9,0%</td></tr>
+        <tr><td>Pozostałe</td><td class="num">210</td><td class="num">24,7%</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Najwięksi pracodawcy w aglomeracji</h3>
+    <p>
+      <strong>FCA / Stellantis Tychy</strong> (8,4 km) — 2 800 pracowników, fabryka samochodów.
+      <strong>Tyskie Browary Książęce</strong> (3,2 km) — 1 400 pracowników, browar Asahi.
+      <strong>Magneti Marelli Suspension Systems</strong> (5,1 km) — 950 pracowników.
+      <strong>NEMAK Poland</strong> (6,8 km) — 720 pracowników, odlewnia aluminium.
+      Łącznie w KSSE-Tychy zatrudnionych jest około 12 000 osób.
+    </p>
+
+    <div class="summary-card">
+      <div class="summary-card-label">Wniosek</div>
+      <div class="summary-card-text">
+        Tychy to <strong>silne, dojrzałe centrum gospodarcze</strong>. Niskie bezrobocie 2,8%,
+        wysoka mediana wynagrodzenia, dywersyfikacja branżowa. Lokalizacja w centrum sprzyja
+        usługom dla mieszkańców i biurowcom mniejszej skali.
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer"><span class="page-footer-mark">G</span> grunt.report · GR-2026-D7K3M2</div>
+  <div class="page-number">str. 20</div>
+</div>
+
+<!-- ================== END / DISCLAIMER ================== -->
+<div class="page" style="background:#FAFAF6;">
+  <div style="text-align:center; padding: 60px 20px;">
+    <div style="display:inline-flex; align-items:center; gap:14px; margin-bottom: 28px;">
+      <div style="width:50px; height:50px; background:var(--primary); border-radius:10px; display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:24px;">G</div>
+      <div style="font-family:'Fraunces',serif; font-size:24px; font-weight:600;">grunt<span style="color:var(--primary)">.</span>report</div>
+    </div>
+    <h2 style="font-family:'Fraunces',serif; font-size:32px; font-weight:600; letter-spacing:-0.025em; margin-bottom:14px;">Koniec raportu</h2>
+    <p style="font-size:14px; color:var(--text-light); max-width:520px; margin: 0 auto 32px; line-height:1.6;">
+      Dziękujemy za zaufanie. Mamy nadzieję, że niniejszy raport pomoże Ci podjąć świadomą
+      decyzję dotyczącą Twojej inwestycji w nieruchomość.
+    </p>
+
+    <div style="max-width:520px; margin: 0 auto 32px; padding: 24px; background: white; border: 1px solid var(--border); border-radius: 12px; text-align: left;">
+      <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; color: var(--text-light); margin-bottom: 8px;">Zastrzeżenie</div>
+      <p style="font-size: 11.5px; color: var(--text-light); line-height: 1.6; margin: 0;">
+        Raport ma charakter <strong>informacyjny i analityczny</strong>. Dane pochodzą ze źródeł
+        publicznych (GUGiK, GUS, Urząd Miasta Tychy, OSM, NMPT, ISOK, IMGW, GIOŚ) oraz analiz własnych
+        autora. Raport nie stanowi operatu szacunkowego, opinii biegłego rzeczoznawcy ani porady prawnej.
+        Decyzje inwestycyjne podejmowane na podstawie raportu są ryzykiem własnym zamawiającego.
+        grunt.report nie ponosi odpowiedzialności za nieaktualność danych źródłowych po dacie wygenerowania.
+      </p>
+    </div>
+
+    <div style="font-family:'JetBrains Mono',monospace; font-size: 11px; color: var(--text-light);">
+      Numer raportu: <strong style="color:var(--text)">GR-2026-D7K3M2</strong><br>
+      Wygenerowano: <strong style="color:var(--text)">04 maja 2026, 14:23 CEST</strong><br>
+      Wersja systemu: <strong style="color:var(--text)">grunt.report v1.4.2</strong>
+    </div>
+  </div>
+  <div class="page-footer"><span class="page-footer-mark">G</span> grunt.report · GR-2026-D7K3M2</div>
+  <div class="page-number">str. 21 (koniec)</div>
+</div>
+
+</body>
+</html>

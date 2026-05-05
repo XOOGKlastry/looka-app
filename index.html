@@ -1,0 +1,2936 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>looka — popatrz na działkę z góry zanim kupisz</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      /* === BRAND === */
+      --brand: #1F8EFE;
+      --brand-dark: #0E72D9;
+      --brand-light: #E8F2FE;
+      --brand-tint: #F4F8FE;
+
+      /* === SURFACES === */
+      --bg: #FFFFFF;
+      --surface: #F7F8FA;
+      --surface-2: #F0F2F5;
+      --border: #E5E7EB;
+      --border-strong: #D1D5DB;
+
+      /* === TEXT === */
+      --text: #0F172A;
+      --text-muted: #64748B;
+      --text-subtle: #94A3B8;
+
+      /* === SEMANTIC === */
+      --parcel: #10B981;
+      --parcel-light: #D1FAE5;
+      --warning: #F59E0B;
+      --warning-light: #FEF3C7;
+      --danger: #EF4444;
+      --success: #10B981;
+
+      /* === SHADOW === */
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+      --shadow: 0 4px 12px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+      --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.08), 0 4px 8px rgba(15, 23, 42, 0.04);
+      --shadow-brand: 0 6px 20px rgba(31, 142, 254, 0.25);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      background: var(--brand);
+      color: white;
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-feature-settings: 'tnum';
+    }
+
+    /* === FOCUS === */
+    button:focus-visible,
+    a:focus-visible,
+    [tabindex]:focus-visible {
+      outline: 2px solid var(--brand);
+      outline-offset: 2px;
+      border-radius: 6px;
+    }
+
+    /* ================== HEADER ================== */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: saturate(180%) blur(14px);
+      -webkit-backdrop-filter: saturate(180%) blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .logo-mark {
+      position: relative;
+      width: 30px;
+      height: 36px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .logo-pin {
+      width: 30px;
+      height: 30px;
+      background: var(--brand);
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(31, 142, 254, 0.35);
+      position: relative;
+    }
+
+    .logo-pin::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 18px;
+      height: 12px;
+      background: white;
+      border-radius: 100% 100% 100% 100% / 60% 60% 40% 40%;
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    .logo-pin::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 5px;
+      height: 5px;
+      background: var(--brand);
+      border-radius: 50%;
+      transform: translate(-50%, -50%) rotate(45deg);
+      box-shadow: 0 0 0 2px white;
+    }
+
+    .logo-wordmark {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1;
+    }
+
+    .logo-wordmark .dot {
+      color: var(--brand);
+    }
+
+    .logo-wordmark .ext {
+      font-weight: 500;
+      color: var(--text-subtle);
+    }
+
+    .header-divider {
+      width: 1px;
+      height: 22px;
+      background: var(--border);
+      margin: 0 4px;
+    }
+
+    .header-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: var(--brand-light);
+      color: var(--brand-dark);
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: -0.005em;
+    }
+
+    .header-pill-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--brand);
+      border-radius: 50%;
+      box-shadow: 0 0 0 3px rgba(31, 142, 254, 0.2);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+
+    .header-link:hover {
+      color: var(--text);
+      background: var(--surface);
+    }
+
+    .header-link svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .cart-btn {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      background: white;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .cart-btn:hover:not(:disabled) {
+      border-color: var(--brand);
+      background: var(--brand-tint);
+      color: var(--brand-dark);
+    }
+
+    .cart-btn:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+
+    .cart-btn svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .cart-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 6px;
+      background: var(--brand);
+      color: white;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 100px;
+    }
+
+    /* ================== MAP ================== */
+    #map {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 460px;
+      bottom: 0;
+      background: #EAEEF2;
+      transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #map.no-sidebar {
+      right: 0;
+    }
+
+    .leaflet-container {
+      background: #EAEEF2;
+      cursor: crosshair;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .leaflet-container.loading {
+      cursor: progress;
+    }
+
+    .leaflet-control-attribution {
+      background: rgba(255, 255, 255, 0.85) !important;
+      font-size: 10px !important;
+      color: var(--text-subtle) !important;
+      padding: 3px 8px !important;
+      border-radius: 6px !important;
+      margin: 8px !important;
+      border: 1px solid var(--border) !important;
+    }
+
+    .leaflet-control-zoom {
+      border: 1px solid var(--border) !important;
+      box-shadow: var(--shadow) !important;
+      border-radius: 10px !important;
+      overflow: hidden;
+      margin: 16px !important;
+    }
+
+    .leaflet-control-zoom a {
+      background: white !important;
+      color: var(--text) !important;
+      border-color: var(--border) !important;
+      width: 34px !important;
+      height: 34px !important;
+      line-height: 34px !important;
+      font-size: 17px !important;
+      font-weight: 500;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .leaflet-control-zoom a:hover {
+      background: var(--brand-tint) !important;
+      color: var(--brand-dark) !important;
+    }
+
+    /* ================== HINT BANNER ================== */
+    .hint {
+      position: absolute;
+      top: 80px;
+      left: calc(50% - 230px);
+      transform: translateX(-50%);
+      z-index: 500;
+      background: white;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px 18px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: var(--shadow);
+      animation: fadeInDown 0.5s ease-out 0.3s both;
+    }
+
+    .hint-icon {
+      width: 22px;
+      height: 22px;
+      background: var(--brand-light);
+      color: var(--brand);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hint-icon svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    .hint.hidden {
+      display: none;
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ================== STATUS TOAST ================== */
+    .status-toast {
+      position: absolute;
+      top: 80px;
+      left: calc(50% - 230px);
+      transform: translateX(-50%);
+      z-index: 600;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: var(--shadow-lg);
+      animation: fadeInDown 0.3s ease-out;
+      max-width: 480px;
+    }
+
+    .status-toast.error {
+      border-color: rgba(245, 158, 11, 0.4);
+    }
+
+    .status-toast.success {
+      border-color: rgba(16, 185, 129, 0.4);
+    }
+
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(31, 142, 254, 0.2);
+      border-top-color: var(--brand);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .toast-icon-warn,
+    .toast-icon-success {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .toast-icon-warn {
+      background: var(--warning-light);
+      color: var(--warning);
+    }
+
+    .toast-icon-success {
+      background: var(--parcel-light);
+      color: var(--success);
+    }
+
+    .toast-icon-warn svg,
+    .toast-icon-success svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    .status-toast .msg-title {
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .status-toast .msg-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .status-toast .close-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-subtle);
+      padding: 4px;
+      font-size: 18px;
+      line-height: 1;
+      border-radius: 4px;
+    }
+
+    .status-toast .close-btn:hover {
+      color: var(--text);
+      background: var(--surface);
+    }
+
+    /* ================== SIDEBAR ================== */
+    #sidebar {
+      position: fixed;
+      top: 60px;
+      right: 0;
+      bottom: 0;
+      width: 460px;
+      z-index: 500;
+      background: white;
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #sidebar.visible {
+      transform: translateX(0);
+    }
+
+    .sidebar-scroll {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    /* === Onboarding (welcome) === */
+    .welcome {
+      padding: 48px 32px;
+      text-align: center;
+      animation: slideUp 0.5s ease-out;
+    }
+
+    .welcome-icon {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 20px;
+      background: var(--brand-light);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--brand);
+    }
+
+    .welcome-icon svg {
+      width: 32px;
+      height: 32px;
+      stroke-width: 1.75;
+    }
+
+    .welcome-title {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .welcome-text {
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      max-width: 320px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .welcome-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: left;
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+
+    .welcome-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: var(--text-muted);
+    }
+
+    .welcome-step strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .welcome-step-num {
+      width: 18px;
+      height: 18px;
+      background: white;
+      border: 1px solid var(--border);
+      color: var(--brand);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .welcome-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      background: white;
+      color: var(--brand);
+      border: 1px solid var(--brand);
+      border-radius: 9px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+
+    .welcome-cta:hover {
+      background: var(--brand);
+      color: white;
+    }
+
+    .welcome-cta svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* === Parcel header === */
+    .parcel-header {
+      padding: 22px 24px 18px;
+      border-bottom: 1px solid var(--border);
+      animation: slideUp 0.4s ease-out;
+    }
+
+    .parcel-header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      gap: 8px;
+    }
+
+    .panel-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: -0.005em;
+      background: var(--parcel-light);
+      color: var(--success);
+      padding: 4px 10px;
+      border-radius: 100px;
+    }
+
+    .panel-tag-dot {
+      width: 6px;
+      height: 6px;
+      background: currentColor;
+      border-radius: 50%;
+      animation: pulse-dot 1.6s ease-in-out infinite;
+    }
+
+    .parcel-counter {
+      font-size: 11px;
+      color: var(--text-subtle);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    @keyframes pulse-dot {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.4;
+      }
+    }
+
+    .panel-title {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+
+    .panel-title .num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 22px;
+      color: var(--brand);
+      font-weight: 600;
+    }
+
+    .panel-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    .panel-subtitle strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .panel-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .stat-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-subtle);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .stat-value {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+
+    .stat-sub {
+      font-size: 11px;
+      color: var(--text-subtle);
+      margin-top: 2px;
+    }
+
+    /* === Track section === */
+    .track-section {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .track-header {
+      padding: 20px 24px 8px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .track-header:hover {
+      background: var(--surface);
+    }
+
+    .track-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--brand-light);
+      color: var(--brand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .track-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke-width: 2;
+    }
+
+    .track-title-block {
+      flex: 1;
+    }
+
+    .track-name {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .track-tagline {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .track-counter {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--brand);
+      background: var(--brand-light);
+      padding: 3px 9px;
+      border-radius: 100px;
+      white-space: nowrap;
+      margin-top: 4px;
+      text-align: center;
+    }
+
+    .btn-select-all {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--brand);
+      background: var(--brand-light);
+      border: none;
+      padding: 4px 10px;
+      border-radius: 100px;
+      cursor: pointer;
+      margin-top: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-select-all:hover {
+      background: var(--brand);
+      color: white;
+    }
+
+    .track-toggle-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      color: var(--text-muted);
+      transition: transform 0.3s;
+    }
+
+    .track-toggle-icon.open {
+      transform: rotate(180deg);
+    }
+
+    .track-modules {
+      display: none;
+      padding: 0 24px 18px;
+    }
+
+    .track-modules.open {
+      display: block;
+    }
+
+    .track-description {
+      font-size: 12px;
+      color: var(--text-muted);
+      padding: 0 0 14px 52px;
+      line-height: 1.5;
+    }
+
+    .module-card {
+      width: 100%;
+      text-align: left;
+      padding: 12px 14px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      cursor: pointer;
+      margin-bottom: 8px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+
+    .module-card:hover {
+      border-color: var(--border-strong);
+      background: var(--surface);
+    }
+
+    .module-card.selected {
+      border-color: var(--brand);
+      background: var(--brand-tint);
+      box-shadow: 0 0 0 3px rgba(31, 142, 254, 0.08);
+    }
+
+    .module-icon-wrap {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: var(--surface-2);
+      color: var(--text-muted);
+      transition: all 0.15s ease;
+    }
+
+    .module-card.selected .module-icon-wrap {
+      background: var(--brand);
+      color: white;
+    }
+
+    .module-icon-wrap svg {
+      width: 16px;
+      height: 16px;
+      stroke-width: 2;
+    }
+
+    .module-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .module-card-top {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 2px;
+    }
+
+    .module-name {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+
+    .module-price {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+      color: var(--text);
+    }
+
+    .module-card.selected .module-price {
+      color: var(--brand-dark);
+    }
+
+    .module-desc {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    .module-formula {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--text-subtle);
+      margin-top: 5px;
+    }
+
+    .module-checkbox {
+      width: 18px;
+      height: 18px;
+      border-radius: 5px;
+      border: 1.5px solid var(--border-strong);
+      flex-shrink: 0;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+
+    .module-card.selected .module-checkbox {
+      background: var(--brand);
+      border-color: var(--brand);
+    }
+
+    .module-checkbox svg {
+      width: 10px;
+      height: 10px;
+      color: white;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+
+    .module-card.selected .module-checkbox svg {
+      opacity: 1;
+    }
+
+    /* === Sample report inline button === */
+    .sample-cta {
+      margin: 14px 24px 0;
+      padding: 14px 16px;
+      background: var(--brand-tint);
+      border: 1px solid rgba(31, 142, 254, 0.2);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.15s ease;
+    }
+
+    .sample-cta:hover {
+      border-color: var(--brand);
+      background: var(--brand-light);
+    }
+
+    .sample-cta-icon {
+      width: 36px;
+      height: 36px;
+      background: white;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--brand);
+      flex-shrink: 0;
+      border: 1px solid rgba(31, 142, 254, 0.2);
+    }
+
+    .sample-cta-icon svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .sample-cta-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .sample-cta-title {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.005em;
+      color: var(--text);
+    }
+
+    .sample-cta-sub {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+
+    .sample-cta-arrow {
+      color: var(--brand);
+      flex-shrink: 0;
+    }
+
+    .sample-cta-arrow svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* === Empty / summary === */
+    .summary-section {
+      padding: 18px 24px 22px;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .empty-modules {
+      background: var(--warning-light);
+      border: 1px dashed rgba(245, 158, 11, 0.4);
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--warning);
+      font-weight: 500;
+    }
+
+    .summary-header {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-subtle);
+      margin-bottom: 12px;
+    }
+
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 12.5px;
+      margin-bottom: 5px;
+    }
+
+    .summary-line.muted {
+      color: var(--text-muted);
+      font-size: 11.5px;
+    }
+
+    .summary-line .mono {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .summary-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 10px 0;
+    }
+
+    .summary-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-top: 12px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    .summary-total-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-subtle);
+      margin-bottom: 2px;
+    }
+
+    .summary-total-sub {
+      font-size: 10.5px;
+      color: var(--text-subtle);
+      margin-top: 3px;
+    }
+
+    .summary-total-value {
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .summary-total-currency {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 16px;
+      color: var(--text-subtle);
+      margin-left: 3px;
+      font-weight: 500;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 12px;
+      margin-top: 14px;
+      background: var(--brand);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 13.5px;
+      font-weight: 600;
+      letter-spacing: -0.005em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: var(--shadow-brand);
+      transition: all 0.15s ease;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--brand-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(31, 142, 254, 0.35);
+    }
+
+    .btn-primary:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .btn-primary svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .btn-clear {
+      width: 100%;
+      padding: 8px;
+      background: none;
+      color: var(--text-muted);
+      border: none;
+      font-family: inherit;
+      font-size: 12px;
+      cursor: pointer;
+      margin-top: 4px;
+      border-radius: 6px;
+    }
+
+    .btn-clear:hover {
+      color: var(--text);
+      background: var(--surface-2);
+    }
+
+    /* ================== COORDS DISPLAY ================== */
+    .coords-display {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      z-index: 500;
+      background: white;
+      border: 1px solid var(--border);
+      padding: 7px 11px;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* ================== PARCEL ANIMATION ================== */
+    .parcel-appear {
+      animation: parcelAppear 0.5s ease-out;
+    }
+
+    @keyframes parcelAppear {
+      from {
+        stroke-opacity: 0;
+        fill-opacity: 0;
+      }
+
+      to {
+        stroke-opacity: 1;
+        fill-opacity: 0.35;
+      }
+    }
+
+    .error-flash-icon {
+      background: transparent !important;
+      border: none !important;
+    }
+
+    .error-flash {
+      width: 50px;
+      height: 50px;
+      border: 2px dashed var(--warning);
+      background: rgba(245, 158, 11, 0.15);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      animation: errorPulse 0.8s ease-out 2;
+    }
+
+    @keyframes errorPulse {
+      0% {
+        transform: translate(-50%, -50%) scale(0.5);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translate(-50%, -50%) scale(2.2);
+        opacity: 0;
+      }
+    }
+
+    /* ================== MODAL ================== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.25s ease-out;
+      padding: 20px;
+    }
+
+    .modal {
+      background: white;
+      border-radius: 16px;
+      max-width: 640px;
+      width: 100%;
+      max-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 24px 64px rgba(15, 23, 42, 0.25);
+      overflow: hidden;
+      animation: slideUp 0.3s ease-out;
+    }
+
+    .modal-header {
+      padding: 22px 26px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .modal-header-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .modal-cart-icon {
+      width: 42px;
+      height: 42px;
+      background: var(--brand-light);
+      color: var(--brand);
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-cart-icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .modal-title {
+      font-size: 21px;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+    }
+
+    .modal-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .modal-close {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      width: 34px;
+      height: 34px;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+
+    .modal-close:hover {
+      border-color: var(--border-strong);
+      color: var(--text);
+    }
+
+    .modal-body {
+      padding: 4px 26px 0;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .cart-item {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin: 14px 0;
+    }
+
+    .cart-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .cart-item-title {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .cart-item-title .num {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--brand);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .cart-item-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    .cart-item-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .cart-item-price {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+      color: var(--text);
+    }
+
+    .cart-item-remove {
+      background: white;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+
+    .cart-item-remove:hover {
+      border-color: var(--danger);
+      background: rgba(239, 68, 68, 0.08);
+      color: var(--danger);
+    }
+
+    .cart-item-remove svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .cart-item-modules {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .cart-module-pill {
+      font-size: 10.5px;
+      padding: 3px 8px;
+      background: var(--brand-light);
+      color: var(--brand-dark);
+      border-radius: 100px;
+      font-weight: 600;
+    }
+
+    .modal-footer {
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      padding: 18px 26px 22px;
+    }
+
+    .modal-summary {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 20px;
+      margin-bottom: 16px;
+      font-size: 12px;
+    }
+
+    .modal-summary-label {
+      color: var(--text-muted);
+    }
+
+    .modal-summary-value {
+      text-align: right;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text);
+    }
+
+    .modal-total-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .modal-total-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-subtle);
+    }
+
+    .modal-total-value {
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .modal-total-value .currency {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 16px;
+      color: var(--text-subtle);
+      margin-left: 4px;
+      font-weight: 500;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .modal-actions .btn-primary,
+    .modal-actions .btn-secondary {
+      margin-top: 0;
+    }
+
+    .modal-actions .btn-secondary {
+      flex: 1;
+    }
+
+    .modal-actions .btn-primary {
+      flex: 1.6;
+    }
+
+    .btn-secondary {
+      width: 100%;
+      padding: 11px;
+      background: white;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--border-strong);
+      background: var(--surface);
+    }
+
+    /* === DODANE STYLE WYSZUKIWARKI I EKRANU POWITALNEGO === */
+    #welcome-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 3000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      text-align: center;
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #welcome-overlay.hidden {
+      transform: translateY(-100%);
+      pointer-events: none;
+    }
+
+    .welcome-card {
+      max-width: 500px;
+      width: 100%;
+    }
+
+    .welcome-search {
+      width: 100%;
+      margin: 30px 0;
+      position: relative;
+    }
+
+    .welcome-search input {
+      width: 100%;
+      padding: 16px 24px;
+      border-radius: 14px;
+      border: 2px solid var(--border);
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .welcome-search input:focus {
+      border-color: var(--brand);
+    }
+
+    .search-results {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-top: 8px;
+      max-height: 250px;
+      overflow-y: auto;
+      text-align: left;
+      box-shadow: var(--shadow-lg);
+      display: none;
+      z-index: 10;
+    }
+
+    .search-results.visible {
+      display: block;
+    }
+
+    .result-item {
+      padding: 12px 16px;
+      cursor: pointer;
+      font-size: 14px;
+      border-bottom: 1px solid var(--surface);
+      color: var(--text);
+    }
+
+    .result-item:hover {
+      background: var(--brand-tint);
+      color: var(--brand-dark);
+    }
+
+    .result-item:last-child {
+      border-bottom: none;
+    }
+
+    .map-search-wrap {
+      position: absolute;
+      top: 20px;
+      left: 60px;
+      z-index: 1000;
+      width: 380px;
+      background: var(--bg);
+      border-radius: 12px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+    }
+
+    .search-type-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .search-tab {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: var(--surface);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--text-muted);
+      border-radius: 12px 12px 0 0;
+      transition: all 0.2s;
+    }
+
+    .search-tab.active {
+      background: var(--bg);
+      color: var(--brand);
+    }
+
+    .search-input-box {
+      padding: 10px;
+      display: flex;
+      gap: 8px;
+      position: relative;
+    }
+
+    .search-input-box input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      outline: none;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .search-input-box input:focus {
+      border-color: var(--brand);
+    }
+
+    /* ================== RESPONSIVE ================== */
+    @media (max-width: 1024px) {
+      #sidebar {
+        width: 400px;
+      }
+
+      #map {
+        right: 400px;
+      }
+
+      .hint,
+      .status-toast {
+        left: calc(50% - 200px);
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 10px 16px;
+      }
+
+      .header-link,
+      .header-pill,
+      .header-divider {
+        display: none;
+      }
+
+      #sidebar {
+        width: 100%;
+        top: auto;
+        bottom: 0;
+        height: 80vh;
+        border-left: none;
+        border-top: 1px solid var(--border);
+        border-radius: 18px 18px 0 0;
+        transform: translateY(100%);
+        box-shadow: 0 -8px 32px rgba(15, 23, 42, 0.15);
+      }
+
+      #sidebar.visible {
+        transform: translateY(0);
+      }
+
+      #map {
+        right: 0 !important;
+        bottom: 0;
+      }
+
+      .hint,
+      .status-toast {
+        left: 50%;
+        max-width: calc(100% - 32px);
+      }
+
+      .map-search-wrap {
+        left: 16px;
+        top: 16px;
+        width: calc(100% - 32px);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- EKRAN POWITALNY OVERLAY -->
+  <div id="welcome-overlay">
+    <div class="welcome-card">
+      <div class="logo" style="justify-content: center; margin-bottom: 24px;">
+        <div class="logo-mark">
+          <div class="logo-pin"></div>
+        </div>
+        <div class="logo-wordmark" style="font-size: 28px;">looka<span class="dot">.</span><span class="ext">app</span>
+        </div>
+      </div>
+      <h1 class="welcome-title" style="font-size: 32px;">Popatrz na działkę z góry</h1>
+      <p class="welcome-text" style="font-size: 15px; max-width: 400px;">Zanim kupisz, sprawdź dokładnie co jest w
+        okolicy — nasłonecznienie, MPZP, media i uciążliwości.</p>
+
+      <div class="welcome-search">
+        <input type="text" id="welcome-input" placeholder="Wpisz adres (miasto, ulica, numer)..." autocomplete="off">
+        <div id="welcome-results" class="search-results"></div>
+      </div>
+
+      <button class="welcome-cta" style="padding: 14px 40px; font-size: 15px;" onclick="closeWelcome()">Przejdź do
+        mapy</button>
+    </div>
+  </div>
+
+  <header>
+    <a href="/" class="logo">
+      <div class="logo-mark">
+        <div class="logo-pin"></div>
+      </div>
+      <div class="logo-wordmark">
+        looka<span class="dot">.</span><span class="ext">app</span>
+      </div>
+    </a>
+    <div class="header-divider" style="display: flex"></div>
+    <div class="header-pill">
+      <span class="header-pill-dot"></span>
+      Beta
+    </div>
+    <div style="flex: 1"></div>
+    <div class="header-right">
+      <a href="raport-przykladowy.html" target="_blank" class="header-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+          <line x1="16" y1="13" x2="8" y2="13" />
+          <line x1="16" y1="17" x2="8" y2="17" />
+        </svg>
+        Przykładowy raport
+      </a>
+      <a href="#" class="header-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="16" x2="12" y2="12" />
+          <line x1="12" y1="8" x2="12.01" y2="8" />
+        </svg>
+        Jak to działa
+      </a>
+      <button class="cart-btn" id="cart-btn" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <circle cx="9" cy="21" r="1" />
+          <circle cx="20" cy="21" r="1" />
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+        </svg>
+        Koszyk
+        <span class="cart-badge" id="cart-badge">0</span>
+      </button>
+    </div>
+  </header>
+
+  <div id="map">
+    <!-- NOWA WYSZUKIWARKA NA MAPIE -->
+    <div class="map-search-wrap">
+      <div class="search-type-tabs">
+        <button class="search-tab active" onclick="setSearchMode('addr')">ADRES</button>
+        <button class="search-tab" onclick="setSearchMode('teryt')">TERYT</button>
+      </div>
+      <div class="search-input-box">
+        <input type="text" id="map-search-input" placeholder="Szukaj adresu..." autocomplete="off">
+        <div id="map-search-results" class="search-results"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hint" id="hint">
+    <span class="hint-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+        stroke-linejoin="round">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+        <circle cx="12" cy="10" r="3" />
+      </svg>
+    </span>
+    Kliknij dowolne miejsce na mapie żeby wybrać działkę
+  </div>
+
+  <div id="sidebar">
+    <div class="sidebar-scroll" id="sidebar-content">
+      <!-- Zawartość wstrzykiwana przez JS -->
+    </div>
+  </div>
+
+  <div class="coords-display" id="coords">ruch myszą → współrzędne</div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/proj4@2.9.0/dist/proj4.js"></script>
+  <script>
+    if (typeof L === 'undefined' || typeof proj4 === 'undefined') {
+      document.body.innerHTML = `
+    <div style="padding: 40px; text-align: center; font-family: sans-serif;">
+      <h2 style="color: #F59E0B">Nie udało się załadować bibliotek</h2>
+      <p>Sprawdź połączenie internetowe.</p>
+    </div>`;
+      throw new Error("Libraries not loaded");
+    }
+
+    // ============================================================
+    // IKONY (SVG inline)
+    // ============================================================
+    const ICONS = {
+      home: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
+      building: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="9" y1="22" x2="9" y2="2"/><line x1="15" y1="22" x2="15" y2="2"/><line x1="20" y1="9" x2="4" y2="9"/><line x1="20" y1="14" x2="4" y2="14"/></svg>`,
+      'trending-up': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>`,
+      graduation: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>`,
+      bus: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6v6"/><path d="M16 6v6"/><path d="M2 12h19.6"/><path d="M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-1.4-5C20.1 6.8 19.1 6 18 6H4a2 2 0 0 0-2 2v10h3"/><circle cx="7" cy="18" r="2"/><path d="M9 18h5"/><circle cx="16" cy="18" r="2"/></svg>`,
+      heart: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`,
+      tree: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/><path d="M12 8c-1.5 0-3-1.5-3-3.5S10.5 1 12 1s3 1.5 3 3.5S13.5 8 12 8z"/></svg>`,
+      wind: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>`,
+      activity: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`,
+      users: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+      'file-text': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`,
+      sun: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>`,
+      zap: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+      truck: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>`,
+      droplet: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>`,
+      leaf: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg>`,
+      briefcase: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>`,
+      check: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+      cart: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>`,
+      arrow: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`,
+      plus: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`,
+      trash: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>`,
+      warn: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
+      'chevron-down': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`
+    };
+
+    // ============================================================
+    // KONFIG GIS
+    // ============================================================
+    proj4.defs('EPSG:2180',
+      '+proj=tmerc +lat_0=0 +lon_0=19 +k=0.9993 +x_0=500000 +y_0=-5300000 ' +
+      '+ellps=GRS80 +units=m +no_defs');
+
+    const PROXY_URL = '/proxy/uldk';
+
+    const STYLE_PARCEL_ACTIVE = {
+      color: '#10B981',
+      weight: 2.5,
+      fillColor: '#10B981',
+      fillOpacity: 0.35,
+      lineJoin: 'round',
+    };
+    const STYLE_PARCEL_IN_CART = {
+      color: '#1F8EFE',
+      weight: 2,
+      fillColor: '#1F8EFE',
+      fillOpacity: 0.18,
+      lineJoin: 'round',
+    };
+
+    // ============================================================
+    // STAN APLIKACJI
+    // ============================================================
+    const state = {
+      parcel: null,
+      selectedModules: new Set(),
+      expandedTracks: new Set(), // przechowuje nazwy rozwiniętych sekcji
+      catalog: null,
+      cart: [],
+      searchMode: 'addr' // 'addr' lub 'teryt'
+    };
+
+    // ============================================================
+    // MAPA
+    // ============================================================
+    const map = L.map('map', {
+      center: [52.07, 19.48],
+      zoom: 7,
+      zoomControl: true,
+      attributionControl: true,
+    });
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap, © CARTO',
+      subdomains: 'abcd',
+    }).addTo(map);
+
+    L.tileLayer.wms('https://integracja.gugik.gov.pl/cgi-bin/KrajowaIntegracjaEwidencjiGruntow', {
+      layers: 'dzialki,numery_dzialek',
+      format: 'image/png',
+      transparent: true,
+      version: '1.3.0',
+      opacity: 0.55,
+      minZoom: 15,
+      attribution: '© GUGiK',
+    }).addTo(map);
+
+    // ZAPOBIEGANIE KLIKNIĘCIOM POD WYSZUKIWARKĄ (Click-through)
+    const mapSearchWrapDom = document.querySelector('.map-search-wrap');
+    if (mapSearchWrapDom) {
+      L.DomEvent.disableClickPropagation(mapSearchWrapDom);
+      L.DomEvent.disableScrollPropagation(mapSearchWrapDom);
+    }
+
+    let activeParcelLayer = null;
+    let cartParcelLayers = [];
+    let isLoading = false;
+
+    // ============================================================
+    // LOGIKA WYSZUKIWARKI
+    // ============================================================
+    window.setSearchMode = function (mode) {
+      state.searchMode = mode;
+      document.querySelectorAll('.search-tab').forEach(t => t.classList.toggle('active', t.innerText.toLowerCase() === mode));
+      document.getElementById('map-search-input').placeholder = mode === 'addr' ? "Szukaj adresu..." : "Wpisz nr TERYT...";
+      document.getElementById('map-search-input').focus();
+    };
+
+    let searchTimeout;
+    window.handleSearch = async function (query, resultContainerId) {
+      clearTimeout(searchTimeout);
+      const container = document.getElementById(resultContainerId);
+
+      if (query.length < 3) {
+        container.classList.remove('visible');
+        return;
+      }
+
+      searchTimeout = setTimeout(async () => {
+        if (state.searchMode === 'teryt') {
+          // Dla TERYT po prostu tworzymy przycisk by zatwierdzić wpisany tekst jako ID
+          container.innerHTML = `
+            <div class="result-item" onclick="selectTerytResult('${query.trim()}')">
+              Szukaj działki o TERYT:<br><strong>${query.trim()}</strong>
+            </div>`;
+          container.classList.add('visible');
+          return;
+        }
+
+        try {
+          const resp = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=pl&addressdetails=1`);
+          const data = await resp.json();
+          if (data.length === 0) {
+            container.innerHTML = `<div class="result-item" style="color:var(--text-muted)">Brak wyników</div>`;
+          } else {
+            container.innerHTML = data.map(item => `
+              <div class="result-item" onclick="selectSearchResult(${item.lat}, ${item.lon}, '${item.display_name.replace(/'/g, "\\'")}')">${item.display_name}</div>
+            `).join('');
+          }
+          container.classList.add('visible');
+        } catch (e) {
+          console.error('Search error:', e);
+        }
+      }, 400);
+    };
+
+    window.selectSearchResult = function (lat, lon, name) {
+      closeWelcome();
+      map.flyTo([lat, lon], 18);
+      document.querySelectorAll('.search-results').forEach(r => r.classList.remove('visible'));
+
+      // Jeśli w nazwie znaleziono cyfrę (np. numer domu), symulujemy klik w mapę po dolocie
+      if (/\d/.test(name)) {
+        setTimeout(() => map.fire('click', { latlng: L.latLng(lat, lon) }), 800);
+      }
+    };
+
+    window.selectTerytResult = async function (terytCode) {
+      closeWelcome();
+      document.querySelectorAll('.search-results').forEach(r => r.classList.remove('visible'));
+
+      if (isLoading) return;
+      isLoading = true;
+      document.getElementById('map').classList.add('loading');
+      document.getElementById('hint').classList.add('hidden');
+
+      showToast(`
+        <div class="spinner"></div>
+        <div>
+          <div class="msg-title">Pobieram dane działki…</div>
+          <div class="msg-sub">Wyszukiwanie TERYT: ${terytCode}</div>
+        </div>
+      `);
+
+      try {
+        const parcel = await fetchParcelById(terytCode);
+
+        const alreadyInCart = state.cart.some(it => it.parcel.teryt === parcel.teryt);
+        if (alreadyInCart) {
+          hideToast();
+          showToast(`<div class="toast-icon-warn">${ICONS.warn}</div>
+        <div><div class="msg-title">Ta działka jest już w koszyku</div>
+        <div class="msg-sub">Działka ${parcel.parcelNumber} została wcześniej dodana.</div></div>`, 'error');
+          setTimeout(hideToast, 3500);
+          return;
+        }
+
+        if (activeParcelLayer) map.removeLayer(activeParcelLayer);
+
+        activeParcelLayer = L.geoJSON(parcel.geometry, {
+          style: STYLE_PARCEL_ACTIVE,
+          onEachFeature: (f, layer) => {
+            layer.on('add', () => {
+              if (layer._path) layer._path.classList.add('parcel-appear');
+            });
+          },
+        }).addTo(map);
+
+        map.flyToBounds(activeParcelLayer.getBounds(), {
+          padding: [80, 80, 80, 540],
+          maxZoom: 18,
+          duration: 0.6,
+        });
+
+        state.parcel = parcel;
+        state.selectedModules.clear();
+
+        hideToast();
+        renderSidebar();
+
+      } catch (err) {
+        hideToast();
+        let title = 'Nie znaleziono działki';
+        let sub = 'Sprawdź, czy identyfikator TERYT jest poprawny.';
+        showToast(`
+          <div class="toast-icon-warn">${ICONS.warn}</div>
+          <div style="flex:1">
+            <div class="msg-title">${title}</div>
+            <div class="msg-sub">${sub}</div>
+          </div>
+          <button class="close-btn" onclick="this.parentElement.remove()">×</button>
+        `, 'error');
+        setTimeout(() => {
+          if (activeToast && activeToast.classList.contains('error')) hideToast();
+        }, 5000);
+      } finally {
+        isLoading = false;
+        document.getElementById('map').classList.remove('loading');
+      }
+    };
+
+    window.closeWelcome = function () {
+      const overlay = document.getElementById('welcome-overlay');
+      if (overlay) overlay.classList.add('hidden');
+    };
+
+    // Nasłuchiwacze inputów wyszukiwarek
+    document.getElementById('welcome-input').addEventListener('input', (e) => handleSearch(e.target.value, 'welcome-results'));
+    document.getElementById('map-search-input').addEventListener('input', (e) => handleSearch(e.target.value, 'map-search-results'));
+
+
+    // ============================================================
+    // GIS HELPERS
+    // ============================================================
+    function parseWKT(wkt) {
+      wkt = wkt.replace(/^SRID=\d+;/i, '').trim();
+      const isMulti = /^MULTIPOLYGON/i.test(wkt);
+      const ringRegex = /\(([0-9.\s,\-]+)\)/g;
+      const rings = [];
+      let match;
+      while ((match = ringRegex.exec(wkt)) !== null) {
+        const coords = match[1].split(',').map(p => {
+          const parts = p.trim().split(/\s+/).map(Number);
+          return [parts[0], parts[1]];
+        });
+        rings.push(coords);
+      }
+      if (rings.length === 0) throw new Error('No coordinates in WKT');
+      return isMulti
+        ? { type: 'MultiPolygon', coordinates: rings.map(r => [r]) }
+        : { type: 'Polygon', coordinates: rings };
+    }
+
+    function reprojectGeometry(geom) {
+      const projectCoord = (c) => proj4('EPSG:2180', 'EPSG:4326', [c[0], c[1]]);
+      const projectRing = (ring) => ring.map(projectCoord);
+      if (geom.type === 'Polygon')
+        return { type: 'Polygon', coordinates: geom.coordinates.map(projectRing) };
+      if (geom.type === 'MultiPolygon')
+        return { type: 'MultiPolygon', coordinates: geom.coordinates.map(p => p.map(projectRing)) };
+      throw new Error('Unsupported geometry type');
+    }
+
+    function computeArea(geom) {
+      const ringArea = (ring) => {
+        let sum = 0;
+        for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+          sum += (ring[j][0] + ring[i][0]) * (ring[j][1] - ring[i][1]);
+        }
+        return Math.abs(sum / 2);
+      };
+      if (geom.type === 'Polygon') {
+        const [outer, ...holes] = geom.coordinates;
+        return ringArea(outer) - holes.reduce((s, h) => s + ringArea(h), 0);
+      }
+      if (geom.type === 'MultiPolygon') {
+        return geom.coordinates.reduce((sum, poly) => {
+          const [outer, ...holes] = poly;
+          return sum + ringArea(outer) - holes.reduce((s, h) => s + ringArea(h), 0);
+        }, 0);
+      }
+      return 0;
+    }
+
+    async function fetchParcel(lng, lat) {
+      if (lng < 13.5 || lng > 25.0 || lat < 48.5 || lat > 55.5)
+        throw new Error('OUT_OF_POLAND');
+
+      const [x, y] = proj4('EPSG:4326', 'EPSG:2180', [lng, lat]);
+      const params = new URLSearchParams({
+        request: 'GetParcelByXY',
+        xy: `${x.toFixed(2)},${y.toFixed(2)},2180`,
+        result: 'geom_wkt,teryt,voivodeship,county,commune,region,parcel',
+      });
+
+      const response = await fetch(`${PROXY_URL}?${params.toString()}`);
+      if (!response.ok) {
+        const errBody = await response.json().catch(() => ({ error: `HTTP ${response.status}` }));
+        throw new Error('PROXY_ERROR: ' + errBody.error);
+      }
+      const raw = await response.text();
+      return parseUldkResponse(raw);
+    }
+
+    async function fetchParcelById(terytId) {
+      const params = new URLSearchParams({
+        request: 'GetParcelById',
+        id: terytId,
+        result: 'geom_wkt,teryt,voivodeship,county,commune,region,parcel',
+      });
+
+      const response = await fetch(`${PROXY_URL}?${params.toString()}`);
+      if (!response.ok) {
+        const errBody = await response.json().catch(() => ({ error: `HTTP ${response.status}` }));
+        throw new Error('PROXY_ERROR: ' + errBody.error);
+      }
+      const raw = await response.text();
+      return parseUldkResponse(raw);
+    }
+
+    function parseUldkResponse(raw) {
+      const lines = raw.trim().split('\n');
+      if (lines[0].trim() !== '0') throw new Error('PARCEL_NOT_FOUND');
+      if (lines.length < 2) throw new Error('MALFORMED_RESPONSE');
+
+      const parts = lines[1].split('|');
+      if (parts.length < 7) throw new Error('MALFORMED_RESPONSE');
+
+      const [rawWkt, teryt, voivodeship, county, commune, precinct, parcelNumber] = parts;
+      const geom2180 = parseWKT(rawWkt);
+      const areaM2 = Math.round(computeArea(geom2180));
+      const geometry = reprojectGeometry(geom2180);
+
+      return { teryt, voivodeship, county, commune, precinct, parcelNumber, geometry, areaM2 };
+    }
+
+    // ============================================================
+    // CALCULATIONS
+    // ============================================================
+    function calculateModulePrice(module, areaHa) {
+      return module.basePrice + module.pricePerHa * areaHa;
+    }
+
+    function calculateCurrentParcelTotals() {
+      if (!state.parcel || !state.catalog) return null;
+      const areaHa = state.parcel.areaM2 / 10000;
+      const allModules = state.catalog.tracks.flatMap(t => t.modules);
+      const lineItems = allModules
+        .filter(m => state.selectedModules.has(m.code))
+        .map(m => ({ ...m, total: calculateModulePrice(m, areaHa) }));
+      const subtotal = lineItems.reduce((s, it) => s + it.total, 0);
+      const vat = subtotal * state.catalog.vatRate;
+      const gross = subtotal + vat;
+      return { lineItems, subtotal, vat, gross, areaHa };
+    }
+
+    function calculateCartTotals() {
+      let netto = 0;
+      for (const item of state.cart) {
+        netto += item.lineItems.reduce((s, m) => s + m.total, 0);
+      }
+      const vat = netto * (state.catalog?.vatRate ?? 0.23);
+      return { netto, vat, gross: netto + vat };
+    }
+
+    function formatPLN(value) {
+      return value.toLocaleString('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    // ============================================================
+    // RENDER SIDEBAR & MODULE TOGGLES
+    // ============================================================
+
+    window.toggleTrack = function (name) {
+      if (state.expandedTracks.has(name)) state.expandedTracks.delete(name);
+      else state.expandedTracks.add(name);
+      renderSidebar();
+    };
+
+    window.selectAllInTrack = function (trackName, event) {
+      event.stopPropagation();
+      const track = state.catalog.tracks.find(t => t.name === trackName);
+      const allCodes = track.modules.map(m => m.code);
+      const allSelected = allCodes.every(code => state.selectedModules.has(code));
+
+      allCodes.forEach(code => {
+        if (allSelected) state.selectedModules.delete(code);
+        else state.selectedModules.add(code);
+      });
+      renderSidebar();
+    };
+
+    function renderSidebar() {
+      if (!state.parcel) {
+        if (state.cart.length === 0) {
+          document.getElementById('sidebar').classList.add('visible');
+          document.getElementById('map').classList.remove('no-sidebar');
+          if (!document.querySelector('.welcome')) {
+            renderWelcomeState();
+          }
+        } else {
+          document.getElementById('sidebar').classList.add('visible');
+          document.getElementById('map').classList.remove('no-sidebar');
+          renderCartHintState();
+        }
+        return;
+      }
+
+      document.getElementById('sidebar').classList.add('visible');
+      document.getElementById('map').classList.remove('no-sidebar');
+
+      const p = state.parcel;
+      const areaHa = (p.areaM2 / 10000).toFixed(2).replace('.', ',');
+      const areaM2 = p.areaM2.toLocaleString('pl-PL');
+      const totals = calculateCurrentParcelTotals();
+      const parcelOrdinal = state.cart.length + 1;
+
+      let html = `
+    <div class="parcel-header">
+      <div class="parcel-header-top">
+        <div class="panel-tag">
+          <span class="panel-tag-dot"></span>
+          ${state.cart.length === 0 ? 'Działka wybrana' : `Działka ${parcelOrdinal} · nowa`}
+        </div>
+        ${state.cart.length > 0 ? `
+          <div class="parcel-counter">${state.cart.length} w koszyku</div>
+        ` : ''}
+      </div>
+      <div class="panel-title">
+        Działka <span class="num">${p.parcelNumber}</span>
+      </div>
+      <div class="panel-subtitle">
+        obręb <strong>${p.precinct}</strong>, gm. ${p.commune}<br>
+        pow. ${p.county}, woj. ${p.voivodeship}
+      </div>
+      <div class="panel-stats">
+        <div>
+          <div class="stat-label">Powierzchnia</div>
+          <div class="stat-value">${areaHa} ha</div>
+          <div class="stat-sub mono">${areaM2} m²</div>
+        </div>
+        <div>
+          <div class="stat-label">TERYT</div>
+          <div class="stat-value mono" style="font-size:11px">${p.teryt.split('.')[0]}</div>
+          <div class="stat-sub mono">${p.teryt.split('.').slice(1).join('.')}</div>
+        </div>
+        <div>
+          <div class="stat-label">Współrzędne</div>
+          <div class="stat-value mono" style="font-size:11px">
+            ${(p.geometry.type === 'MultiPolygon'
+          ? p.geometry.coordinates[0][0][0][1]
+          : p.geometry.coordinates[0][0][1]).toFixed(3)}°N
+          </div>
+          <div class="stat-sub mono">
+            ${(p.geometry.type === 'MultiPolygon'
+          ? p.geometry.coordinates[0][0][0][0]
+          : p.geometry.coordinates[0][0][0]).toFixed(3)}°E
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <a href="raport-przykladowy.html" target="_blank" class="sample-cta">
+      <div class="sample-cta-icon">${ICONS['file-text']}</div>
+      <div class="sample-cta-body">
+        <div class="sample-cta-title">Zobacz przykładowy raport</div>
+        <div class="sample-cta-sub">21 stron · realna analiza · PDF do druku</div>
+      </div>
+      <div class="sample-cta-arrow">${ICONS.arrow}</div>
+    </a>
+  `;
+
+      for (const track of state.catalog.tracks) {
+        const selectedInTrack = track.modules.filter(m => state.selectedModules.has(m.code)).length;
+        const isExpanded = state.expandedTracks.has(track.name);
+
+        html += `
+      <div class="track-section">
+        <div class="track-header" onclick="toggleTrack('${track.name}')">
+          <div class="track-icon">${ICONS[track.icon] || ICONS.home}</div>
+          <div class="track-title-block">
+            <div class="track-name">${track.name}</div>
+            <div class="track-tagline">${track.tagline}</div>
+            <button class="btn-select-all" onclick="selectAllInTrack('${track.name}', event)">Zaznacz wszystkie</button>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:flex-end;">
+            ${selectedInTrack > 0 ? `<div class="track-counter">${selectedInTrack} ${selectedInTrack === 1 ? 'wybrany' : 'wybranych'}</div>` : ''}
+            <div class="track-toggle-icon ${isExpanded ? 'open' : ''}" style="margin-top: ${selectedInTrack > 0 ? '8px' : '0'};">
+              ${ICONS['chevron-down']}
+            </div>
+          </div>
+        </div>
+        <div class="track-modules ${isExpanded ? 'open' : ''}">
+          <div class="track-description" style="padding-top: 0;">${track.description}</div>
+          ${track.modules.map(m => renderModuleCard(m, totals.areaHa)).join('')}
+        </div>
+      </div>
+    `;
+      }
+
+      html += renderSummary(totals);
+
+      document.getElementById('sidebar-content').innerHTML = html;
+
+      document.querySelectorAll('.module-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toggleModule(card.dataset.code);
+        });
+      });
+      const addBtn = document.getElementById('btn-add-to-cart');
+      if (addBtn) addBtn.addEventListener('click', addCurrentToCart);
+      const cancelBtn = document.getElementById('btn-cancel-current');
+      if (cancelBtn) cancelBtn.addEventListener('click', cancelCurrent);
+    }
+
+    function renderWelcomeState() {
+      document.getElementById('sidebar-content').innerHTML = `
+    <div class="welcome">
+      <div class="welcome-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      </div>
+      <h1 class="welcome-title">Popatrz na działkę z góry</h1>
+      <p class="welcome-text">
+        Zanim kupisz, sprawdź dokładnie co jest w okolicy — szkoły, dojazdy,
+        ceny, plany zagospodarowania, potencjał inwestycyjny.
+      </p>
+      <div class="welcome-steps">
+        <div class="welcome-step">
+          <span class="welcome-step-num">1</span>
+          <span><strong>Kliknij na mapie</strong> — system automatycznie pobierze granice działki z GUGiK</span>
+        </div>
+        <div class="welcome-step">
+          <span class="welcome-step-num">2</span>
+          <span><strong>Wybierz moduły raportu</strong> — od jakości życia po potencjał komercyjny</span>
+        </div>
+        <div class="welcome-step">
+          <span class="welcome-step-num">3</span>
+          <span><strong>Otrzymaj raport PDF</strong> w 24h, z konkretnymi danymi i wnioskami</span>
+        </div>
+      </div>
+      <a href="raport-przykladowy.html" target="_blank" class="welcome-cta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Zobacz przykładowy raport
+      </a>
+    </div>
+  `;
+    }
+
+    function renderCartHintState() {
+      document.getElementById('sidebar-content').innerHTML = `
+    <div class="welcome">
+      <div class="welcome-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      </div>
+      <h1 class="welcome-title">Wybierz kolejną działkę</h1>
+      <p class="welcome-text">
+        Kliknij na mapie, żeby dodać następną do koszyka,
+        lub przejdź do podsumowania zamówienia.
+      </p>
+      <button class="welcome-cta" onclick="document.getElementById('cart-btn').click()">
+        ${ICONS.cart} Otwórz koszyk (${state.cart.length})
+      </button>
+    </div>
+  `;
+    }
+
+    function renderModuleCard(module, areaHa) {
+      const isSelected = state.selectedModules.has(module.code);
+      const price = calculateModulePrice(module, areaHa);
+      const icon = ICONS[module.icon] || ICONS['file-text'];
+      const formula = module.pricePerHa > 0
+        ? `${module.basePrice} zł + ${module.pricePerHa} zł/ha · ${areaHa.toFixed(2).replace('.', ',')} ha`
+        : `${module.basePrice} zł · ryczałt`;
+
+      return `
+    <button class="module-card ${isSelected ? 'selected' : ''}" data-code="${module.code}">
+      <div class="module-icon-wrap">${icon}</div>
+      <div class="module-body">
+        <div class="module-card-top">
+          <div class="module-name">${module.name}</div>
+          <div class="module-price">${formatPLN(price)} zł</div>
+        </div>
+        <div class="module-desc">${module.description}</div>
+        <div class="module-formula">${formula}</div>
+      </div>
+      <div class="module-checkbox">${ICONS.check}</div>
+    </button>
+  `;
+    }
+
+    function renderSummary(totals) {
+      const hasModules = totals.lineItems.length > 0;
+
+      if (!hasModules) {
+        return `
+      <div class="summary-section">
+        <div class="summary-header">Podsumowanie tej działki</div>
+        <div class="empty-modules">
+          Wybierz przynajmniej jeden moduł raportu,<br>żeby zobaczyć cenę
+        </div>
+        <button class="btn-primary" disabled>
+          ${ICONS.plus} Dodaj działkę do koszyka
+        </button>
+        <button class="btn-clear" id="btn-cancel-current">Anuluj wybór działki</button>
+      </div>
+    `;
+      }
+
+      return `
+    <div class="summary-section">
+      <div class="summary-header">Podsumowanie tej działki</div>
+
+      ${totals.lineItems.map(it => `
+        <div class="summary-line">
+          <span>${it.shortName}</span>
+          <span class="mono">${formatPLN(it.total)} zł</span>
+        </div>
+      `).join('')}
+
+      <div class="summary-divider"></div>
+
+      <div class="summary-line muted">
+        <span>Netto</span>
+        <span class="mono">${formatPLN(totals.subtotal)} zł</span>
+      </div>
+      <div class="summary-line muted">
+        <span>VAT (${(state.catalog.vatRate * 100).toFixed(0)}%)</span>
+        <span class="mono">${formatPLN(totals.vat)} zł</span>
+      </div>
+
+      <div class="summary-total">
+        <div>
+          <div class="summary-total-label">Cena tej działki</div>
+          <div class="summary-total-sub">brutto · ${totals.lineItems.length} ${totals.lineItems.length === 1 ? 'moduł' : totals.lineItems.length < 5 ? 'moduły' : 'modułów'} · raport ~24 h</div>
+        </div>
+        <div>
+          <div class="summary-total-value">
+            ${formatPLN(totals.gross)}<span class="summary-total-currency">zł</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-primary" id="btn-add-to-cart">
+        ${ICONS.plus} Dodaj działkę do koszyka
+      </button>
+      <button class="btn-clear" id="btn-cancel-current">Anuluj wybór tej działki</button>
+    </div>
+  `;
+    }
+
+    function toggleModule(code) {
+      if (state.selectedModules.has(code))
+        state.selectedModules.delete(code);
+      else
+        state.selectedModules.add(code);
+      renderSidebar();
+    }
+
+    function addCurrentToCart() {
+      if (!state.parcel) return;
+      const totals = calculateCurrentParcelTotals();
+      if (!totals || totals.lineItems.length === 0) return;
+
+      state.cart.push({
+        parcel: state.parcel,
+        lineItems: totals.lineItems,
+        subtotal: totals.subtotal,
+        vat: totals.vat,
+        gross: totals.gross,
+        addedAt: new Date(),
+      });
+
+      if (activeParcelLayer) {
+        activeParcelLayer.setStyle(STYLE_PARCEL_IN_CART);
+        cartParcelLayers.push({
+          parcelId: state.parcel.teryt,
+          layer: activeParcelLayer,
+        });
+        activeParcelLayer = null;
+      }
+
+      state.parcel = null;
+      state.selectedModules.clear();
+
+      showToast(`
+    <div class="toast-icon-success">${ICONS.check}</div>
+    <div>
+      <div class="msg-title">Dodano do koszyka</div>
+      <div class="msg-sub">Łącznie: ${state.cart.length} ${state.cart.length === 1 ? 'działka' : state.cart.length < 5 ? 'działki' : 'działek'} · kliknij kolejną na mapie</div>
+    </div>
+  `, 'success');
+      setTimeout(() => {
+        if (activeToast && activeToast.classList.contains('success')) hideToast();
+      }, 3000);
+
+      document.getElementById('hint').classList.remove('hidden');
+      updateCartButton();
+      renderSidebar();
+    }
+
+    function cancelCurrent() {
+      if (activeParcelLayer) {
+        map.removeLayer(activeParcelLayer);
+        activeParcelLayer = null;
+      }
+      state.parcel = null;
+      state.selectedModules.clear();
+      if (state.cart.length === 0) {
+        document.getElementById('hint').classList.remove('hidden');
+      }
+      renderSidebar();
+    }
+
+    function removeFromCart(index) {
+      const item = state.cart[index];
+      const layerEntry = cartParcelLayers.find(l => l.parcelId === item.parcel.teryt);
+      if (layerEntry) {
+        map.removeLayer(layerEntry.layer);
+        cartParcelLayers = cartParcelLayers.filter(l => l.parcelId !== item.parcel.teryt);
+      }
+      state.cart.splice(index, 1);
+      updateCartButton();
+      renderCartModal();
+      renderSidebar();
+    }
+
+    function updateCartButton() {
+      const btn = document.getElementById('cart-btn');
+      const badge = document.getElementById('cart-badge');
+      badge.textContent = state.cart.length;
+      btn.disabled = state.cart.length === 0;
+    }
+
+    function openCartModal() {
+      if (state.cart.length === 0) return;
+      const totals = calculateCartTotals();
+
+      const modalHtml = `
+    <div class="modal-backdrop" id="cart-modal">
+      <div class="modal">
+        <div class="modal-header">
+          <div class="modal-header-left">
+            <div class="modal-cart-icon">${ICONS.cart}</div>
+            <div>
+              <div class="modal-title">Twój koszyk</div>
+              <div class="modal-subtitle">${state.cart.length} ${state.cart.length === 1 ? 'działka' : state.cart.length < 5 ? 'działki' : 'działek'} · każda jako osobny raport PDF</div>
+            </div>
+          </div>
+          <button class="modal-close" onclick="closeCartModal()">×</button>
+        </div>
+        <div class="modal-body" id="cart-modal-body">
+          ${renderCartItems()}
+        </div>
+        <div class="modal-footer">
+          <div class="modal-summary">
+            <div class="modal-summary-label">Liczba działek</div>
+            <div class="modal-summary-value">${state.cart.length}</div>
+            <div class="modal-summary-label">Liczba modułów łącznie</div>
+            <div class="modal-summary-value">${state.cart.reduce((s, it) => s + it.lineItems.length, 0)}</div>
+            <div class="modal-summary-label">Netto</div>
+            <div class="modal-summary-value">${formatPLN(totals.netto)} zł</div>
+            <div class="modal-summary-label">VAT (23%)</div>
+            <div class="modal-summary-value">${formatPLN(totals.vat)} zł</div>
+          </div>
+          <div class="modal-total-line">
+            <div>
+              <div class="modal-total-label">Do zapłaty</div>
+            </div>
+            <div class="modal-total-value">
+              ${formatPLN(totals.gross)}<span class="currency">zł</span>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button class="btn-secondary" onclick="closeCartModal()">Wróć do mapy</button>
+            <button class="btn-primary" onclick="checkout()">
+              ${ICONS.check} Przejdź do zamówienia ${ICONS.arrow}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+      document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+      document.getElementById('cart-modal').addEventListener('click', (e) => {
+        if (e.target.id === 'cart-modal') closeCartModal();
+      });
+    }
+
+    function renderCartItems() {
+      return state.cart.map((item, idx) => {
+        const p = item.parcel;
+        const areaHa = (p.areaM2 / 10000).toFixed(2).replace('.', ',');
+        return `
+      <div class="cart-item">
+        <div class="cart-item-header">
+          <div>
+            <div class="cart-item-title">
+              Działka <span class="num">${p.parcelNumber}</span>
+            </div>
+            <div class="cart-item-meta">
+              ${p.precinct}, gm. ${p.commune} · ${areaHa} ha
+            </div>
+          </div>
+          <div class="cart-item-actions">
+            <div class="cart-item-price">${formatPLN(item.gross)} zł</div>
+            <button class="cart-item-remove" onclick="removeFromCart(${idx}); return false;" title="Usuń z koszyka">
+              ${ICONS.trash}
+            </button>
+          </div>
+        </div>
+        <div class="cart-item-modules">
+          ${item.lineItems.map(m => `
+            <span class="cart-module-pill">${m.shortName}</span>
+          `).join('')}
+        </div>
+      </div>
+    `;
+      }).join('');
+    }
+
+    function renderCartModal() {
+      const body = document.getElementById('cart-modal-body');
+      if (!body) return;
+      if (state.cart.length === 0) {
+        closeCartModal();
+        return;
+      }
+      closeCartModal();
+      setTimeout(openCartModal, 50);
+    }
+
+    window.closeCartModal = function () {
+      const modal = document.getElementById('cart-modal');
+      if (modal) modal.remove();
+    };
+
+    window.removeFromCart = removeFromCart;
+
+    window.checkout = function () {
+      const totals = calculateCartTotals();
+      alert(
+        `To jest demo lokalne.\n\n` +
+        `W pełnej wersji (po wdrożeniu na Netlify+Supabase) tutaj otworzy się formularz:\n\n` +
+        `1. Wpiszesz e-mail\n` +
+        `2. Otrzymasz mail z linkiem potwierdzającym\n` +
+        `3. Klikniesz link → zamówienie zostanie zarejestrowane\n` +
+        `4. Otrzymasz potwierdzenie + ja dostanę powiadomienie\n\n` +
+        `Łączna kwota: ${formatPLN(totals.gross)} zł brutto\n` +
+        `Zamówienie: ${state.cart.length} ${state.cart.length === 1 ? 'działka' : 'działki'}\n\n` +
+        `(Pełne dane zamówienia w konsoli przeglądarki — F12)`
+      );
+      console.log('[CHECKOUT] Zamówienie:', {
+        parcelsCount: state.cart.length,
+        totalGrossPln: totals.gross.toFixed(2),
+        items: state.cart.map(it => ({
+          parcel: it.parcel.teryt,
+          parcelNumber: it.parcel.parcelNumber,
+          areaM2: it.parcel.areaM2,
+          modules: it.lineItems.map(m => m.code),
+          gross: it.gross.toFixed(2),
+        })),
+      });
+    };
+
+    // ============================================================
+    // TOAST
+    // ============================================================
+    let activeToast = null;
+    function showToast(html, type = 'loading') {
+      if (activeToast) activeToast.remove();
+      const el = document.createElement('div');
+      el.className = 'status-toast' + (type !== 'loading' ? ' ' + type : '');
+      el.innerHTML = html;
+      document.body.appendChild(el);
+      activeToast = el;
+      return el;
+    }
+    function hideToast() {
+      if (activeToast) {
+        activeToast.remove();
+        activeToast = null;
+      }
+    }
+
+    function showErrorFlash(latlng) {
+      const icon = L.divIcon({
+        className: 'error-flash-icon',
+        html: '<div class="error-flash"></div>',
+        iconSize: [50, 50],
+      });
+      const marker = L.marker(latlng, { icon, interactive: false }).addTo(map);
+      setTimeout(() => marker.remove(), 1600);
+    }
+
+    // ============================================================
+    // CLICK HANDLER
+    // ============================================================
+    map.on('click', async (e) => {
+      if (isLoading) return;
+      if (!state.catalog) {
+        showToast(`<div class="toast-icon-warn">${ICONS.warn}</div>
+      <div><div class="msg-title">Cennik się jeszcze nie załadował</div>
+      <div class="msg-sub">Spróbuj za chwilę.</div></div>`, 'error');
+        setTimeout(hideToast, 2000);
+        return;
+      }
+
+      if (state.parcel && state.selectedModules.size > 0) {
+        if (!confirm('Masz już wybraną działkę z modułami. Kliknięcie wybierze nową — bieżąca zostanie odrzucona. Kontynuować?')) {
+          return;
+        }
+        if (activeParcelLayer) {
+          map.removeLayer(activeParcelLayer);
+          activeParcelLayer = null;
+        }
+      }
+
+      isLoading = true;
+      document.getElementById('map').classList.add('loading');
+      document.getElementById('hint').classList.add('hidden');
+
+      showToast(`
+    <div class="spinner"></div>
+    <div>
+      <div class="msg-title">Pobieram dane działki…</div>
+      <div class="msg-sub">looka.app → GUGiK ULDK</div>
+    </div>
+  `);
+
+      try {
+        const parcel = await fetchParcel(e.latlng.lng, e.latlng.lat);
+
+        const alreadyInCart = state.cart.some(it => it.parcel.teryt === parcel.teryt);
+        if (alreadyInCart) {
+          hideToast();
+          showToast(`<div class="toast-icon-warn">${ICONS.warn}</div>
+        <div><div class="msg-title">Ta działka jest już w koszyku</div>
+        <div class="msg-sub">Działka ${parcel.parcelNumber} została wcześniej dodana.</div></div>`, 'error');
+          setTimeout(hideToast, 3500);
+          return;
+        }
+
+        if (activeParcelLayer) map.removeLayer(activeParcelLayer);
+
+        activeParcelLayer = L.geoJSON(parcel.geometry, {
+          style: STYLE_PARCEL_ACTIVE,
+          onEachFeature: (f, layer) => {
+            layer.on('add', () => {
+              if (layer._path) layer._path.classList.add('parcel-appear');
+            });
+          },
+        }).addTo(map);
+
+        map.flyToBounds(activeParcelLayer.getBounds(), {
+          padding: [80, 80, 80, 540],
+          maxZoom: 18,
+          duration: 0.6,
+        });
+
+        state.parcel = parcel;
+        state.selectedModules.clear();
+
+        hideToast();
+        renderSidebar();
+
+      } catch (err) {
+        let title = 'Wystąpił błąd';
+        let sub = err.message;
+        if (err.message === 'PARCEL_NOT_FOUND') {
+          title = 'Brak działki w tym punkcie';
+          sub = 'GUGiK nie znalazł działki ewidencyjnej w tym miejscu.';
+        } else if (err.message === 'OUT_OF_POLAND') {
+          title = 'Punkt poza granicami Polski';
+          sub = 'looka działa tylko dla obszaru Polski.';
+        } else if (err.message.startsWith('NETWORK_ERROR') || err.message.startsWith('PROXY_ERROR')) {
+          title = 'Problem z połączeniem';
+          sub = err.message;
+        } else if (err.message === 'MALFORMED_RESPONSE') {
+          title = 'Nieprawidłowa odpowiedź';
+          sub = 'GUGiK zwrócił dane w nieoczekiwanym formacie.';
+        }
+
+        showErrorFlash(e.latlng);
+        showToast(`
+      <div class="toast-icon-warn">${ICONS.warn}</div>
+      <div style="flex:1">
+        <div class="msg-title">${title}</div>
+        <div class="msg-sub">${sub}</div>
+      </div>
+      <button class="close-btn" onclick="this.parentElement.remove()">×</button>
+    `, 'error');
+        setTimeout(() => {
+          if (activeToast && activeToast.classList.contains('error')) hideToast();
+        }, 5000);
+      } finally {
+        isLoading = false;
+        document.getElementById('map').classList.remove('loading');
+      }
+    });
+
+    map.on('mousemove', (e) => {
+      document.getElementById('coords').textContent =
+        `${e.latlng.lat.toFixed(5)}°N · ${e.latlng.lng.toFixed(5)}°E`;
+    });
+
+    document.getElementById('cart-btn').addEventListener('click', openCartModal);
+
+    // ============================================================
+    // LOAD CATALOG
+    // ============================================================
+    async function loadCatalog() {
+      try {
+        const response = await fetch('/cennik.json');
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        state.catalog = await response.json();
+        const totalModules = state.catalog.tracks.reduce((s, t) => s + t.modules.length, 0);
+
+        // Domyślnie rozwijamy pierwszą sekcję po załadowaniu
+        if (state.catalog.tracks.length > 0) {
+          state.expandedTracks.add(state.catalog.tracks[0].name);
+        }
+
+        console.log(`✓ looka.app — cennik załadowany: ${state.catalog.tracks.length} ścieżki, ${totalModules} modułów`);
+      } catch (err) {
+        console.error('✗ Nie udało się załadować cennika:', err);
+      }
+    }
+    loadCatalog();
+
+    // Pokaż sidebar od startu z welcome state
+    document.getElementById('sidebar').classList.add('visible');
+
+    console.log('%c looka.app ', 'background:#1F8EFE;color:white;padding:4px 8px;border-radius:4px;font-weight:bold');
+    console.log('Popatrz na działkę z góry zanim kupisz');
+  </script>
+
+</body>
+
+</html>

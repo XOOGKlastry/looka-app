@@ -1,0 +1,194 @@
+{
+	"vatRate": 0.23,
+	"currency": "PLN",
+	"tracks": [
+		{
+			"id": "residential",
+			"name": "Działka pod dom",
+			"tagline": "Twoje codzienne życie w okolicy",
+			"description": "Sprawdź, jak będzie się żyło w tym miejscu — sąsiedztwo, dojazdy, edukacja, zdrowie, zieleń i ceny w okolicy.",
+			"icon": "home",
+			"modules": [
+				{
+					"code": "RES_PRICES",
+					"name": "Ceny w okolicy",
+					"shortName": "Ceny okolicy",
+					"description": "Mediana ceny m² działek i domów w promieniu 2 km. Jak wypada Twoja działka na tle rynku — drożej, taniej, ile odbiega od średniej. Trend cen w 24 miesiącach.",
+					"icon": "trending-up",
+					"basePrice": 149,
+					"pricePerHa": 0,
+					"estimatedTimeHours": 24
+				},
+				{
+					"code": "RES_EDUCATION",
+					"name": "Edukacja i opieka",
+					"shortName": "Edukacja",
+					"description": "Najbliższe żłobki, przedszkola, szkoły podstawowe i ponadpodstawowe. Czas dojścia, rankingi szkół (egzamin ósmoklasisty, matura), liczba uczniów na klasę.",
+					"icon": "graduation",
+					"basePrice": 119,
+					"pricePerHa": 0,
+					"estimatedTimeHours": 24
+				},
+				{
+					"code": "RES_TRANSPORT",
+					"name": "Komunikacja i dojazdy",
+					"shortName": "Komunikacja",
+					"description": "Najbliższe przystanki autobusu, tramwaju, metra, kolei. Częstotliwość kursów. Czas dojazdu do centrum (auto / komunikacja / rower) o godzinach szczytu i poza.",
+					"icon": "bus",
+					"basePrice": 129,
+					"pricePerHa": 0,
+					"estimatedTimeHours": 24
+				},
+				{
+					"code": "RES_HEALTH",
+					"name": "Zdrowie i bezpieczeństwo",
+					"shortName": "Zdrowie",
+					"description": "Najbliższy szpital, przychodnia POZ, apteka 24h, posterunek policji, straż pożarna. Wskaźniki przestępczości w gminie.",
+					"icon": "heart",
+					"basePrice": 109,
+					"pricePerHa": 0,
+					"estimatedTimeHours": 24
+				},
+				{
+					"code": "RES_GREEN",
+					"name": "Zieleń i przyroda",
+					"shortName": "Przyroda",
+					"description": "Najbliższy park, las, jezioro, rzeka — odległość i powierzchnia. Tereny zielone w promieniu 500 m. Liczba drzew na ulicy. Pomniki przyrody.",
+					"icon": "tree",
+					"basePrice": 119,
+					"pricePerHa": 0,
+					"estimatedTimeHours": 24
+				},
+				{
+					"code": "RES_AIR",
+					"name": "Hałas i jakość powietrza",
+					"shortName": "Hałas / powietrze",
+					"description": "Mapa hałasu drogowego, lotniczego, kolejowego. Średnia roczna PM10 i PM2.5, dni z przekroczeniem norm. Bliskość uciążliwych obiektów (oczyszczalnie, stacje paliw).",
+					"icon": "wind",
+					"basePrice": 139,
+					"pricePerHa": 0,
+					"estimatedTimeHours": 24
+				},
+				{
+					"code": "RES_LEISURE",
+					"name": "Sport i rekreacja",
+					"shortName": "Rekreacja",
+					"description": "Place zabaw, baseny, siłownie, korty, kluby fitness, biblioteki. Stacje rowerów miejskich, punkty ładowania EV, szlaki rowerowe i piesze.",
+					"icon": "activity",
+					"basePrice": 99,
+					"pricePerHa": 0,
+					"estimatedTimeHours": 24
+				},
+				{
+					"code": "RES_DEMOGRAPHY",
+					"name": "Mieszkańcy i otoczenie",
+					"shortName": "Demografia",
+					"description": "Profil sąsiedztwa wg GUS: liczba mieszkańców, mediana wieku, % osób z wyższym wykształceniem, dynamika ludności, struktura zabudowy w okolicy.",
+					"icon": "users",
+					"basePrice": 89,
+					"pricePerHa": 0,
+					"estimatedTimeHours": 24
+				},
+				{
+					"code": "RES_PLANNING",
+					"name": "Plany zagospodarowania",
+					"shortName": "MPZP / WZ",
+					"description": "MPZP, Studium uwarunkowań, plan ogólny, decyzje WZ wydane w sąsiedztwie. Co planowane jest w okolicy — drogi, osiedla, obiekty publiczne.",
+					"icon": "file-text",
+					"basePrice": 169,
+					"pricePerHa": 8,
+					"estimatedTimeHours": 24
+				}
+			]
+		},
+		{
+			"id": "business",
+			"name": "Działka pod inwestycję",
+			"tagline": "Potencjał komercyjny i analiza rentowności",
+			"description": "Oceń potencjał działki pod farmę PV, magazyn, halę, centrum logistyczne lub inną inwestycję komercyjną.",
+			"icon": "building",
+			"modules": [
+				{
+					"code": "BIZ_SOLAR",
+					"name": "Potencjał solarny PV",
+					"shortName": "Solar PV",
+					"description": "Roczne nasłonecznienie (GHI z NMPT), spadki terenu, ekspozycja stoków, optymalna konfiguracja paneli, szacowany uzysk MWh/rok, wstępny dobór mocy instalacji.",
+					"icon": "sun",
+					"basePrice": 199,
+					"pricePerHa": 25,
+					"estimatedTimeHours": 24
+				},
+				{
+					"code": "BIZ_GRID",
+					"name": "Sieć energetyczna",
+					"shortName": "Sieć SN/WN",
+					"description": "Najbliższa linia SN i WN, lokalizacja GPZ, wstępna ocena możliwości przyłączenia, operator OSD, szacunek kosztu i czasu przyłączenia do sieci.",
+					"icon": "zap",
+					"basePrice": 179,
+					"pricePerHa": 20,
+					"estimatedTimeHours": 24
+				},
+				{
+					"code": "BIZ_LOGISTICS",
+					"name": "Dostęp i logistyka",
+					"shortName": "Logistyka",
+					"description": "Najbliższa droga krajowa / ekspresowa / autostrada. Odległość do najbliższego węzła autostradowego. Możliwość wjazdu transportu ciężkiego (TIR), nośność dróg dojazdowych.",
+					"icon": "truck",
+					"basePrice": 149,
+					"pricePerHa": 10,
+					"estimatedTimeHours": 24
+				},
+				{
+					"code": "BIZ_UTILITIES",
+					"name": "Media i przyłącza",
+					"shortName": "Media",
+					"description": "Wodociąg, kanalizacja, gaz, sieć ciepłownicza, telekomunikacja. Wstępna ocena możliwości i kosztu przyłączenia każdego z mediów.",
+					"icon": "droplet",
+					"basePrice": 169,
+					"pricePerHa": 12,
+					"estimatedTimeHours": 24
+				},
+				{
+					"code": "BIZ_PRICES",
+					"name": "Ceny gruntów komercyjnych",
+					"shortName": "Ceny komerc.",
+					"description": "Mediana cen gruntów inwestycyjnych w gminie i powiecie. Porównanie Twojej działki z transakcjami z ostatnich 24 miesięcy. Trend cenowy.",
+					"icon": "trending-up",
+					"basePrice": 169,
+					"pricePerHa": 0,
+					"estimatedTimeHours": 24
+				},
+				{
+					"code": "BIZ_ENVIRONMENT",
+					"name": "Uwarunkowania środowiskowe",
+					"shortName": "Środowisko",
+					"description": "Natura 2000, parki krajobrazowe, tereny zalewowe ISOK, klasy bonitacyjne gleb, status leśny, korytarze ekologiczne. Co wymaga decyzji środowiskowej, co wyłączenia z produkcji rolnej.",
+					"icon": "leaf",
+					"basePrice": 189,
+					"pricePerHa": 18,
+					"estimatedTimeHours": 24
+				},
+				{
+					"code": "BIZ_ZONING",
+					"name": "Plany zagospodarowania",
+					"shortName": "MPZP / WZ",
+					"description": "MPZP, Studium, plan ogólny, dopuszczalne przeznaczenia, ograniczenia wysokości i intensywności zabudowy. Możliwość uzyskania WZ. Strefy ochrony konserwatorskiej.",
+					"icon": "file-text",
+					"basePrice": 199,
+					"pricePerHa": 12,
+					"estimatedTimeHours": 24
+				},
+				{
+					"code": "BIZ_MARKET",
+					"name": "Otoczenie biznesowe",
+					"shortName": "Otoczenie biz.",
+					"description": "Liczba firm w okolicy (REGON), profil branżowy, Specjalna Strefa Ekonomiczna, parki przemysłowe i technologiczne, dostępność pracowników (bezrobocie powiatowe).",
+					"icon": "briefcase",
+					"basePrice": 139,
+					"pricePerHa": 0,
+					"estimatedTimeHours": 24
+				}
+			]
+		}
+	]
+}
