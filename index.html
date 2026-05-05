@@ -1756,6 +1756,256 @@
         width: calc(100% - 32px);
       }
     }
+
+    /* === ANIMOWANE FEATURES === */
+    .features-row {
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      margin: 24px 0 28px;
+      flex-wrap: wrap;
+    }
+
+    .feature {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 4px 8px;
+      border-radius: 10px;
+      width: 64px;
+      background: var(--surface);
+      transition: all 0.2s ease;
+    }
+
+    .feature:hover {
+      background: var(--brand-tint);
+      transform: translateY(-2px);
+    }
+
+    .feat-svg {
+      width: 36px;
+      height: 36px;
+    }
+
+    .feat-label {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: -0.005em;
+      text-align: center;
+    }
+
+    .feature:hover .feat-label {
+      color: var(--brand-dark);
+    }
+
+    /* 1. PV (słońce) */
+    @keyframes sun-spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes sun-pulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.18);
+      }
+    }
+
+    .sun-rays {
+      transform-origin: 32px 32px;
+      animation: sun-spin 14s linear infinite;
+    }
+
+    .sun-core {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: sun-pulse 2.6s ease-in-out infinite;
+    }
+
+    /* 2. MPZP (siatka stref) */
+    @keyframes mpzp-fade {
+
+      0%,
+      100% {
+        opacity: 0.25;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    .mpzp-1 {
+      animation: mpzp-fade 2.4s ease-in-out infinite;
+    }
+
+    .mpzp-2 {
+      animation: mpzp-fade 2.4s ease-in-out infinite 0.4s;
+    }
+
+    .mpzp-3 {
+      animation: mpzp-fade 2.4s ease-in-out infinite 0.8s;
+    }
+
+    .mpzp-4 {
+      animation: mpzp-fade 2.4s ease-in-out infinite 1.2s;
+    }
+
+    /* 3. Drogi (samochód jadący) */
+    @keyframes road-dash {
+      to {
+        stroke-dashoffset: -16;
+      }
+    }
+
+    @keyframes car-drive {
+
+      0%,
+      100% {
+        transform: translateX(0);
+        opacity: 0;
+      }
+
+      6% {
+        opacity: 1;
+      }
+
+      88% {
+        transform: translateX(54px);
+        opacity: 1;
+      }
+
+      94% {
+        transform: translateX(54px);
+        opacity: 0;
+      }
+    }
+
+    .road-line {
+      animation: road-dash 1.4s linear infinite;
+    }
+
+    .road-car {
+      animation: car-drive 4.2s ease-in-out infinite;
+    }
+
+    /* 4. Media (woda / prąd / gaz) */
+    @keyframes media-pop {
+
+      0%,
+      70%,
+      100% {
+        opacity: 0.3;
+      }
+
+      15%,
+      35% {
+        opacity: 1;
+      }
+    }
+
+    .media-1 {
+      animation: media-pop 3s ease-in-out infinite;
+    }
+
+    .media-2 {
+      animation: media-pop 3s ease-in-out infinite 1s;
+    }
+
+    .media-3 {
+      animation: media-pop 3s ease-in-out infinite 2s;
+    }
+
+    /* 5. Szkoły (czapka + frędzel) */
+    @keyframes tassel-swing {
+
+      0%,
+      100% {
+        transform: rotate(-14deg);
+      }
+
+      50% {
+        transform: rotate(14deg);
+      }
+    }
+
+    .szkoly-tassel {
+      transform-origin: 44px 26px;
+      animation: tassel-swing 2.2s ease-in-out infinite;
+    }
+
+    /* 6. Ceny (słupki) */
+    @keyframes bar-rise {
+
+      0%,
+      100% {
+        transform: scaleY(0.15);
+      }
+
+      50% {
+        transform: scaleY(1);
+      }
+    }
+
+    .ceny-bar {
+      transform-box: fill-box;
+      transform-origin: center bottom;
+    }
+
+    .ceny-1 {
+      animation: bar-rise 2.4s ease-in-out infinite;
+    }
+
+    .ceny-2 {
+      animation: bar-rise 2.4s ease-in-out infinite 0.12s;
+    }
+
+    .ceny-3 {
+      animation: bar-rise 2.4s ease-in-out infinite 0.24s;
+    }
+
+    .ceny-4 {
+      animation: bar-rise 2.4s ease-in-out infinite 0.36s;
+    }
+
+    /* 7. Hałas (głośnik + fale) */
+    @keyframes wave-pulse {
+
+      0%,
+      100% {
+        opacity: 0.15;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    .halas-1 {
+      animation: wave-pulse 1.6s ease-in-out infinite;
+    }
+
+    .halas-2 {
+      animation: wave-pulse 1.6s ease-in-out infinite 0.25s;
+    }
+
+    .halas-3 {
+      animation: wave-pulse 1.6s ease-in-out infinite 0.5s;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .features-row * {
+        animation: none !important;
+      }
+    }
   </style>
 </head>
 
@@ -1774,7 +2024,115 @@
       <h1 class="welcome-title" style="font-size: 32px;">Popatrz na działkę z góry</h1>
       <p class="welcome-text" style="font-size: 15px; max-width: 400px;">Zanim kupisz, sprawdź dokładnie co jest w
         okolicy — nasłonecznienie, MPZP, media i uciążliwości.</p>
+      <div class="features-row">
+        <!-- 1. PV / Słońce -->
+        <div class="feature" title="Nasłonecznienie i potencjał PV">
+          <svg class="feat-svg" viewBox="0 0 64 64" fill="none">
+            <g class="sun-rays" stroke="#F59E0B" stroke-width="3" stroke-linecap="round">
+              <line x1="32" y1="6" x2="32" y2="14" />
+              <line x1="32" y1="50" x2="32" y2="58" />
+              <line x1="6" y1="32" x2="14" y2="32" />
+              <line x1="50" y1="32" x2="58" y2="32" />
+              <line x1="13" y1="13" x2="19" y2="19" />
+              <line x1="45" y1="45" x2="51" y2="51" />
+              <line x1="13" y1="51" x2="19" y2="45" />
+              <line x1="45" y1="19" x2="51" y2="13" />
+            </g>
+            <circle class="sun-core" cx="32" cy="32" r="10" fill="#FBBF24" />
+          </svg>
+          <span class="feat-label">PV</span>
+        </div>
 
+        <!-- 2. MPZP -->
+        <div class="feature" title="Plan miejscowy zagospodarowania">
+          <svg class="feat-svg" viewBox="0 0 64 64" fill="none">
+            <path d="M14 8 H42 L52 18 V56 H14 Z" fill="#EFF6FF" stroke="#1F8EFE" stroke-width="2" />
+            <path d="M42 8 V18 H52" stroke="#1F8EFE" stroke-width="2" />
+            <rect class="mpzp-1" x="20" y="26" width="8" height="8" fill="#1F8EFE" />
+            <rect class="mpzp-2" x="30" y="26" width="8" height="8" fill="#10B981" />
+            <rect class="mpzp-3" x="40" y="26" width="8" height="8" fill="#F59E0B" />
+            <rect class="mpzp-4" x="20" y="36" width="8" height="8" fill="#F59E0B" />
+            <rect class="mpzp-1" x="30" y="36" width="8" height="8" fill="#1F8EFE" />
+            <rect class="mpzp-2" x="40" y="36" width="8" height="8" fill="#10B981" />
+          </svg>
+          <span class="feat-label">MPZP</span>
+        </div>
+
+        <!-- 3. Drogi -->
+        <div class="feature" title="Dojazdy i hierarchia dróg">
+          <svg class="feat-svg" viewBox="0 0 64 64" fill="none">
+            <rect x="2" y="26" width="60" height="14" fill="#475569" rx="2" />
+            <line class="road-line" x1="2" y1="33" x2="62" y2="33" stroke="white" stroke-width="2"
+              stroke-dasharray="8 8" />
+            <g class="road-car">
+              <rect x="4" y="20" width="14" height="8" rx="2" fill="#1F8EFE" />
+              <rect x="6" y="22" width="3" height="2.5" fill="#BFDBFE" />
+              <rect x="13" y="22" width="3" height="2.5" fill="#BFDBFE" />
+              <circle cx="7" cy="29" r="1.5" fill="#0F172A" />
+              <circle cx="15" cy="29" r="1.5" fill="#0F172A" />
+            </g>
+          </svg>
+          <span class="feat-label">Drogi</span>
+        </div>
+
+        <!-- 4. Media -->
+        <div class="feature" title="Woda, prąd, gaz, kanalizacja">
+          <svg class="feat-svg" viewBox="0 0 64 64" fill="none">
+            <g class="media-1">
+              <circle cx="14" cy="32" r="10" fill="#DBEAFE" />
+              <path d="M14 24 C14 28, 18 30, 18 34 A4 4 0 0 1 10 34 C10 30, 14 28, 14 24 Z" fill="#1F8EFE" />
+            </g>
+            <g class="media-2">
+              <circle cx="32" cy="32" r="10" fill="#FEF3C7" />
+              <path d="M33 25 L28 33 L31.5 33 L30 39 L36 31 L32.5 31 L34 25 Z" fill="#F59E0B" />
+            </g>
+            <g class="media-3">
+              <circle cx="50" cy="32" r="10" fill="#FEE2E2" />
+              <path d="M50 25 C46 29, 44 31, 44 34 A6 6 0 0 0 56 34 C56 30, 53 28, 50 25 Z" fill="#EF4444" />
+            </g>
+          </svg>
+          <span class="feat-label">Media</span>
+        </div>
+
+        <!-- 5. Szkoły -->
+        <div class="feature" title="Szkoły, przedszkola, edukacja">
+          <svg class="feat-svg" viewBox="0 0 64 64" fill="none">
+            <path d="M32 18 L8 24 L32 30 L56 24 Z" fill="#7C3AED" />
+            <path d="M18 28 V38 C18 42, 24 44, 32 44 C40 44, 46 42, 46 38 V28 L32 32 Z" fill="#7C3AED" />
+            <g class="szkoly-tassel">
+              <line x1="44" y1="26" x2="50" y2="38" stroke="#5B21B6" stroke-width="1.5" />
+              <circle cx="50" cy="40" r="3" fill="#A78BFA" />
+            </g>
+          </svg>
+          <span class="feat-label">Szkoły</span>
+        </div>
+
+        <!-- 6. Ceny -->
+        <div class="feature" title="Ceny działek w okolicy">
+          <svg class="feat-svg" viewBox="0 0 64 64" fill="none">
+            <line x1="6" y1="50" x2="58" y2="50" stroke="#94A3B8" stroke-width="1.5" />
+            <rect class="ceny-bar ceny-1" x="10" y="38" width="8" height="12" fill="#10B981" rx="1" />
+            <rect class="ceny-bar ceny-2" x="22" y="28" width="8" height="22" fill="#10B981" rx="1" />
+            <rect class="ceny-bar ceny-3" x="34" y="20" width="8" height="30" fill="#10B981" rx="1" />
+            <rect class="ceny-bar ceny-4" x="46" y="32" width="8" height="18" fill="#10B981" rx="1" />
+          </svg>
+          <span class="feat-label">Ceny</span>
+        </div>
+
+        <!-- 7. Hałas -->
+        <div class="feature" title="Hałas drogowy i kolejowy">
+          <svg class="feat-svg" viewBox="0 0 64 64" fill="none">
+            <path d="M12 28 H22 L30 22 V42 L22 36 H12 Z" fill="#EF4444" />
+            <path class="halas-1" d="M36 26 A8 8 0 0 1 36 38" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round"
+              fill="none" />
+            <path class="halas-2" d="M40 22 A12 12 0 0 1 40 42" stroke="#EF4444" stroke-width="2.5"
+              stroke-linecap="round" fill="none" />
+            <path class="halas-3" d="M44 18 A16 16 0 0 1 44 46" stroke="#EF4444" stroke-width="2.5"
+              stroke-linecap="round" fill="none" />
+          </svg>
+          <span class="feat-label">Hałas</span>
+        </div>
+      </div>
       <div class="welcome-search">
         <input type="text" id="welcome-input" placeholder="Wpisz adres (miasto, ulica, numer)..." autocomplete="off">
         <div id="welcome-results" class="search-results"></div>
