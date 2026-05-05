@@ -3,7 +3,10 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#1F8EFE">
   <title>looka — popatrz na działkę z góry zanim kupisz</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <!-- PostHog -->
@@ -22,33 +25,24 @@
     rel="stylesheet">
   <style>
     :root {
-      /* === BRAND === */
       --brand: #1F8EFE;
       --brand-dark: #0E72D9;
       --brand-light: #E8F2FE;
       --brand-tint: #F4F8FE;
-
-      /* === SURFACES === */
       --bg: #FFFFFF;
       --surface: #F7F8FA;
       --surface-2: #F0F2F5;
       --border: #E5E7EB;
       --border-strong: #D1D5DB;
-
-      /* === TEXT === */
       --text: #0F172A;
       --text-muted: #64748B;
       --text-subtle: #94A3B8;
-
-      /* === SEMANTIC === */
       --parcel: #10B981;
       --parcel-light: #D1FAE5;
       --warning: #F59E0B;
       --warning-light: #FEF3C7;
       --danger: #EF4444;
       --success: #10B981;
-
-      /* === SHADOW === */
       --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
       --shadow: 0 4px 12px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
       --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.08), 0 4px 8px rgba(15, 23, 42, 0.04);
@@ -68,7 +62,7 @@
     }
 
     body {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-family: 'Inter', system-uI, -apple-system, sans-serif;
       background: var(--bg);
       color: var(--text);
       font-size: 14px;
@@ -85,7 +79,6 @@
       font-feature-settings: 'tnum';
     }
 
-    /* === FOCUS === */
     button:focus-visible,
     a:focus-visible,
     [tabindex]:focus-visible {
@@ -94,7 +87,7 @@
       border-radius: 6px;
     }
 
-    /* ================== HEADER ================== */
+    /* HEADER */
     header {
       position: fixed;
       top: 0;
@@ -200,7 +193,6 @@
       border-radius: 100px;
       font-size: 11px;
       font-weight: 600;
-      letter-spacing: -0.005em;
     }
 
     .header-pill-dot {
@@ -288,7 +280,7 @@
       border-radius: 100px;
     }
 
-    /* ================== MAP ================== */
+    /* MAP */
     #map {
       position: fixed;
       top: 60px;
@@ -348,7 +340,7 @@
       color: var(--brand-dark) !important;
     }
 
-    /* ================== HINT BANNER ================== */
+    /* HINT */
     .hint {
       position: absolute;
       top: 80px;
@@ -423,7 +415,7 @@
       }
     }
 
-    /* ================== STATUS TOAST ================== */
+    /* TOAST */
     .status-toast {
       position: absolute;
       top: 80px;
@@ -520,7 +512,7 @@
       background: var(--surface);
     }
 
-    /* ================== SIDEBAR ================== */
+    /* SIDEBAR */
     #sidebar {
       position: fixed;
       top: 60px;
@@ -545,7 +537,7 @@
       overflow-y: auto;
     }
 
-    /* === Onboarding (welcome) === */
+    /* WELCOME */
     .welcome {
       padding: 48px 32px;
       text-align: center;
@@ -657,7 +649,7 @@
       height: 14px;
     }
 
-    /* === Parcel header === */
+    /* PARCEL HEADER */
     .parcel-header {
       padding: 22px 24px 18px;
       border-bottom: 1px solid var(--border);
@@ -678,7 +670,6 @@
       gap: 6px;
       font-size: 11px;
       font-weight: 600;
-      letter-spacing: -0.005em;
       background: var(--parcel-light);
       color: var(--success);
       padding: 4px 10px;
@@ -768,7 +759,7 @@
       margin-top: 2px;
     }
 
-    /* === Track section === */
+    /* TRACK */
     .track-section {
       border-bottom: 1px solid var(--border);
     }
@@ -1007,7 +998,7 @@
       opacity: 1;
     }
 
-    /* === Sample report inline button === */
+    /* SAMPLE CTA */
     .sample-cta {
       margin: 14px 24px 0;
       padding: 14px 16px;
@@ -1053,7 +1044,6 @@
     .sample-cta-title {
       font-size: 13px;
       font-weight: 600;
-      letter-spacing: -0.005em;
       color: var(--text);
     }
 
@@ -1073,7 +1063,7 @@
       height: 16px;
     }
 
-    /* === Empty / summary === */
+    /* SUMMARY */
     .summary-section {
       padding: 18px 24px 22px;
       border-top: 1px solid var(--border);
@@ -1175,7 +1165,6 @@
       font-family: inherit;
       font-size: 13.5px;
       font-weight: 600;
-      letter-spacing: -0.005em;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -1224,7 +1213,7 @@
       background: var(--surface-2);
     }
 
-    /* ================== COORDS DISPLAY ================== */
+    /* COORDS */
     .coords-display {
       position: absolute;
       bottom: 16px;
@@ -1240,7 +1229,7 @@
       box-shadow: var(--shadow-sm);
     }
 
-    /* ================== PARCEL ANIMATION ================== */
+    /* PARCEL ANIMATION */
     .parcel-appear {
       animation: parcelAppear 0.5s ease-out;
     }
@@ -1284,7 +1273,7 @@
       }
     }
 
-    /* ================== MODAL ================== */
+    /* MODAL */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -1567,7 +1556,7 @@
       background: var(--surface);
     }
 
-    /* === DODANE STYLE WYSZUKIWARKI I EKRANU POWITALNEGO === */
+    /* WELCOME OVERLAY + MAP SEARCH */
     #welcome-overlay {
       position: fixed;
       inset: 0;
@@ -1707,68 +1696,7 @@
       border-color: var(--brand);
     }
 
-    /* ================== RESPONSIVE ================== */
-    @media (max-width: 1024px) {
-      #sidebar {
-        width: 400px;
-      }
-
-      #map {
-        right: 400px;
-      }
-
-      .hint,
-      .status-toast {
-        left: calc(50% - 200px);
-      }
-    }
-
-    @media (max-width: 768px) {
-      header {
-        padding: 10px 16px;
-      }
-
-      .header-link,
-      .header-pill,
-      .header-divider {
-        display: none;
-      }
-
-      #sidebar {
-        width: 100%;
-        top: auto;
-        bottom: 0;
-        height: 80vh;
-        border-left: none;
-        border-top: 1px solid var(--border);
-        border-radius: 18px 18px 0 0;
-        transform: translateY(100%);
-        box-shadow: 0 -8px 32px rgba(15, 23, 42, 0.15);
-      }
-
-      #sidebar.visible {
-        transform: translateY(0);
-      }
-
-      #map {
-        right: 0 !important;
-        bottom: 0;
-      }
-
-      .hint,
-      .status-toast {
-        left: 50%;
-        max-width: calc(100% - 32px);
-      }
-
-      .map-search-wrap {
-        left: 16px;
-        top: 16px;
-        width: calc(100% - 32px);
-      }
-    }
-
-    /* === ANIMOWANE FEATURES === */
+    /* ANIMOWANE FEATURES */
     .features-row {
       display: flex;
       justify-content: center;
@@ -1811,7 +1739,6 @@
       color: var(--brand-dark);
     }
 
-    /* 1. PV (słońce) */
     @keyframes sun-spin {
       to {
         transform: rotate(360deg);
@@ -1841,7 +1768,6 @@
       animation: sun-pulse 2.6s ease-in-out infinite;
     }
 
-    /* 2. MPZP (siatka stref) */
     @keyframes mpzp-fade {
 
       0%,
@@ -1870,7 +1796,6 @@
       animation: mpzp-fade 2.4s ease-in-out infinite 1.2s;
     }
 
-    /* 3. Drogi (samochód jadący) */
     @keyframes road-dash {
       to {
         stroke-dashoffset: -16;
@@ -1908,7 +1833,6 @@
       animation: car-drive 4.2s ease-in-out infinite;
     }
 
-    /* 4. Media (woda / prąd / gaz) */
     @keyframes media-pop {
 
       0%,
@@ -1935,7 +1859,6 @@
       animation: media-pop 3s ease-in-out infinite 2s;
     }
 
-    /* 5. Szkoły (czapka + frędzel) */
     @keyframes tassel-swing {
 
       0%,
@@ -1953,7 +1876,6 @@
       animation: tassel-swing 2.2s ease-in-out infinite;
     }
 
-    /* 6. Ceny (słupki) */
     @keyframes bar-rise {
 
       0%,
@@ -1987,7 +1909,6 @@
       animation: bar-rise 2.4s ease-in-out infinite 0.36s;
     }
 
-    /* 7. Hałas (głośnik + fale) */
     @keyframes wave-pulse {
 
       0%,
@@ -2017,6 +1938,443 @@
         animation: none !important;
       }
     }
+
+    /* ================== TABLET (≤1024px) ================== */
+    @media (max-width: 1024px) and (min-width: 769px) {
+      #sidebar {
+        width: 400px;
+      }
+
+      #map {
+        right: 400px;
+      }
+
+      .hint,
+      .status-toast {
+        left: calc(50% - 200px);
+      }
+    }
+
+    /* ================== MOBILE (≤768px) ================== */
+    @media (max-width: 768px) {
+
+      /* HEADER */
+      header {
+        padding: 8px 12px;
+        height: 52px;
+        padding-top: max(8px, env(safe-area-inset-top));
+      }
+
+      .header-link,
+      .header-pill,
+      .header-divider {
+        display: none;
+      }
+
+      .logo-mark {
+        width: 26px;
+        height: 30px;
+      }
+
+      .logo-pin {
+        width: 26px;
+        height: 26px;
+      }
+
+      .logo-wordmark {
+        font-size: 17px;
+      }
+
+      .cart-btn {
+        padding: 7px 11px;
+        font-size: 12px;
+        gap: 6px;
+      }
+
+      .cart-btn .cart-label {
+        display: none;
+      }
+
+      .cart-badge {
+        min-width: 18px;
+        height: 18px;
+        font-size: 10px;
+      }
+
+      /* WELCOME OVERLAY */
+      #welcome-overlay {
+        padding: 80px 20px 24px;
+        justify-content: flex-start;
+      }
+
+      .welcome-card .logo .logo-wordmark {
+        font-size: 24px !important;
+      }
+
+      .welcome-title {
+        font-size: 26px !important;
+      }
+
+      .welcome-text {
+        font-size: 14px !important;
+        max-width: 100% !important;
+      }
+
+      .features-row {
+        display: none !important;
+      }
+
+      .welcome-search {
+        margin: 24px 0 20px;
+      }
+
+      .welcome-search input {
+        padding: 18px 22px;
+        font-size: 16px;
+        border-radius: 12px;
+      }
+
+      .welcome-cta {
+        padding: 16px 32px !important;
+        font-size: 15px !important;
+        width: 100%;
+        justify-content: center;
+      }
+
+      /* MAPA fullscreen */
+      #map {
+        top: calc(52px + env(safe-area-inset-top));
+        right: 0 !important;
+        bottom: 0;
+        left: 0;
+      }
+
+      /* WYSZUKIWARKA */
+      .map-search-wrap {
+        left: 12px;
+        top: 12px;
+        width: calc(100% - 24px);
+        border-radius: 14px;
+      }
+
+      .search-tab {
+        padding: 11px;
+        font-size: 12px;
+      }
+
+      .search-input-box {
+        padding: 8px;
+      }
+
+      .search-input-box input {
+        padding: 12px 14px;
+        font-size: 15px;
+      }
+
+      /* BOTTOM SHEET */
+      #sidebar {
+        width: 100%;
+        top: auto;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 75vh;
+        max-height: 75vh;
+        border-left: none;
+        border-top: none;
+        border-radius: 20px 20px 0 0;
+        transform: translateY(calc(100% - 96px));
+        transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 0 -8px 32px rgba(15, 23, 42, 0.12);
+        z-index: 600;
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+
+      #sidebar.visible {
+        transform: translateY(calc(100% - 96px));
+      }
+
+      #sidebar.expanded {
+        transform: translateY(0);
+      }
+
+      /* drag handle */
+      #sidebar::before {
+        content: "";
+        position: absolute;
+        top: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 4px;
+        background: var(--border-strong);
+        border-radius: 100px;
+        z-index: 10;
+        pointer-events: none;
+      }
+
+      .sidebar-scroll {
+        padding-top: 16px;
+      }
+
+      /* WELCOME (sidebar) */
+      .welcome {
+        padding: 24px 20px 20px;
+      }
+
+      .welcome-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        margin-bottom: 14px;
+      }
+
+      .welcome-icon svg {
+        width: 22px;
+        height: 22px;
+      }
+
+      .welcome .welcome-title {
+        font-size: 18px !important;
+      }
+
+      .welcome .welcome-text {
+        font-size: 12.5px !important;
+        margin-bottom: 14px;
+      }
+
+      .welcome-steps {
+        padding: 12px;
+        gap: 8px;
+      }
+
+      .welcome-step {
+        font-size: 12px;
+      }
+
+      /* PARCEL HEADER */
+      .parcel-header {
+        padding: 16px 20px 14px;
+      }
+
+      .panel-title {
+        font-size: 22px;
+      }
+
+      .panel-stats {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .panel-stats>div:nth-child(3) {
+        grid-column: span 2;
+      }
+
+      /* TRACK / MODULES */
+      .track-header {
+        padding: 16px 20px 8px;
+      }
+
+      .track-icon {
+        width: 36px;
+        height: 36px;
+      }
+
+      .track-name {
+        font-size: 16px;
+      }
+
+      .module-card {
+        padding: 14px;
+      }
+
+      .module-icon-wrap {
+        width: 38px;
+        height: 38px;
+      }
+
+      .module-name {
+        font-size: 14px;
+      }
+
+      .module-checkbox {
+        width: 22px;
+        height: 22px;
+      }
+
+      .btn-select-all {
+        padding: 6px 12px;
+        font-size: 11px;
+        min-height: 28px;
+      }
+
+      .track-modules {
+        padding: 0 20px 16px;
+      }
+
+      .track-description {
+        padding-left: 48px;
+      }
+
+      /* SAMPLE CTA */
+      .sample-cta {
+        margin: 14px 20px 0;
+        padding: 12px 14px;
+      }
+
+      /* SUMMARY */
+      .summary-section {
+        padding: 16px 20px 24px;
+      }
+
+      .summary-total-value {
+        font-size: 26px;
+      }
+
+      .btn-primary {
+        padding: 14px;
+        font-size: 14px;
+        min-height: 48px;
+      }
+
+      /* HINT */
+      .hint {
+        top: 76px;
+        left: 12px;
+        right: 12px;
+        transform: none;
+        padding: 9px 14px;
+        font-size: 12px;
+        max-width: none;
+        width: auto;
+      }
+
+      /* TOAST */
+      .status-toast {
+        top: 76px;
+        left: 12px;
+        right: 12px;
+        transform: none;
+        max-width: none;
+        width: auto;
+        padding: 10px 14px;
+      }
+
+      /* COORDS — niepotrzebne na mobile */
+      .coords-display {
+        display: none;
+      }
+
+      /* MODAL fullscreen */
+      .modal-backdrop {
+        padding: 0;
+        align-items: flex-end;
+      }
+
+      .modal {
+        max-width: 100%;
+        width: 100%;
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
+        animation: slideUpFull 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      @keyframes slideUpFull {
+        from {
+          transform: translateY(100%);
+        }
+
+        to {
+          transform: translateY(0);
+        }
+      }
+
+      .modal-header {
+        padding: 18px 20px 14px;
+      }
+
+      .modal-title {
+        font-size: 19px;
+      }
+
+      .modal-cart-icon {
+        width: 38px;
+        height: 38px;
+      }
+
+      .modal-cart-icon svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .modal-body {
+        padding: 4px 20px 0;
+      }
+
+      .modal-footer {
+        padding: 16px 20px 20px;
+        padding-bottom: max(20px, env(safe-area-inset-bottom));
+      }
+
+      .modal-actions {
+        flex-direction: column-reverse;
+      }
+
+      .modal-actions .btn-primary,
+      .modal-actions .btn-secondary {
+        flex: none;
+        width: 100%;
+      }
+
+      .modal-total-value {
+        font-size: 26px;
+      }
+
+      /* LEAFLET */
+      .leaflet-control-zoom a {
+        width: 38px !important;
+        height: 38px !important;
+        line-height: 38px !important;
+        font-size: 19px !important;
+      }
+
+      .leaflet-control-zoom {
+        margin: 12px !important;
+      }
+
+      .leaflet-container {
+        cursor: pointer;
+      }
+    }
+
+    /* ================== MAŁE TELEFONY (≤380px) ================== */
+    @media (max-width: 380px) {
+      .panel-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .panel-stats>div:nth-child(3) {
+        grid-column: span 1;
+      }
+
+      .summary-total-value {
+        font-size: 22px;
+      }
+
+      .modal-total-value {
+        font-size: 22px;
+      }
+
+      .welcome-title {
+        font-size: 23px !important;
+      }
+
+      .module-card {
+        padding: 12px;
+        gap: 10px;
+      }
+    }
   </style>
 </head>
 
@@ -2036,7 +2394,6 @@
       <p class="welcome-text" style="font-size: 15px; max-width: 400px;">Zanim kupisz, sprawdź dokładnie co jest w
         okolicy — nasłonecznienie, MPZP, media i uciążliwości.</p>
       <div class="features-row">
-        <!-- 1. PV / Słońce -->
         <div class="feature" title="Nasłonecznienie i potencjał PV">
           <svg class="feat-svg" viewBox="0 0 64 64" fill="none">
             <g class="sun-rays" stroke="#F59E0B" stroke-width="3" stroke-linecap="round">
@@ -2053,8 +2410,6 @@
           </svg>
           <span class="feat-label">PV</span>
         </div>
-
-        <!-- 2. MPZP -->
         <div class="feature" title="Plan miejscowy zagospodarowania">
           <svg class="feat-svg" viewBox="0 0 64 64" fill="none">
             <path d="M14 8 H42 L52 18 V56 H14 Z" fill="#EFF6FF" stroke="#1F8EFE" stroke-width="2" />
@@ -2068,8 +2423,6 @@
           </svg>
           <span class="feat-label">MPZP</span>
         </div>
-
-        <!-- 3. Drogi -->
         <div class="feature" title="Dojazdy i hierarchia dróg">
           <svg class="feat-svg" viewBox="0 0 64 64" fill="none">
             <rect x="2" y="26" width="60" height="14" fill="#475569" rx="2" />
@@ -2085,8 +2438,6 @@
           </svg>
           <span class="feat-label">Drogi</span>
         </div>
-
-        <!-- 4. Media -->
         <div class="feature" title="Woda, prąd, gaz, kanalizacja">
           <svg class="feat-svg" viewBox="0 0 64 64" fill="none">
             <g class="media-1">
@@ -2104,8 +2455,6 @@
           </svg>
           <span class="feat-label">Media</span>
         </div>
-
-        <!-- 5. Szkoły -->
         <div class="feature" title="Szkoły, przedszkola, edukacja">
           <svg class="feat-svg" viewBox="0 0 64 64" fill="none">
             <path d="M32 18 L8 24 L32 30 L56 24 Z" fill="#7C3AED" />
@@ -2117,8 +2466,6 @@
           </svg>
           <span class="feat-label">Szkoły</span>
         </div>
-
-        <!-- 6. Ceny -->
         <div class="feature" title="Ceny działek w okolicy">
           <svg class="feat-svg" viewBox="0 0 64 64" fill="none">
             <line x1="6" y1="50" x2="58" y2="50" stroke="#94A3B8" stroke-width="1.5" />
@@ -2129,8 +2476,6 @@
           </svg>
           <span class="feat-label">Ceny</span>
         </div>
-
-        <!-- 7. Hałas -->
         <div class="feature" title="Hałas drogowy i kolejowy">
           <svg class="feat-svg" viewBox="0 0 64 64" fill="none">
             <path d="M12 28 H22 L30 22 V42 L22 36 H12 Z" fill="#EF4444" />
@@ -2148,7 +2493,6 @@
         <input type="text" id="welcome-input" placeholder="Wpisz adres (miasto, ulica, numer)..." autocomplete="off">
         <div id="welcome-results" class="search-results"></div>
       </div>
-
       <button class="welcome-cta" style="padding: 14px 40px; font-size: 15px;" onclick="closeWelcome()">Przejdź do
         mapy</button>
     </div>
@@ -2159,15 +2503,10 @@
       <div class="logo-mark">
         <div class="logo-pin"></div>
       </div>
-      <div class="logo-wordmark">
-        looka<span class="dot">.</span><span class="ext">app</span>
-      </div>
+      <div class="logo-wordmark">looka<span class="dot">.</span><span class="ext">app</span></div>
     </a>
     <div class="header-divider" style="display: flex"></div>
-    <div class="header-pill">
-      <span class="header-pill-dot"></span>
-      Beta
-    </div>
+    <div class="header-pill"><span class="header-pill-dot"></span>Beta</div>
     <div style="flex: 1"></div>
     <div class="header-right">
       <a href="raport-przykladowy.html" target="_blank" class="header-link">
@@ -2196,14 +2535,13 @@
           <circle cx="20" cy="21" r="1" />
           <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
         </svg>
-        Koszyk
+        <span class="cart-label">Koszyk</span>
         <span class="cart-badge" id="cart-badge">0</span>
       </button>
     </div>
   </header>
 
   <div id="map">
-    <!-- NOWA WYSZUKIWARKA NA MAPIE -->
     <div class="map-search-wrap">
       <div class="search-type-tabs">
         <button class="search-tab active" onclick="setSearchMode('addr')">ADRES</button>
@@ -2224,13 +2562,11 @@
         <circle cx="12" cy="10" r="3" />
       </svg>
     </span>
-    Kliknij dowolne miejsce na mapie żeby wybrać działkę
+    Dotknij dowolne miejsce na mapie
   </div>
 
   <div id="sidebar">
-    <div class="sidebar-scroll" id="sidebar-content">
-      <!-- Zawartość wstrzykiwana przez JS -->
-    </div>
+    <div class="sidebar-scroll" id="sidebar-content"></div>
   </div>
 
   <div class="coords-display" id="coords">ruch myszą → współrzędne</div>
@@ -2238,6 +2574,11 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/proj4@2.9.0/dist/proj4.js"></script>
   <script>
+    // === POSTHOG TRACKING (musi być przed użyciem) ===
+    window.trackEvent = function (name, props = {}) {
+      if (window.posthog) posthog.capture(name, props);
+    };
+
     if (typeof L === 'undefined' || typeof proj4 === 'undefined') {
       document.body.innerHTML = `
     <div style="padding: 40px; text-align: center; font-family: sans-serif;">
@@ -2247,9 +2588,6 @@
       throw new Error("Libraries not loaded");
     }
 
-    // ============================================================
-    // IKONY (SVG inline)
-    // ============================================================
     const ICONS = {
       home: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
       building: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="9" y1="22" x2="9" y2="2"/><line x1="15" y1="22" x2="15" y2="2"/><line x1="20" y1="9" x2="4" y2="9"/><line x1="20" y1="14" x2="4" y2="14"/></svg>`,
@@ -2277,45 +2615,23 @@
       'chevron-down': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`
     };
 
-    // ============================================================
-    // KONFIG GIS
-    // ============================================================
     proj4.defs('EPSG:2180',
-      '+proj=tmerc +lat_0=0 +lon_0=19 +k=0.9993 +x_0=500000 +y_0=-5300000 ' +
-      '+ellps=GRS80 +units=m +no_defs');
+      '+proj=tmerc +lat_0=0 +lon_0=19 +k=0.9993 +x_0=500000 +y_0=-5300000 +ellps=GRS80 +units=m +no_defs');
 
     const PROXY_URL = '/proxy/uldk';
 
-    const STYLE_PARCEL_ACTIVE = {
-      color: '#10B981',
-      weight: 2.5,
-      fillColor: '#10B981',
-      fillOpacity: 0.35,
-      lineJoin: 'round',
-    };
-    const STYLE_PARCEL_IN_CART = {
-      color: '#1F8EFE',
-      weight: 2,
-      fillColor: '#1F8EFE',
-      fillOpacity: 0.18,
-      lineJoin: 'round',
-    };
+    const STYLE_PARCEL_ACTIVE = { color: '#10B981', weight: 2.5, fillColor: '#10B981', fillOpacity: 0.35, lineJoin: 'round' };
+    const STYLE_PARCEL_IN_CART = { color: '#1F8EFE', weight: 2, fillColor: '#1F8EFE', fillOpacity: 0.18, lineJoin: 'round' };
 
-    // ============================================================
-    // STAN APLIKACJI
-    // ============================================================
     const state = {
       parcel: null,
       selectedModules: new Set(),
-      expandedTracks: new Set(), // przechowuje nazwy rozwiniętych sekcji
+      expandedTracks: new Set(),
       catalog: null,
       cart: [],
-      searchMode: 'addr' // 'addr' lub 'teryt'
+      searchMode: 'addr'
     };
 
-    // ============================================================
-    // MAPA
-    // ============================================================
     const map = L.map('map', {
       center: [52.07, 19.48],
       zoom: 7,
@@ -2339,7 +2655,6 @@
       attribution: '© GUGiK',
     }).addTo(map);
 
-    // ZAPOBIEGANIE KLIKNIĘCIOM POD WYSZUKIWARKĄ (Click-through)
     const mapSearchWrapDom = document.querySelector('.map-search-wrap');
     if (mapSearchWrapDom) {
       L.DomEvent.disableClickPropagation(mapSearchWrapDom);
@@ -2350,9 +2665,6 @@
     let cartParcelLayers = [];
     let isLoading = false;
 
-    // ============================================================
-    // LOGIKA WYSZUKIWARKI
-    // ============================================================
     window.setSearchMode = function (mode) {
       state.searchMode = mode;
       document.querySelectorAll('.search-tab').forEach(t => t.classList.toggle('active', t.innerText.toLowerCase() === mode));
@@ -2364,37 +2676,23 @@
     window.handleSearch = async function (query, resultContainerId) {
       clearTimeout(searchTimeout);
       const container = document.getElementById(resultContainerId);
-
-      if (query.length < 3) {
-        container.classList.remove('visible');
-        return;
-      }
-
+      if (query.length < 3) { container.classList.remove('visible'); return; }
       searchTimeout = setTimeout(async () => {
         if (state.searchMode === 'teryt') {
-          // Dla TERYT po prostu tworzymy przycisk by zatwierdzić wpisany tekst jako ID
-          container.innerHTML = `
-            <div class="result-item" onclick="selectTerytResult('${query.trim()}')">
-              Szukaj działki o TERYT:<br><strong>${query.trim()}</strong>
-            </div>`;
+          container.innerHTML = `<div class="result-item" onclick="selectTerytResult('${query.trim()}')">Szukaj działki o TERYT:<br><strong>${query.trim()}</strong></div>`;
           container.classList.add('visible');
           return;
         }
-
         try {
           const resp = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=pl&addressdetails=1`);
           const data = await resp.json();
           if (data.length === 0) {
             container.innerHTML = `<div class="result-item" style="color:var(--text-muted)">Brak wyników</div>`;
           } else {
-            container.innerHTML = data.map(item => `
-              <div class="result-item" onclick="selectSearchResult(${item.lat}, ${item.lon}, '${item.display_name.replace(/'/g, "\\'")}')">${item.display_name}</div>
-            `).join('');
+            container.innerHTML = data.map(item => `<div class="result-item" onclick="selectSearchResult(${item.lat}, ${item.lon}, '${item.display_name.replace(/'/g, "\\'")}')">${item.display_name}</div>`).join('');
           }
           container.classList.add('visible');
-        } catch (e) {
-          console.error('Search error:', e);
-        }
+        } catch (e) { console.error('Search error:', e); }
       }, 400);
     };
 
@@ -2402,8 +2700,6 @@
       closeWelcome();
       map.flyTo([lat, lon], 18);
       document.querySelectorAll('.search-results').forEach(r => r.classList.remove('visible'));
-
-      // Jeśli w nazwie znaleziono cyfrę (np. numer domu), symulujemy klik w mapę po dolocie
       if (/\d/.test(name)) {
         setTimeout(() => map.fire('click', { latlng: L.latLng(lat, lon) }), 800);
       }
@@ -2412,71 +2708,35 @@
     window.selectTerytResult = async function (terytCode) {
       closeWelcome();
       document.querySelectorAll('.search-results').forEach(r => r.classList.remove('visible'));
-
       if (isLoading) return;
       isLoading = true;
       document.getElementById('map').classList.add('loading');
       document.getElementById('hint').classList.add('hidden');
-
-      showToast(`
-        <div class="spinner"></div>
-        <div>
-          <div class="msg-title">Pobieram dane działki…</div>
-          <div class="msg-sub">Wyszukiwanie TERYT: ${terytCode}</div>
-        </div>
-      `);
-
+      showToast(`<div class="spinner"></div><div><div class="msg-title">Pobieram dane działki…</div><div class="msg-sub">Wyszukiwanie TERYT: ${terytCode}</div></div>`);
       try {
         const parcel = await fetchParcelById(terytCode);
-
         const alreadyInCart = state.cart.some(it => it.parcel.teryt === parcel.teryt);
         if (alreadyInCart) {
           hideToast();
-          showToast(`<div class="toast-icon-warn">${ICONS.warn}</div>
-        <div><div class="msg-title">Ta działka jest już w koszyku</div>
-        <div class="msg-sub">Działka ${parcel.parcelNumber} została wcześniej dodana.</div></div>`, 'error');
+          showToast(`<div class="toast-icon-warn">${ICONS.warn}</div><div><div class="msg-title">Ta działka jest już w koszyku</div><div class="msg-sub">Działka ${parcel.parcelNumber} została wcześniej dodana.</div></div>`, 'error');
           setTimeout(hideToast, 3500);
           return;
         }
-
         if (activeParcelLayer) map.removeLayer(activeParcelLayer);
-
         activeParcelLayer = L.geoJSON(parcel.geometry, {
           style: STYLE_PARCEL_ACTIVE,
-          onEachFeature: (f, layer) => {
-            layer.on('add', () => {
-              if (layer._path) layer._path.classList.add('parcel-appear');
-            });
-          },
+          onEachFeature: (f, layer) => { layer.on('add', () => { if (layer._path) layer._path.classList.add('parcel-appear'); }); },
         }).addTo(map);
-
-        map.flyToBounds(activeParcelLayer.getBounds(), {
-          padding: [80, 80, 80, 540],
-          maxZoom: 18,
-          duration: 0.6,
-        });
-
+        const padding = window.innerWidth <= 768 ? [40, 40, 200, 40] : [80, 80, 80, 540];
+        map.flyToBounds(activeParcelLayer.getBounds(), { padding, maxZoom: 18, duration: 0.6 });
         state.parcel = parcel;
         state.selectedModules.clear();
-
         hideToast();
         renderSidebar();
-
       } catch (err) {
         hideToast();
-        let title = 'Nie znaleziono działki';
-        let sub = 'Sprawdź, czy identyfikator TERYT jest poprawny.';
-        showToast(`
-          <div class="toast-icon-warn">${ICONS.warn}</div>
-          <div style="flex:1">
-            <div class="msg-title">${title}</div>
-            <div class="msg-sub">${sub}</div>
-          </div>
-          <button class="close-btn" onclick="this.parentElement.remove()">×</button>
-        `, 'error');
-        setTimeout(() => {
-          if (activeToast && activeToast.classList.contains('error')) hideToast();
-        }, 5000);
+        showToast(`<div class="toast-icon-warn">${ICONS.warn}</div><div style="flex:1"><div class="msg-title">Nie znaleziono działki</div><div class="msg-sub">Sprawdź, czy identyfikator TERYT jest poprawny.</div></div><button class="close-btn" onclick="this.parentElement.remove()">×</button>`, 'error');
+        setTimeout(() => { if (activeToast && activeToast.classList.contains('error')) hideToast(); }, 5000);
       } finally {
         isLoading = false;
         document.getElementById('map').classList.remove('loading');
@@ -2488,96 +2748,55 @@
       if (overlay) overlay.classList.add('hidden');
     };
 
-    // Nasłuchiwacze inputów wyszukiwarek
     document.getElementById('welcome-input').addEventListener('input', (e) => handleSearch(e.target.value, 'welcome-results'));
     document.getElementById('map-search-input').addEventListener('input', (e) => handleSearch(e.target.value, 'map-search-results'));
 
-
-    // ============================================================
-    // GIS HELPERS
-    // ============================================================
     function parseWKT(wkt) {
       wkt = wkt.replace(/^SRID=\d+;/i, '').trim();
       const isMulti = /^MULTIPOLYGON/i.test(wkt);
       const ringRegex = /\(([0-9.\s,\-]+)\)/g;
-      const rings = [];
-      let match;
+      const rings = []; let match;
       while ((match = ringRegex.exec(wkt)) !== null) {
-        const coords = match[1].split(',').map(p => {
-          const parts = p.trim().split(/\s+/).map(Number);
-          return [parts[0], parts[1]];
-        });
+        const coords = match[1].split(',').map(p => { const parts = p.trim().split(/\s+/).map(Number); return [parts[0], parts[1]]; });
         rings.push(coords);
       }
       if (rings.length === 0) throw new Error('No coordinates in WKT');
-      return isMulti
-        ? { type: 'MultiPolygon', coordinates: rings.map(r => [r]) }
-        : { type: 'Polygon', coordinates: rings };
+      return isMulti ? { type: 'MultiPolygon', coordinates: rings.map(r => [r]) } : { type: 'Polygon', coordinates: rings };
     }
 
     function reprojectGeometry(geom) {
       const projectCoord = (c) => proj4('EPSG:2180', 'EPSG:4326', [c[0], c[1]]);
       const projectRing = (ring) => ring.map(projectCoord);
-      if (geom.type === 'Polygon')
-        return { type: 'Polygon', coordinates: geom.coordinates.map(projectRing) };
-      if (geom.type === 'MultiPolygon')
-        return { type: 'MultiPolygon', coordinates: geom.coordinates.map(p => p.map(projectRing)) };
+      if (geom.type === 'Polygon') return { type: 'Polygon', coordinates: geom.coordinates.map(projectRing) };
+      if (geom.type === 'MultiPolygon') return { type: 'MultiPolygon', coordinates: geom.coordinates.map(p => p.map(projectRing)) };
       throw new Error('Unsupported geometry type');
     }
 
     function computeArea(geom) {
       const ringArea = (ring) => {
         let sum = 0;
-        for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
-          sum += (ring[j][0] + ring[i][0]) * (ring[j][1] - ring[i][1]);
-        }
+        for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) sum += (ring[j][0] + ring[i][0]) * (ring[j][1] - ring[i][1]);
         return Math.abs(sum / 2);
       };
-      if (geom.type === 'Polygon') {
-        const [outer, ...holes] = geom.coordinates;
-        return ringArea(outer) - holes.reduce((s, h) => s + ringArea(h), 0);
-      }
-      if (geom.type === 'MultiPolygon') {
-        return geom.coordinates.reduce((sum, poly) => {
-          const [outer, ...holes] = poly;
-          return sum + ringArea(outer) - holes.reduce((s, h) => s + ringArea(h), 0);
-        }, 0);
-      }
+      if (geom.type === 'Polygon') { const [outer, ...holes] = geom.coordinates; return ringArea(outer) - holes.reduce((s, h) => s + ringArea(h), 0); }
+      if (geom.type === 'MultiPolygon') return geom.coordinates.reduce((sum, poly) => { const [outer, ...holes] = poly; return sum + ringArea(outer) - holes.reduce((s, h) => s + ringArea(h), 0); }, 0);
       return 0;
     }
 
     async function fetchParcel(lng, lat) {
-      if (lng < 13.5 || lng > 25.0 || lat < 48.5 || lat > 55.5)
-        throw new Error('OUT_OF_POLAND');
-
+      if (lng < 13.5 || lng > 25.0 || lat < 48.5 || lat > 55.5) throw new Error('OUT_OF_POLAND');
       const [x, y] = proj4('EPSG:4326', 'EPSG:2180', [lng, lat]);
-      const params = new URLSearchParams({
-        request: 'GetParcelByXY',
-        xy: `${x.toFixed(2)},${y.toFixed(2)},2180`,
-        result: 'geom_wkt,teryt,voivodeship,county,commune,region,parcel',
-      });
-
+      const params = new URLSearchParams({ request: 'GetParcelByXY', xy: `${x.toFixed(2)},${y.toFixed(2)},2180`, result: 'geom_wkt,teryt,voivodeship,county,commune,region,parcel' });
       const response = await fetch(`${PROXY_URL}?${params.toString()}`);
-      if (!response.ok) {
-        const errBody = await response.json().catch(() => ({ error: `HTTP ${response.status}` }));
-        throw new Error('PROXY_ERROR: ' + errBody.error);
-      }
+      if (!response.ok) { const errBody = await response.json().catch(() => ({ error: `HTTP ${response.status}` })); throw new Error('PROXY_ERROR: ' + errBody.error); }
       const raw = await response.text();
       return parseUldkResponse(raw);
     }
 
     async function fetchParcelById(terytId) {
-      const params = new URLSearchParams({
-        request: 'GetParcelById',
-        id: terytId,
-        result: 'geom_wkt,teryt,voivodeship,county,commune,region,parcel',
-      });
-
+      const params = new URLSearchParams({ request: 'GetParcelById', id: terytId, result: 'geom_wkt,teryt,voivodeship,county,commune,region,parcel' });
       const response = await fetch(`${PROXY_URL}?${params.toString()}`);
-      if (!response.ok) {
-        const errBody = await response.json().catch(() => ({ error: `HTTP ${response.status}` }));
-        throw new Error('PROXY_ERROR: ' + errBody.error);
-      }
+      if (!response.ok) { const errBody = await response.json().catch(() => ({ error: `HTTP ${response.status}` })); throw new Error('PROXY_ERROR: ' + errBody.error); }
       const raw = await response.text();
       return parseUldkResponse(raw);
     }
@@ -2586,32 +2805,22 @@
       const lines = raw.trim().split('\n');
       if (lines[0].trim() !== '0') throw new Error('PARCEL_NOT_FOUND');
       if (lines.length < 2) throw new Error('MALFORMED_RESPONSE');
-
       const parts = lines[1].split('|');
       if (parts.length < 7) throw new Error('MALFORMED_RESPONSE');
-
       const [rawWkt, teryt, voivodeship, county, commune, precinct, parcelNumber] = parts;
       const geom2180 = parseWKT(rawWkt);
       const areaM2 = Math.round(computeArea(geom2180));
       const geometry = reprojectGeometry(geom2180);
-
       return { teryt, voivodeship, county, commune, precinct, parcelNumber, geometry, areaM2 };
     }
 
-    // ============================================================
-    // CALCULATIONS
-    // ============================================================
-    function calculateModulePrice(module, areaHa) {
-      return module.basePrice + module.pricePerHa * areaHa;
-    }
+    function calculateModulePrice(module, areaHa) { return module.basePrice + module.pricePerHa * areaHa; }
 
     function calculateCurrentParcelTotals() {
       if (!state.parcel || !state.catalog) return null;
       const areaHa = state.parcel.areaM2 / 10000;
       const allModules = state.catalog.tracks.flatMap(t => t.modules);
-      const lineItems = allModules
-        .filter(m => state.selectedModules.has(m.code))
-        .map(m => ({ ...m, total: calculateModulePrice(m, areaHa) }));
+      const lineItems = allModules.filter(m => state.selectedModules.has(m.code)).map(m => ({ ...m, total: calculateModulePrice(m, areaHa) }));
       const subtotal = lineItems.reduce((s, it) => s + it.total, 0);
       const vat = subtotal * state.catalog.vatRate;
       const gross = subtotal + vat;
@@ -2620,20 +2829,12 @@
 
     function calculateCartTotals() {
       let netto = 0;
-      for (const item of state.cart) {
-        netto += item.lineItems.reduce((s, m) => s + m.total, 0);
-      }
+      for (const item of state.cart) netto += item.lineItems.reduce((s, m) => s + m.total, 0);
       const vat = netto * (state.catalog?.vatRate ?? 0.23);
       return { netto, vat, gross: netto + vat };
     }
 
-    function formatPLN(value) {
-      return value.toLocaleString('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    }
-
-    // ============================================================
-    // RENDER SIDEBAR & MODULE TOGGLES
-    // ============================================================
+    function formatPLN(value) { return value.toLocaleString('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
 
     window.toggleTrack = function (name) {
       if (state.expandedTracks.has(name)) state.expandedTracks.delete(name);
@@ -2646,11 +2847,7 @@
       const track = state.catalog.tracks.find(t => t.name === trackName);
       const allCodes = track.modules.map(m => m.code);
       const allSelected = allCodes.every(code => state.selectedModules.has(code));
-
-      allCodes.forEach(code => {
-        if (allSelected) state.selectedModules.delete(code);
-        else state.selectedModules.add(code);
-      });
+      allCodes.forEach(code => { if (allSelected) state.selectedModules.delete(code); else state.selectedModules.add(code); });
       renderSidebar();
     };
 
@@ -2659,9 +2856,7 @@
         if (state.cart.length === 0) {
           document.getElementById('sidebar').classList.add('visible');
           document.getElementById('map').classList.remove('no-sidebar');
-          if (!document.querySelector('.welcome')) {
-            renderWelcomeState();
-          }
+          if (!document.querySelector('.welcome')) renderWelcomeState();
         } else {
           document.getElementById('sidebar').classList.add('visible');
           document.getElementById('map').classList.remove('no-sidebar');
@@ -2669,10 +2864,8 @@
         }
         return;
       }
-
       document.getElementById('sidebar').classList.add('visible');
       document.getElementById('map').classList.remove('no-sidebar');
-
       const p = state.parcel;
       const areaHa = (p.areaM2 / 10000).toFixed(2).replace('.', ',');
       const areaM2 = p.areaM2.toLocaleString('pl-PL');
@@ -2682,62 +2875,32 @@
       let html = `
     <div class="parcel-header">
       <div class="parcel-header-top">
-        <div class="panel-tag">
-          <span class="panel-tag-dot"></span>
-          ${state.cart.length === 0 ? 'Działka wybrana' : `Działka ${parcelOrdinal} · nowa`}
-        </div>
-        ${state.cart.length > 0 ? `
-          <div class="parcel-counter">${state.cart.length} w koszyku</div>
-        ` : ''}
+        <div class="panel-tag"><span class="panel-tag-dot"></span>${state.cart.length === 0 ? 'Działka wybrana' : `Działka ${parcelOrdinal} · nowa`}</div>
+        ${state.cart.length > 0 ? `<div class="parcel-counter">${state.cart.length} w koszyku</div>` : ''}
       </div>
-      <div class="panel-title">
-        Działka <span class="num">${p.parcelNumber}</span>
-      </div>
-      <div class="panel-subtitle">
-        obręb <strong>${p.precinct}</strong>, gm. ${p.commune}<br>
-        pow. ${p.county}, woj. ${p.voivodeship}
-      </div>
+      <div class="panel-title">Działka <span class="num">${p.parcelNumber}</span></div>
+      <div class="panel-subtitle">obręb <strong>${p.precinct}</strong>, gm. ${p.commune}<br>pow. ${p.county}, woj. ${p.voivodeship}</div>
       <div class="panel-stats">
-        <div>
-          <div class="stat-label">Powierzchnia</div>
-          <div class="stat-value">${areaHa} ha</div>
-          <div class="stat-sub mono">${areaM2} m²</div>
-        </div>
-        <div>
-          <div class="stat-label">TERYT</div>
-          <div class="stat-value mono" style="font-size:11px">${p.teryt.split('.')[0]}</div>
-          <div class="stat-sub mono">${p.teryt.split('.').slice(1).join('.')}</div>
-        </div>
-        <div>
-          <div class="stat-label">Współrzędne</div>
-          <div class="stat-value mono" style="font-size:11px">
-            ${(p.geometry.type === 'MultiPolygon'
-          ? p.geometry.coordinates[0][0][0][1]
-          : p.geometry.coordinates[0][0][1]).toFixed(3)}°N
-          </div>
-          <div class="stat-sub mono">
-            ${(p.geometry.type === 'MultiPolygon'
-          ? p.geometry.coordinates[0][0][0][0]
-          : p.geometry.coordinates[0][0][0]).toFixed(3)}°E
-          </div>
+        <div><div class="stat-label">Powierzchnia</div><div class="stat-value">${areaHa} ha</div><div class="stat-sub mono">${areaM2} m²</div></div>
+        <div><div class="stat-label">TERYT</div><div class="stat-value mono" style="font-size:11px">${p.teryt.split('.')[0]}</div><div class="stat-sub mono">${p.teryt.split('.').slice(1).join('.')}</div></div>
+        <div><div class="stat-label">Współrzędne</div>
+          <div class="stat-value mono" style="font-size:11px">${(p.geometry.type === 'MultiPolygon' ? p.geometry.coordinates[0][0][0][1] : p.geometry.coordinates[0][0][1]).toFixed(3)}°N</div>
+          <div class="stat-sub mono">${(p.geometry.type === 'MultiPolygon' ? p.geometry.coordinates[0][0][0][0] : p.geometry.coordinates[0][0][0]).toFixed(3)}°E</div>
         </div>
       </div>
     </div>
-
     <a href="raport-przykladowy.html" target="_blank" class="sample-cta">
       <div class="sample-cta-icon">${ICONS['file-text']}</div>
       <div class="sample-cta-body">
         <div class="sample-cta-title">Zobacz przykładowy raport</div>
-        <div class="sample-cta-sub">21 stron · realna analiza · PDF do druku</div>
+        <div class="sample-cta-sub">21 stron · realna analiza · PDF</div>
       </div>
       <div class="sample-cta-arrow">${ICONS.arrow}</div>
-    </a>
-  `;
+    </a>`;
 
       for (const track of state.catalog.tracks) {
         const selectedInTrack = track.modules.filter(m => state.selectedModules.has(m.code)).length;
         const isExpanded = state.expandedTracks.has(track.name);
-
         html += `
       <div class="track-section">
         <div class="track-header" onclick="toggleTrack('${track.name}')">
@@ -2749,28 +2912,21 @@
           </div>
           <div style="display:flex; flex-direction:column; align-items:flex-end;">
             ${selectedInTrack > 0 ? `<div class="track-counter">${selectedInTrack} ${selectedInTrack === 1 ? 'wybrany' : 'wybranych'}</div>` : ''}
-            <div class="track-toggle-icon ${isExpanded ? 'open' : ''}" style="margin-top: ${selectedInTrack > 0 ? '8px' : '0'};">
-              ${ICONS['chevron-down']}
-            </div>
+            <div class="track-toggle-icon ${isExpanded ? 'open' : ''}" style="margin-top: ${selectedInTrack > 0 ? '8px' : '0'};">${ICONS['chevron-down']}</div>
           </div>
         </div>
         <div class="track-modules ${isExpanded ? 'open' : ''}">
           <div class="track-description" style="padding-top: 0;">${track.description}</div>
           ${track.modules.map(m => renderModuleCard(m, totals.areaHa)).join('')}
         </div>
-      </div>
-    `;
+      </div>`;
       }
 
       html += renderSummary(totals);
-
       document.getElementById('sidebar-content').innerHTML = html;
 
       document.querySelectorAll('.module-card').forEach(card => {
-        card.addEventListener('click', (e) => {
-          e.stopPropagation();
-          toggleModule(card.dataset.code);
-        });
+        card.addEventListener('click', (e) => { e.stopPropagation(); toggleModule(card.dataset.code); });
       });
       const addBtn = document.getElementById('btn-add-to-cart');
       if (addBtn) addBtn.addEventListener('click', addCurrentToCart);
@@ -2781,62 +2937,36 @@
     function renderWelcomeState() {
       document.getElementById('sidebar-content').innerHTML = `
     <div class="welcome">
-      <div class="welcome-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-      </div>
+      <div class="welcome-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
       <h1 class="welcome-title">Popatrz na działkę z góry</h1>
-      <p class="welcome-text">
-        Zanim kupisz, sprawdź dokładnie co jest w okolicy — szkoły, dojazdy,
-        ceny, plany zagospodarowania, potencjał inwestycyjny.
-      </p>
+      <p class="welcome-text">Zanim kupisz, sprawdź dokładnie co jest w okolicy — szkoły, dojazdy, ceny, plany zagospodarowania.</p>
       <div class="welcome-steps">
-        <div class="welcome-step">
-          <span class="welcome-step-num">1</span>
-          <span><strong>Kliknij na mapie</strong> — system automatycznie pobierze granice działki z GUGiK</span>
-        </div>
-        <div class="welcome-step">
-          <span class="welcome-step-num">2</span>
-          <span><strong>Wybierz moduły raportu</strong> — od jakości życia po potencjał komercyjny</span>
-        </div>
-        <div class="welcome-step">
-          <span class="welcome-step-num">3</span>
-          <span><strong>Otrzymaj raport PDF</strong> w 24h, z konkretnymi danymi i wnioskami</span>
-        </div>
+        <div class="welcome-step"><span class="welcome-step-num">1</span><span><strong>Dotknij na mapie</strong> — system automatycznie pobierze granice działki z GUGiK</span></div>
+        <div class="welcome-step"><span class="welcome-step-num">2</span><span><strong>Wybierz moduły raportu</strong> — od jakości życia po potencjał komercyjny</span></div>
+        <div class="welcome-step"><span class="welcome-step-num">3</span><span><strong>Otrzymaj raport PDF</strong> w 24h, z konkretnymi danymi i wnioskami</span></div>
       </div>
       <a href="raport-przykladowy.html" target="_blank" class="welcome-cta">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
         Zobacz przykładowy raport
       </a>
-    </div>
-  `;
+    </div>`;
     }
 
     function renderCartHintState() {
       document.getElementById('sidebar-content').innerHTML = `
     <div class="welcome">
-      <div class="welcome-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-      </div>
+      <div class="welcome-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
       <h1 class="welcome-title">Wybierz kolejną działkę</h1>
-      <p class="welcome-text">
-        Kliknij na mapie, żeby dodać następną do koszyka,
-        lub przejdź do podsumowania zamówienia.
-      </p>
-      <button class="welcome-cta" onclick="document.getElementById('cart-btn').click()">
-        ${ICONS.cart} Otwórz koszyk (${state.cart.length})
-      </button>
-    </div>
-  `;
+      <p class="welcome-text">Dotknij mapy, żeby dodać następną do koszyka, lub przejdź do podsumowania zamówienia.</p>
+      <button class="welcome-cta" onclick="document.getElementById('cart-btn').click()">${ICONS.cart} Otwórz koszyk (${state.cart.length})</button>
+    </div>`;
     }
 
     function renderModuleCard(module, areaHa) {
       const isSelected = state.selectedModules.has(module.code);
       const price = calculateModulePrice(module, areaHa);
       const icon = ICONS[module.icon] || ICONS['file-text'];
-      const formula = module.pricePerHa > 0
-        ? `${module.basePrice} zł + ${module.pricePerHa} zł/ha · ${areaHa.toFixed(2).replace('.', ',')} ha`
-        : `${module.basePrice} zł · ryczałt`;
-
+      const formula = module.pricePerHa > 0 ? `${module.basePrice} zł + ${module.pricePerHa} zł/ha · ${areaHa.toFixed(2).replace('.', ',')} ha` : `${module.basePrice} zł · ryczałt`;
       return `
     <button class="module-card ${isSelected ? 'selected' : ''}" data-code="${module.code}">
       <div class="module-icon-wrap">${icon}</div>
@@ -2849,75 +2979,40 @@
         <div class="module-formula">${formula}</div>
       </div>
       <div class="module-checkbox">${ICONS.check}</div>
-    </button>
-  `;
+    </button>`;
     }
 
     function renderSummary(totals) {
       const hasModules = totals.lineItems.length > 0;
-
       if (!hasModules) {
-        return `
-      <div class="summary-section">
+        return `<div class="summary-section">
         <div class="summary-header">Podsumowanie tej działki</div>
-        <div class="empty-modules">
-          Wybierz przynajmniej jeden moduł raportu,<br>żeby zobaczyć cenę
-        </div>
-        <button class="btn-primary" disabled>
-          ${ICONS.plus} Dodaj działkę do koszyka
-        </button>
+        <div class="empty-modules">Wybierz przynajmniej jeden moduł raportu,<br>żeby zobaczyć cenę</div>
+        <button class="btn-primary" disabled>${ICONS.plus} Dodaj działkę do koszyka</button>
         <button class="btn-clear" id="btn-cancel-current">Anuluj wybór działki</button>
-      </div>
-    `;
+      </div>`;
       }
-
-      return `
-    <div class="summary-section">
+      return `<div class="summary-section">
       <div class="summary-header">Podsumowanie tej działki</div>
-
-      ${totals.lineItems.map(it => `
-        <div class="summary-line">
-          <span>${it.shortName}</span>
-          <span class="mono">${formatPLN(it.total)} zł</span>
-        </div>
-      `).join('')}
-
+      ${totals.lineItems.map(it => `<div class="summary-line"><span>${it.shortName}</span><span class="mono">${formatPLN(it.total)} zł</span></div>`).join('')}
       <div class="summary-divider"></div>
-
-      <div class="summary-line muted">
-        <span>Netto</span>
-        <span class="mono">${formatPLN(totals.subtotal)} zł</span>
-      </div>
-      <div class="summary-line muted">
-        <span>VAT (${(state.catalog.vatRate * 100).toFixed(0)}%)</span>
-        <span class="mono">${formatPLN(totals.vat)} zł</span>
-      </div>
-
+      <div class="summary-line muted"><span>Netto</span><span class="mono">${formatPLN(totals.subtotal)} zł</span></div>
+      <div class="summary-line muted"><span>VAT (${(state.catalog.vatRate * 100).toFixed(0)}%)</span><span class="mono">${formatPLN(totals.vat)} zł</span></div>
       <div class="summary-total">
         <div>
           <div class="summary-total-label">Cena tej działki</div>
-          <div class="summary-total-sub">brutto · ${totals.lineItems.length} ${totals.lineItems.length === 1 ? 'moduł' : totals.lineItems.length < 5 ? 'moduły' : 'modułów'} · raport ~24 h</div>
+          <div class="summary-total-sub">brutto · ${totals.lineItems.length} ${totals.lineItems.length === 1 ? 'moduł' : totals.lineItems.length < 5 ? 'moduły' : 'modułów'} · ~24 h</div>
         </div>
-        <div>
-          <div class="summary-total-value">
-            ${formatPLN(totals.gross)}<span class="summary-total-currency">zł</span>
-          </div>
-        </div>
+        <div><div class="summary-total-value">${formatPLN(totals.gross)}<span class="summary-total-currency">zł</span></div></div>
       </div>
-
-      <button class="btn-primary" id="btn-add-to-cart">
-        ${ICONS.plus} Dodaj działkę do koszyka
-      </button>
+      <button class="btn-primary" id="btn-add-to-cart">${ICONS.plus} Dodaj działkę do koszyka</button>
       <button class="btn-clear" id="btn-cancel-current">Anuluj wybór tej działki</button>
-    </div>
-  `;
+    </div>`;
     }
 
     function toggleModule(code) {
-      if (state.selectedModules.has(code))
-        state.selectedModules.delete(code);
-      else
-        state.selectedModules.add(code);
+      if (state.selectedModules.has(code)) state.selectedModules.delete(code);
+      else state.selectedModules.add(code);
       renderSidebar();
     }
 
@@ -2926,60 +3021,53 @@
       const totals = calculateCurrentParcelTotals();
       if (!totals || totals.lineItems.length === 0) return;
 
-      state.cart.push({
-        parcel: state.parcel,
+      const parcelSnapshot = state.parcel;
+      const cartEntry = {
+        parcel: parcelSnapshot,
         lineItems: totals.lineItems,
         subtotal: totals.subtotal,
         vat: totals.vat,
         gross: totals.gross,
         addedAt: new Date(),
-      });
+      };
+      state.cart.push(cartEntry);
 
       if (activeParcelLayer) {
         activeParcelLayer.setStyle(STYLE_PARCEL_IN_CART);
-        cartParcelLayers.push({
-          parcelId: state.parcel.teryt,
-          layer: activeParcelLayer,
-        });
+        cartParcelLayers.push({ parcelId: parcelSnapshot.teryt, layer: activeParcelLayer });
         activeParcelLayer = null;
       }
 
-      state.parcel = null;
-      state.selectedModules.clear();
-
-      showToast(`
-    <div class="toast-icon-success">${ICONS.check}</div>
-    <div>
-      <div class="msg-title">Dodano do koszyka</div>
-      <div class="msg-sub">Łącznie: ${state.cart.length} ${state.cart.length === 1 ? 'działka' : state.cart.length < 5 ? 'działki' : 'działek'} · kliknij kolejną na mapie</div>
-    </div>
-  `, 'success');
-      setTimeout(() => {
-        if (activeToast && activeToast.classList.contains('success')) hideToast();
-      }, 3000);
-
-      document.getElementById('hint').classList.remove('hidden');
       trackEvent('parcel_added_to_cart', {
-        parcel_id: state.parcel?.teryt,
-        area_m2: state.parcel?.areaM2,
+        parcel_id: parcelSnapshot.teryt,
+        area_m2: parcelSnapshot.areaM2,
         modules_count: totals.lineItems.length,
         gross_pln: Math.round(totals.gross),
         cart_size: state.cart.length
       });
+
+      state.parcel = null;
+      state.selectedModules.clear();
+
+      // na mobile zwijamy bottom sheet do peek po dodaniu
+      if (window.innerWidth <= 768) {
+        document.getElementById('sidebar').classList.remove('expanded');
+      }
+
+      showToast(`<div class="toast-icon-success">${ICONS.check}</div><div><div class="msg-title">Dodano do koszyka</div><div class="msg-sub">Łącznie: ${state.cart.length} ${state.cart.length === 1 ? 'działka' : state.cart.length < 5 ? 'działki' : 'działek'} · dotknij kolejną na mapie</div></div>`, 'success');
+      setTimeout(() => { if (activeToast && activeToast.classList.contains('success')) hideToast(); }, 3000);
+
+      document.getElementById('hint').classList.remove('hidden');
       updateCartButton();
       renderSidebar();
     }
 
     function cancelCurrent() {
-      if (activeParcelLayer) {
-        map.removeLayer(activeParcelLayer);
-        activeParcelLayer = null;
-      }
+      if (activeParcelLayer) { map.removeLayer(activeParcelLayer); activeParcelLayer = null; }
       state.parcel = null;
       state.selectedModules.clear();
-      if (state.cart.length === 0) {
-        document.getElementById('hint').classList.remove('hidden');
-      }
+      if (state.cart.length === 0) document.getElementById('hint').classList.remove('hidden');
+      if (window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('expanded');
       renderSidebar();
     }
 
@@ -3007,7 +3095,6 @@
       trackEvent('cart_opened', { cart_size: state.cart.length });
       if (state.cart.length === 0) return;
       const totals = calculateCartTotals();
-
       const modalHtml = `
     <div class="modal-backdrop" id="cart-modal">
       <div class="modal">
@@ -3016,133 +3103,72 @@
             <div class="modal-cart-icon">${ICONS.cart}</div>
             <div>
               <div class="modal-title">Twój koszyk</div>
-              <div class="modal-subtitle">${state.cart.length} ${state.cart.length === 1 ? 'działka' : state.cart.length < 5 ? 'działki' : 'działek'} · każda jako osobny raport PDF</div>
+              <div class="modal-subtitle">${state.cart.length} ${state.cart.length === 1 ? 'działka' : state.cart.length < 5 ? 'działki' : 'działek'} · każda jako osobny raport</div>
             </div>
           </div>
           <button class="modal-close" onclick="closeCartModal()">×</button>
         </div>
-        <div class="modal-body" id="cart-modal-body">
-          ${renderCartItems()}
-        </div>
+        <div class="modal-body" id="cart-modal-body">${renderCartItems()}</div>
         <div class="modal-footer">
           <div class="modal-summary">
-            <div class="modal-summary-label">Liczba działek</div>
-            <div class="modal-summary-value">${state.cart.length}</div>
-            <div class="modal-summary-label">Liczba modułów łącznie</div>
-            <div class="modal-summary-value">${state.cart.reduce((s, it) => s + it.lineItems.length, 0)}</div>
-            <div class="modal-summary-label">Netto</div>
-            <div class="modal-summary-value">${formatPLN(totals.netto)} zł</div>
-            <div class="modal-summary-label">VAT (23%)</div>
-            <div class="modal-summary-value">${formatPLN(totals.vat)} zł</div>
+            <div class="modal-summary-label">Liczba działek</div><div class="modal-summary-value">${state.cart.length}</div>
+            <div class="modal-summary-label">Liczba modułów łącznie</div><div class="modal-summary-value">${state.cart.reduce((s, it) => s + it.lineItems.length, 0)}</div>
+            <div class="modal-summary-label">Netto</div><div class="modal-summary-value">${formatPLN(totals.netto)} zł</div>
+            <div class="modal-summary-label">VAT (23%)</div><div class="modal-summary-value">${formatPLN(totals.vat)} zł</div>
           </div>
           <div class="modal-total-line">
-            <div>
-              <div class="modal-total-label">Do zapłaty</div>
-            </div>
-            <div class="modal-total-value">
-              ${formatPLN(totals.gross)}<span class="currency">zł</span>
-            </div>
+            <div><div class="modal-total-label">Do zapłaty</div></div>
+            <div class="modal-total-value">${formatPLN(totals.gross)}<span class="currency">zł</span></div>
           </div>
           <div class="modal-actions">
             <button class="btn-secondary" onclick="closeCartModal()">Wróć do mapy</button>
-            <button class="btn-primary" onclick="checkout()">
-              ${ICONS.check} Przejdź do zamówienia ${ICONS.arrow}
-            </button>
+            <button class="btn-primary" onclick="checkout()">${ICONS.check} Przejdź do zamówienia ${ICONS.arrow}</button>
           </div>
         </div>
       </div>
-    </div>
-  `;
+    </div>`;
       document.body.insertAdjacentHTML('beforeend', modalHtml);
-
-      document.getElementById('cart-modal').addEventListener('click', (e) => {
-        if (e.target.id === 'cart-modal') closeCartModal();
-      });
+      document.getElementById('cart-modal').addEventListener('click', (e) => { if (e.target.id === 'cart-modal') closeCartModal(); });
     }
 
     function renderCartItems() {
       return state.cart.map((item, idx) => {
         const p = item.parcel;
         const areaHa = (p.areaM2 / 10000).toFixed(2).replace('.', ',');
-        return `
-      <div class="cart-item">
+        return `<div class="cart-item">
         <div class="cart-item-header">
           <div>
-            <div class="cart-item-title">
-              Działka <span class="num">${p.parcelNumber}</span>
-            </div>
-            <div class="cart-item-meta">
-              ${p.precinct}, gm. ${p.commune} · ${areaHa} ha
-            </div>
+            <div class="cart-item-title">Działka <span class="num">${p.parcelNumber}</span></div>
+            <div class="cart-item-meta">${p.precinct}, gm. ${p.commune} · ${areaHa} ha</div>
           </div>
           <div class="cart-item-actions">
             <div class="cart-item-price">${formatPLN(item.gross)} zł</div>
-            <button class="cart-item-remove" onclick="removeFromCart(${idx}); return false;" title="Usuń z koszyka">
-              ${ICONS.trash}
-            </button>
+            <button class="cart-item-remove" onclick="removeFromCart(${idx}); return false;" title="Usuń z koszyka">${ICONS.trash}</button>
           </div>
         </div>
-        <div class="cart-item-modules">
-          ${item.lineItems.map(m => `
-            <span class="cart-module-pill">${m.shortName}</span>
-          `).join('')}
-        </div>
-      </div>
-    `;
+        <div class="cart-item-modules">${item.lineItems.map(m => `<span class="cart-module-pill">${m.shortName}</span>`).join('')}</div>
+      </div>`;
       }).join('');
     }
 
     function renderCartModal() {
       const body = document.getElementById('cart-modal-body');
       if (!body) return;
-      if (state.cart.length === 0) {
-        closeCartModal();
-        return;
-      }
+      if (state.cart.length === 0) { closeCartModal(); return; }
       closeCartModal();
       setTimeout(openCartModal, 50);
     }
 
-    window.closeCartModal = function () {
-      const modal = document.getElementById('cart-modal');
-      if (modal) modal.remove();
-    };
-
+    window.closeCartModal = function () { const modal = document.getElementById('cart-modal'); if (modal) modal.remove(); };
     window.removeFromCart = removeFromCart;
 
     window.checkout = function () {
-      trackEvent('checkout_clicked', {
-        parcels: state.cart.length,
-        gross_pln: Math.round(calculateCartTotals().gross)
-      });
+      trackEvent('checkout_clicked', { parcels: state.cart.length, gross_pln: Math.round(calculateCartTotals().gross) });
       const totals = calculateCartTotals();
-      alert(
-        `To jest demo lokalne.\n\n` +
-        `W pełnej wersji (po wdrożeniu na Netlify+Supabase) tutaj otworzy się formularz:\n\n` +
-        `1. Wpiszesz e-mail\n` +
-        `2. Otrzymasz mail z linkiem potwierdzającym\n` +
-        `3. Klikniesz link → zamówienie zostanie zarejestrowane\n` +
-        `4. Otrzymasz potwierdzenie + ja dostanę powiadomienie\n\n` +
-        `Łączna kwota: ${formatPLN(totals.gross)} zł brutto\n` +
-        `Zamówienie: ${state.cart.length} ${state.cart.length === 1 ? 'działka' : 'działki'}\n\n` +
-        `(Pełne dane zamówienia w konsoli przeglądarki — F12)`
-      );
-      console.log('[CHECKOUT] Zamówienie:', {
-        parcelsCount: state.cart.length,
-        totalGrossPln: totals.gross.toFixed(2),
-        items: state.cart.map(it => ({
-          parcel: it.parcel.teryt,
-          parcelNumber: it.parcel.parcelNumber,
-          areaM2: it.parcel.areaM2,
-          modules: it.lineItems.map(m => m.code),
-          gross: it.gross.toFixed(2),
-        })),
-      });
+      alert(`To jest demo lokalne.\n\nW pełnej wersji tutaj otworzy się formularz:\n\n1. Wpiszesz e-mail\n2. Otrzymasz mail z linkiem potwierdzającym\n3. Klikniesz link → zamówienie zostanie zarejestrowane\n4. Otrzymasz potwierdzenie + ja dostanę powiadomienie\n\nŁączna kwota: ${formatPLN(totals.gross)} zł brutto\nZamówienie: ${state.cart.length} ${state.cart.length === 1 ? 'działka' : 'działki'}`);
+      console.log('[CHECKOUT]', { parcelsCount: state.cart.length, totalGrossPln: totals.gross.toFixed(2), items: state.cart.map(it => ({ parcel: it.parcel.teryt, parcelNumber: it.parcel.parcelNumber, areaM2: it.parcel.areaM2, modules: it.lineItems.map(m => m.code), gross: it.gross.toFixed(2) })) });
     };
 
-    // ============================================================
-    // TOAST
-    // ============================================================
     let activeToast = null;
     function showToast(html, type = 'loading') {
       if (activeToast) activeToast.remove();
@@ -3153,123 +3179,59 @@
       activeToast = el;
       return el;
     }
-    function hideToast() {
-      if (activeToast) {
-        activeToast.remove();
-        activeToast = null;
-      }
-    }
+    function hideToast() { if (activeToast) { activeToast.remove(); activeToast = null; } }
 
     function showErrorFlash(latlng) {
-      const icon = L.divIcon({
-        className: 'error-flash-icon',
-        html: '<div class="error-flash"></div>',
-        iconSize: [50, 50],
-      });
+      const icon = L.divIcon({ className: 'error-flash-icon', html: '<div class="error-flash"></div>', iconSize: [50, 50] });
       const marker = L.marker(latlng, { icon, interactive: false }).addTo(map);
       setTimeout(() => marker.remove(), 1600);
     }
 
-    // ============================================================
-    // CLICK HANDLER
-    // ============================================================
     map.on('click', async (e) => {
       if (isLoading) return;
       if (!state.catalog) {
-        showToast(`<div class="toast-icon-warn">${ICONS.warn}</div>
-      <div><div class="msg-title">Cennik się jeszcze nie załadował</div>
-      <div class="msg-sub">Spróbuj za chwilę.</div></div>`, 'error');
+        showToast(`<div class="toast-icon-warn">${ICONS.warn}</div><div><div class="msg-title">Cennik się jeszcze nie załadował</div><div class="msg-sub">Spróbuj za chwilę.</div></div>`, 'error');
         setTimeout(hideToast, 2000);
         return;
       }
-
       if (state.parcel && state.selectedModules.size > 0) {
-        if (!confirm('Masz już wybraną działkę z modułami. Kliknięcie wybierze nową — bieżąca zostanie odrzucona. Kontynuować?')) {
-          return;
-        }
-        if (activeParcelLayer) {
-          map.removeLayer(activeParcelLayer);
-          activeParcelLayer = null;
-        }
+        if (!confirm('Masz już wybraną działkę z modułami. Kliknięcie wybierze nową — bieżąca zostanie odrzucona. Kontynuować?')) return;
+        if (activeParcelLayer) { map.removeLayer(activeParcelLayer); activeParcelLayer = null; }
       }
-
       isLoading = true;
       document.getElementById('map').classList.add('loading');
       document.getElementById('hint').classList.add('hidden');
-
-      showToast(`
-    <div class="spinner"></div>
-    <div>
-      <div class="msg-title">Pobieram dane działki…</div>
-      <div class="msg-sub">looka.app → GUGiK ULDK</div>
-    </div>
-  `);
-
+      showToast(`<div class="spinner"></div><div><div class="msg-title">Pobieram dane działki…</div><div class="msg-sub">looka.app → GUGiK ULDK</div></div>`);
       try {
         const parcel = await fetchParcel(e.latlng.lng, e.latlng.lat);
-
         const alreadyInCart = state.cart.some(it => it.parcel.teryt === parcel.teryt);
         if (alreadyInCart) {
           hideToast();
-          showToast(`<div class="toast-icon-warn">${ICONS.warn}</div>
-        <div><div class="msg-title">Ta działka jest już w koszyku</div>
-        <div class="msg-sub">Działka ${parcel.parcelNumber} została wcześniej dodana.</div></div>`, 'error');
+          showToast(`<div class="toast-icon-warn">${ICONS.warn}</div><div><div class="msg-title">Ta działka jest już w koszyku</div><div class="msg-sub">Działka ${parcel.parcelNumber} została wcześniej dodana.</div></div>`, 'error');
           setTimeout(hideToast, 3500);
           return;
         }
-
         if (activeParcelLayer) map.removeLayer(activeParcelLayer);
-
         activeParcelLayer = L.geoJSON(parcel.geometry, {
           style: STYLE_PARCEL_ACTIVE,
-          onEachFeature: (f, layer) => {
-            layer.on('add', () => {
-              if (layer._path) layer._path.classList.add('parcel-appear');
-            });
-          },
+          onEachFeature: (f, layer) => { layer.on('add', () => { if (layer._path) layer._path.classList.add('parcel-appear'); }); },
         }).addTo(map);
-
-        map.flyToBounds(activeParcelLayer.getBounds(), {
-          padding: [80, 80, 80, 540],
-          maxZoom: 18,
-          duration: 0.6,
-        });
-
+        const padding = window.innerWidth <= 768 ? [40, 40, 200, 40] : [80, 80, 80, 540];
+        map.flyToBounds(activeParcelLayer.getBounds(), { padding, maxZoom: 18, duration: 0.6 });
         state.parcel = parcel;
         state.selectedModules.clear();
-
         hideToast();
         renderSidebar();
-
       } catch (err) {
         let title = 'Wystąpił błąd';
         let sub = err.message;
-        if (err.message === 'PARCEL_NOT_FOUND') {
-          title = 'Brak działki w tym punkcie';
-          sub = 'GUGiK nie znalazł działki ewidencyjnej w tym miejscu.';
-        } else if (err.message === 'OUT_OF_POLAND') {
-          title = 'Punkt poza granicami Polski';
-          sub = 'looka działa tylko dla obszaru Polski.';
-        } else if (err.message.startsWith('NETWORK_ERROR') || err.message.startsWith('PROXY_ERROR')) {
-          title = 'Problem z połączeniem';
-          sub = err.message;
-        } else if (err.message === 'MALFORMED_RESPONSE') {
-          title = 'Nieprawidłowa odpowiedź';
-          sub = 'GUGiK zwrócił dane w nieoczekiwanym formacie.';
-        }
-
+        if (err.message === 'PARCEL_NOT_FOUND') { title = 'Brak działki w tym punkcie'; sub = 'GUGiK nie znalazł działki ewidencyjnej w tym miejscu.'; }
+        else if (err.message === 'OUT_OF_POLAND') { title = 'Punkt poza granicami Polski'; sub = 'looka działa tylko dla obszaru Polski.'; }
+        else if (err.message.startsWith('NETWORK_ERROR') || err.message.startsWith('PROXY_ERROR')) { title = 'Problem z połączeniem'; sub = err.message; }
+        else if (err.message === 'MALFORMED_RESPONSE') { title = 'Nieprawidłowa odpowiedź'; sub = 'GUGiK zwrócił dane w nieoczekiwanym formacie.'; }
         showErrorFlash(e.latlng);
-        showToast(`
-      <div class="toast-icon-warn">${ICONS.warn}</div>
-      <div style="flex:1">
-        <div class="msg-title">${title}</div>
-        <div class="msg-sub">${sub}</div>
-      </div>
-      <button class="close-btn" onclick="this.parentElement.remove()">×</button>
-    `, 'error');
-        setTimeout(() => {
-          if (activeToast && activeToast.classList.contains('error')) hideToast();
-        }, 5000);
+        showToast(`<div class="toast-icon-warn">${ICONS.warn}</div><div style="flex:1"><div class="msg-title">${title}</div><div class="msg-sub">${sub}</div></div><button class="close-btn" onclick="this.parentElement.remove()">×</button>`, 'error');
+        setTimeout(() => { if (activeToast && activeToast.classList.contains('error')) hideToast(); }, 5000);
       } finally {
         isLoading = false;
         document.getElementById('map').classList.remove('loading');
@@ -3277,43 +3239,80 @@
     });
 
     map.on('mousemove', (e) => {
-      document.getElementById('coords').textContent =
-        `${e.latlng.lat.toFixed(5)}°N · ${e.latlng.lng.toFixed(5)}°E`;
+      const c = document.getElementById('coords');
+      if (c) c.textContent = `${e.latlng.lat.toFixed(5)}°N · ${e.latlng.lng.toFixed(5)}°E`;
     });
 
     document.getElementById('cart-btn').addEventListener('click', openCartModal);
 
-    // ============================================================
-    // LOAD CATALOG
-    // ============================================================
     async function loadCatalog() {
       try {
         const response = await fetch('/cennik.json');
         if (!response.ok) throw new Error('HTTP ' + response.status);
         state.catalog = await response.json();
         const totalModules = state.catalog.tracks.reduce((s, t) => s + t.modules.length, 0);
-
-        // Domyślnie rozwijamy pierwszą sekcję po załadowaniu
-        if (state.catalog.tracks.length > 0) {
-          state.expandedTracks.add(state.catalog.tracks[0].name);
-        }
-
+        if (state.catalog.tracks.length > 0) state.expandedTracks.add(state.catalog.tracks[0].name);
         console.log(`✓ looka.app — cennik załadowany: ${state.catalog.tracks.length} ścieżki, ${totalModules} modułów`);
-      } catch (err) {
-        console.error('✗ Nie udało się załadować cennika:', err);
-      }
+      } catch (err) { console.error('✗ Nie udało się załadować cennika:', err); }
     }
     loadCatalog();
 
-    // Pokaż sidebar od startu z welcome state
     document.getElementById('sidebar').classList.add('visible');
+
+    // ============================================================
+    // BOTTOM SHEET (mobile) - drag/click handle + auto-expand
+    // ============================================================
+    (function setupBottomSheet() {
+      const sidebar = document.getElementById('sidebar');
+      let startY = 0;
+      let isDragging = false;
+      const isMobile = () => window.innerWidth <= 768;
+
+      // Tap w górną część sheeta → toggle expanded
+      sidebar.addEventListener('click', (e) => {
+        if (!isMobile()) return;
+        const rect = sidebar.getBoundingClientRect();
+        const clickY = e.clientY - rect.top;
+        if (clickY < 32 && !e.target.closest('button, a, input, .module-card')) {
+          sidebar.classList.toggle('expanded');
+        }
+      });
+
+      // Touch drag
+      sidebar.addEventListener('touchstart', (e) => {
+        if (!isMobile()) return;
+        const rect = sidebar.getBoundingClientRect();
+        const touchY = e.touches[0].clientY - rect.top;
+        const scroll = sidebar.querySelector('.sidebar-scroll');
+        if (touchY < 44 || (scroll && scroll.scrollTop === 0)) {
+          isDragging = true;
+          startY = e.touches[0].clientY;
+        }
+      }, { passive: true });
+
+      sidebar.addEventListener('touchmove', (e) => {
+        if (!isDragging || !isMobile()) return;
+        const dy = e.touches[0].clientY - startY;
+        if (Math.abs(dy) > 50) {
+          if (dy < 0) sidebar.classList.add('expanded');
+          else sidebar.classList.remove('expanded');
+          isDragging = false;
+        }
+      }, { passive: true });
+
+      sidebar.addEventListener('touchend', () => { isDragging = false; });
+
+      // Auto-expand po wybraniu działki
+      const observer = new MutationObserver(() => {
+        if (state.parcel && isMobile() && !sidebar.classList.contains('expanded')) {
+          setTimeout(() => sidebar.classList.add('expanded'), 250);
+        }
+      });
+      observer.observe(document.getElementById('sidebar-content'), { childList: true });
+    })();
 
     console.log('%c looka.app ', 'background:#1F8EFE;color:white;padding:4px 8px;border-radius:4px;font-weight:bold');
     console.log('Popatrz na działkę z góry zanim kupisz');
-    // === POSTHOG TRACKING ===
-    window.trackEvent = function (name, props = {}) {
-      if (window.posthog) posthog.capture(name, props);
-    };
   </script>
 
 </body>
