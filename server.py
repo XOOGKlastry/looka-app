@@ -1,3 +1,6 @@
+import os
+print("CWD:", os.getcwd())
+print("Files:", os.listdir('.'))
 """
 looka.app — serwer Flask (dla Render)
 """
