@@ -62,7 +62,7 @@
     }
 
     body {
-      font-family: 'Inter', system-uI, -apple-system, sans-serif;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
       background: var(--bg);
       color: var(--text);
       font-size: 14px;
@@ -85,6 +85,11 @@
       outline: 2px solid var(--brand);
       outline-offset: 2px;
       border-radius: 6px;
+    }
+
+    /* PEEK BAR — domyślnie ukryty, pokazuje się tylko w mobile */
+    .peek-bar {
+      display: none;
     }
 
     /* HEADER */
@@ -512,7 +517,7 @@
       background: var(--surface);
     }
 
-    /* SIDEBAR */
+    /* SIDEBAR (desktop) */
     #sidebar {
       position: fixed;
       top: 60px;
@@ -1939,6 +1944,71 @@
       }
     }
 
+    /* FAB znajdź mnie — ukryty domyślnie, JS pokazuje na mobile */
+    .fab-locate {
+      position: fixed;
+      right: 14px;
+      bottom: calc(70px + env(safe-area-inset-bottom) + 14px);
+      width: 48px;
+      height: 48px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 550;
+      color: var(--brand);
+      transition: bottom 0.32s cubic-bezier(0.16, 1, 0.3, 1), background 0.15s, opacity 0.2s, transform 0.2s;
+    }
+
+    .fab-locate:active {
+      background: var(--brand-tint);
+    }
+
+    .fab-locate svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .fab-locate.locating svg {
+      animation: spin 1.2s linear infinite;
+    }
+
+    /* Pulse marker dla lokalizacji użytkownika */
+    .user-loc-pulse {
+      position: relative;
+      width: 18px;
+      height: 18px;
+      background: #1F8EFE;
+      border: 3px solid white;
+      border-radius: 50%;
+      box-shadow: 0 0 0 1px rgba(31, 142, 254, 0.5);
+    }
+
+    .user-loc-pulse::before {
+      content: "";
+      position: absolute;
+      inset: -8px;
+      background: rgba(31, 142, 254, 0.25);
+      border-radius: 50%;
+      animation: locPulse 1.8s ease-out infinite;
+    }
+
+    @keyframes locPulse {
+      0% {
+        transform: scale(0.6);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(2.2);
+        opacity: 0;
+      }
+    }
+
     /* ================== TABLET (≤1024px) ================== */
     @media (max-width: 1024px) and (min-width: 769px) {
       #sidebar {
@@ -2078,8 +2148,8 @@
         left: 0;
         right: 0;
         bottom: 0;
-        height: 85vh;
-        max-height: 85vh;
+        height: 90vh;
+        max-height: 90vh;
         border-left: none;
         border-top: none;
         border-radius: 20px 20px 0 0;
@@ -2087,11 +2157,12 @@
         transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
         box-shadow: 0 -8px 32px rgba(15, 23, 42, 0.12);
         z-index: 600;
-        padding-bottom: env(safe-area-inset-bottom);
         will-change: transform;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
       }
 
-      /* Domyślny visible = collapsed (peek) */
       #sidebar.visible {
         transform: translateY(calc(100% - 70px));
       }
@@ -2104,7 +2175,7 @@
         transform: translateY(0);
       }
 
-      /* drag handle (klikalny obszar) */
+      /* drag handle */
       #sidebar::before {
         content: "";
         position: absolute;
@@ -2124,7 +2195,7 @@
         background: var(--brand);
       }
 
-      /* peek bar — pasek ze statusem widoczny w collapsed */
+      /* peek bar — pokazujemy na mobile */
       .peek-bar {
         position: absolute;
         top: 22px;
@@ -2139,6 +2210,7 @@
         color: var(--text);
         pointer-events: none;
         z-index: 5;
+        transition: opacity 0.2s;
       }
 
       .peek-bar-icon {
@@ -2177,19 +2249,18 @@
         transform: rotate(180deg);
       }
 
-      /* W expanded ukrywamy peek-bar */
       #sidebar.expanded .peek-bar,
       #sidebar.half .peek-bar {
         opacity: 0;
         pointer-events: none;
       }
 
-      .peek-bar {
-        transition: opacity 0.2s;
-      }
-
       .sidebar-scroll {
         padding-top: 50px;
+        padding-bottom: calc(env(safe-area-inset-bottom) + 32px);
+        flex: 1;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
       }
 
       /* WELCOME (sidebar) */
@@ -2421,6 +2492,17 @@
       .leaflet-container {
         cursor: pointer;
       }
+
+      /* FAB position w stanach */
+      #sidebar.half~.fab-locate {
+        bottom: calc(45vh + 14px);
+      }
+
+      #sidebar.expanded~.fab-locate {
+        opacity: 0;
+        pointer-events: none;
+        transform: scale(0.8);
+      }
     }
 
     /* ================== MAŁE TELEFONY (≤380px) ================== */
@@ -2448,81 +2530,6 @@
       .module-card {
         padding: 12px;
         gap: 10px;
-      }
-    }
-
-    /* FAB znajdź mnie */
-    .fab-locate {
-      position: fixed;
-      right: 14px;
-      bottom: calc(70px + env(safe-area-inset-bottom) + 14px);
-      width: 48px;
-      height: 48px;
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 50%;
-      box-shadow: var(--shadow-lg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 550;
-      color: var(--brand);
-      transition: bottom 0.32s cubic-bezier(0.16, 1, 0.3, 1), background 0.15s;
-    }
-
-    .fab-locate:active {
-      background: var(--brand-tint);
-    }
-
-    .fab-locate svg {
-      width: 22px;
-      height: 22px;
-    }
-
-    #sidebar.half~.fab-locate {
-      bottom: calc(45vh + 14px);
-    }
-
-    #sidebar.expanded~.fab-locate {
-      opacity: 0;
-      pointer-events: none;
-      transform: scale(0.8);
-    }
-
-    .fab-locate.locating svg {
-      animation: spin 1.2s linear infinite;
-    }
-
-    /* Pulse marker dla lokalizacji użytkownika */
-    .user-loc-pulse {
-      position: relative;
-      width: 18px;
-      height: 18px;
-      background: #1F8EFE;
-      border: 3px solid white;
-      border-radius: 50%;
-      box-shadow: 0 0 0 1px rgba(31, 142, 254, 0.5);
-    }
-
-    .user-loc-pulse::before {
-      content: "";
-      position: absolute;
-      inset: -8px;
-      background: rgba(31, 142, 254, 0.25);
-      border-radius: 50%;
-      animation: locPulse 1.8s ease-out infinite;
-    }
-
-    @keyframes locPulse {
-      0% {
-        transform: scale(0.6);
-        opacity: 1;
-      }
-
-      100% {
-        transform: scale(2.2);
-        opacity: 0;
       }
     }
   </style>
@@ -2714,6 +2721,7 @@
     </span>
     Dotknij dowolne miejsce na mapie
   </div>
+
   <button class="fab-locate" id="fab-locate" title="Znajdź mnie" style="display:none;">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
       stroke-linejoin="round">
@@ -2725,6 +2733,7 @@
       <circle cx="12" cy="12" r="9" />
     </svg>
   </button>
+
   <div id="sidebar">
     <div class="peek-bar" id="peek-bar">
       <span class="peek-bar-icon">
@@ -3221,7 +3230,6 @@
       state.parcel = null;
       state.selectedModules.clear();
 
-      // na mobile zwijamy bottom sheet do peek po dodaniu
       if (window.innerWidth <= 768) {
         document.getElementById('sidebar').classList.remove('expanded');
       }
@@ -3430,6 +3438,7 @@
     loadCatalog();
 
     document.getElementById('sidebar').classList.add('visible');
+
     // ============================================================
     // BOTTOM SHEET (mobile) — 3 stany + auto-collapse przy ruchu mapy
     // ============================================================
@@ -3438,12 +3447,9 @@
       const peekText = document.getElementById('peek-bar-text');
       const fab = document.getElementById('fab-locate');
       let touchStartY = 0;
-      let touchStartTransform = '';
       let isDragging = false;
-      let dragStartedAtTop = false;
       const isMobile = () => window.innerWidth <= 768;
 
-      // Pokaż/ukryj FAB w zależności od mobile
       function syncFabVisibility() {
         if (!fab) return;
         fab.style.display = isMobile() ? 'flex' : 'none';
@@ -3451,7 +3457,6 @@
       syncFabVisibility();
       window.addEventListener('resize', syncFabVisibility);
 
-      // Stan: 'collapsed' | 'half' | 'expanded'
       window.setSheetState = function (s) {
         if (!isMobile()) return;
         sidebar.classList.remove('half', 'expanded');
@@ -3459,7 +3464,6 @@
         if (s === 'expanded') sidebar.classList.add('expanded');
       };
 
-      // Aktualizacja tekstu w peek-bar
       window.updatePeekBar = function () {
         if (!peekText) return;
         if (state.parcel) {
@@ -3475,38 +3479,32 @@
         }
       };
 
-      // Tap w górną strefę (handle / peek-bar) — cycle: collapsed → half → expanded → collapsed
       sidebar.addEventListener('click', (e) => {
         if (!isMobile()) return;
         const rect = sidebar.getBoundingClientRect();
         const clickY = e.clientY - rect.top;
-        if (clickY > 50) return; // klik niżej niż handle/peek
+        if (clickY > 50) return;
         if (e.target.closest('button, a, input, .module-card')) return;
 
         if (sidebar.classList.contains('expanded')) {
           sidebar.classList.remove('expanded');
-          // wraca do collapsed (peek)
         } else if (sidebar.classList.contains('half')) {
           sidebar.classList.remove('half');
           sidebar.classList.add('expanded');
         } else {
-          // collapsed → half (jeśli wybrana działka) lub expanded (jeśli welcome)
           if (state.parcel || state.cart.length > 0) sidebar.classList.add('half');
           else sidebar.classList.add('expanded');
         }
       });
 
-      // Touch drag
       sidebar.addEventListener('touchstart', (e) => {
         if (!isMobile()) return;
         const rect = sidebar.getBoundingClientRect();
         const touchY = e.touches[0].clientY - rect.top;
         const scroll = sidebar.querySelector('.sidebar-scroll');
-        // drag tylko za górą (44 px) lub gdy scroll na zerze
         if (touchY < 60 || (scroll && scroll.scrollTop === 0)) {
           isDragging = true;
           touchStartY = e.touches[0].clientY;
-          dragStartedAtTop = touchY < 60;
         }
       }, { passive: true });
 
@@ -3519,11 +3517,9 @@
         const isHalf = sidebar.classList.contains('half');
 
         if (dy < 0) {
-          // swipe UP
           if (!isExpanded && !isHalf) sidebar.classList.add('half');
           else if (isHalf) { sidebar.classList.remove('half'); sidebar.classList.add('expanded'); }
         } else {
-          // swipe DOWN
           if (isExpanded) { sidebar.classList.remove('expanded'); sidebar.classList.add('half'); }
           else if (isHalf) sidebar.classList.remove('half');
         }
@@ -3533,30 +3529,23 @@
       sidebar.addEventListener('touchend', () => { isDragging = false; });
 
       // Auto-collapse przy panowaniu/zoomie mapy
-      let userInteractedWithMap = false;
       map.on('movestart zoomstart dragstart', () => {
         if (!isMobile()) return;
-        userInteractedWithMap = true;
         if (sidebar.classList.contains('expanded') || sidebar.classList.contains('half')) {
           sidebar.classList.remove('expanded', 'half');
         }
       });
 
-      // Po wybraniu działki → auto-half (nie pełen, żeby user widział mapę)
+      // Po wybraniu działki → auto-half
       const observer = new MutationObserver(() => {
         updatePeekBar();
-        if (state.parcel && isMobile() && !userInteractedWithMap) {
-          // tylko przy pierwszym render po wybraniu
-        }
         if (state.parcel && isMobile()) {
-          // przy każdej zmianie po wybraniu działki — wjedź do half jeśli jesteś w collapsed
           setTimeout(() => {
             if (!sidebar.classList.contains('expanded') && !sidebar.classList.contains('half')) {
               sidebar.classList.add('half');
             }
           }, 250);
         }
-        userInteractedWithMap = false;
       });
       observer.observe(document.getElementById('sidebar-content'), { childList: true });
 
@@ -3610,8 +3599,6 @@
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 30000 }
       );
     });
-
-
 
     console.log('%c looka.app ', 'background:#1F8EFE;color:white;padding:4px 8px;border-radius:4px;font-weight:bold');
     console.log('Popatrz na działkę z góry zanim kupisz');
